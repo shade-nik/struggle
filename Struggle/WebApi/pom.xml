@@ -17,6 +17,12 @@
 	</build>
 
 	<dependencies>
+		<!-- our own lib -->
+		<dependency>
+			<groupId>local.halflight.learning</groupId>
+			<artifactId>CommonLib</artifactId>
+		</dependency>
+
 		<!-- Jersey spring integration -->
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
