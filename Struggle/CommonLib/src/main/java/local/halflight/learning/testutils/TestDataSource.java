@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlTransient;
-
-import com.google.common.base.Strings;
-
 import local.halflight.learning.dto.simpletask.SimpleTask;
+import local.halflight.learning.dto.simpletask.SimpleTaskDbEntity;
 import local.halflight.learning.dto.simpletask.TaskPriority;
 
 public class TestDataSource {
@@ -33,6 +30,16 @@ public class TestDataSource {
 		task.setNotes(NOTES);
 		return task;
 	}
+	
+	public static SimpleTaskDbEntity generateSimpleTaskDbEntity(Integer id) {
+		SimpleTaskDbEntity entity = new SimpleTaskDbEntity();
+		entity.setTaskName(TASK_NAME);
+		entity.setTaskDescription(TASK_DESCRIPTION);
+		entity.setPriority(PRIORITY);
+		entity.setNotes(NOTES);
+		return entity;
+	}
+
 	
 	public static List<SimpleTask> generateTaskList(int size) {
 		List<SimpleTask> list = new ArrayList<>();

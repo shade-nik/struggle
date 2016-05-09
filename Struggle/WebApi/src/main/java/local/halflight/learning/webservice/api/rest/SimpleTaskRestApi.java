@@ -94,6 +94,7 @@ public class SimpleTaskRestApi {
 	public Response createTask(SimpleTask rq)
 	{
 		LOG.info("Request {} for task create received.", rq);
+		SimpleTask saved = simpleTaskService.save(rq);
 		return createResponse(Status.OK, new SimpleTaskResponse(rq));
 	}
 	

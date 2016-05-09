@@ -24,6 +24,11 @@ public class AbstractHibernateDao<T> implements Dao<T> {
 		return sessionFactory.getCurrentSession();
 	}
 	
+	protected Class<T> getEntityType()
+	{
+		return clazz;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public T save(T entity)
 	{
