@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import local.halflight.learning.dto.hibernate.simpletask.SimpleTaskDbEntity;
 import local.halflight.learning.dto.simpletask.SimpleTask;
-import local.halflight.learning.dto.simpletask.SimpleTaskDbEntity;
 import local.halflight.learning.dto.simpletask.TaskPriority;
 
 public class TestDataSource {

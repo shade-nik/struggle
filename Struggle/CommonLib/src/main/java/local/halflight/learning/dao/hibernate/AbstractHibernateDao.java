@@ -6,17 +6,20 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.core.GenericTypeResolver;
 
 import local.halflight.learning.dao.Dao;
 
-public class AbstractHibernateDao<T> implements Dao<T> {
+public abstract class AbstractHibernateDao<T> implements Dao<T> {
 
-	private SessionFactory sessionFactory;
+	private final SessionFactory sessionFactory;
 	
-	private Class<T> clazz;
+	protected Class<T> clazz;
 	
+	@SuppressWarnings("unchecked")
 	public AbstractHibernateDao(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
+		this.clazz = (Class<T>) GenericTypeResolver.resolveTypeArgument(getClass(), AbstractHibernateDao.class);
 	}
 	
 	protected Session currentSession()
@@ -24,8 +27,7 @@ public class AbstractHibernateDao<T> implements Dao<T> {
 		return sessionFactory.getCurrentSession();
 	}
 	
-	protected Class<T> getEntityType()
-	{
+	protected Class<T> getEntityType() {
 		return clazz;
 	}
 	

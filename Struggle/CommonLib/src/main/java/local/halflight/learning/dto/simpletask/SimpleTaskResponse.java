@@ -1,13 +1,17 @@
 package local.halflight.learning.dto.simpletask;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.google.common.base.MoreObjects;
 
 @XmlRootElement(name = "SimpleTaskResponse")
+@XmlAccessorType(XmlAccessType.NONE)
 public class SimpleTaskResponse {
 
+	@XmlElement(name = "SimpleTaskRequest")
 	private SimpleTaskRequest request;
 
 	@XmlElement(name = "SimpleTaskPayload")

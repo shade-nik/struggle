@@ -30,6 +30,7 @@ import org.springframework.stereotype.Component;
 import local.halflight.learning.dto.simpletask.NonAnnotatedTaskListResponse;
 import local.halflight.learning.dto.simpletask.SimpleTask;
 import local.halflight.learning.dto.simpletask.SimpleTaskResponse;
+import local.halflight.learning.testutils.TestDataSource;
 import local.halflight.learning.webservice.service.SimpleTaskService;
 
 @Component
@@ -75,7 +76,9 @@ public class SimpleTaskRestApi {
 		{
 			if(taskId.equals("Integer")) {
 				LOG.info("Return Integer as response");
-				return createResponse(Status.OK, new Integer(678));
+				SimpleTask task = TestDataSource.generateTask();
+//				return createResponse(Status.OK, task);
+				return createResponse(Status.OK, new SimpleTaskResponse(task));
 			}
 			else {
 				SimpleTask task = simpleTaskService.findTask(taskId);

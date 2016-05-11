@@ -29,7 +29,7 @@ public class CommonLibHibernateConfig {
 	public LocalSessionFactoryBean sessionFactory() {
 		LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
 		factoryBean.setDataSource(ds);
-		factoryBean.setPackagesToScan(new String[] {"org.halflight.learning.hibernate.entities"});
+		factoryBean.setPackagesToScan(new String[] {"local.halflight.learning.dto.hibernate"});
 
 		Properties props = new Properties();
 		props.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");

@@ -1,4 +1,4 @@
-package local.halflight.learning.dto.simpletask;
+package local.halflight.learning.dto.hibernate.simpletask;
 
 import java.util.List;
 
@@ -20,6 +20,8 @@ import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import com.google.common.base.MoreObjects;
+
+import local.halflight.learning.dto.simpletask.TaskPriority;
 
 @NamedQueries(value = { @NamedQuery(name = "findTaskByName", query = "from SimpleTaskDbEntity where taskname = :taskname") })
 @Entity

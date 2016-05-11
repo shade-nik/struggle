@@ -8,6 +8,9 @@
     http://www.springframework.org/schema/context 
     http://www.springframework.org/schema/context/spring-context.xsd">
 
+	<import resource="classpath:common-lib-spring-beans.xml"/>
+
  	<context:component-scan base-package="local.halflight.learning"/>
+	<context:property-placeholder location="classpath:learning.properties" />
 	
 </beans>

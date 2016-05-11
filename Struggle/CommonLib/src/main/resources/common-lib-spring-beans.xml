@@ -11,7 +11,6 @@
     http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<context:component-scan base-package="local.halflight.learning" scoped-proxy="targetClass" />
-
 	<context:property-placeholder location="classpath:learning.properties" />
     <tx:annotation-driven transaction-manager="hibernateTransactionManager" proxy-target-class="true"/>
 
