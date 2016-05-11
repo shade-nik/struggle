@@ -3,6 +3,7 @@ package local.halflight.learning.webservice.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +53,16 @@ public class SimpleTaskService {
 
 	public SimpleTask findTask(String taskId) {
 
-		// SimpleTask task = TestDataSource.generateTask();
-		SimpleTaskDbEntity task = simpleTaskHibernateDao.findByNameWithNamedQuery(taskId);
+		SimpleTaskDbEntity task = null;
+		if (StringUtils.isNumeric(taskId)) {
+			task = simpleTaskHibernateDao.findById(Integer.valueOf(taskId));
+		} else {
+			try {
+				task = simpleTaskHibernateDao.findByNameWithNamedQuery(taskId);
+			} catch (Exception e) {
+				LOG.info("Exception while searching: {}", e);
+			}
+		}
 		LOG.info("Found task: {}", task);
 
 		return SimpleTaskEntityConverter.toDto(task);

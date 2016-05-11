@@ -78,7 +78,13 @@
 				<artifactId>CommonLib</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
-
+			<!-- Utility lib -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${apache.commons.version}</version>
+			</dependency>
+			
 			<!-- Test -->
 			<dependency>
 				<groupId>junit</groupId>

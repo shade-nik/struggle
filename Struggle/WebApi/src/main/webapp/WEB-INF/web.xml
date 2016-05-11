@@ -19,10 +19,10 @@
 		<location>/404.html</location>
 	</error-page>
 
-	<error-page>
+<!-- 	<error-page>
 		<error-code>500</error-code>
 		<location>/500.html</location>
-	</error-page>
+	</error-page> -->
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>

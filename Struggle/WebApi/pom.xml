@@ -22,6 +22,11 @@
 			<groupId>local.halflight.learning</groupId>
 			<artifactId>CommonLib</artifactId>
 		</dependency>
+		<!-- Utility lib -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
 
 		<!-- Jersey spring integration -->
 		<dependency>
