@@ -13,19 +13,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
 
 import com.google.common.base.MoreObjects;
 
 import local.halflight.learning.dto.simpletask.TaskPriority;
 
 @NamedQueries(value = { @NamedQuery(name = "findTaskByName", query = "from SimpleTaskDbEntity where taskname = :taskname") })
+@NamedNativeQueries(value = {@NamedNativeQuery(name = "checkEntity", query = "select count(*) from simple_task_entry where taskname = :taskname")})
 @Entity
-@Table(name = "simple_task_entry", uniqueConstraints = {@UniqueConstraint(columnNames = {"taskname"}, name = "uq_simple_task_taskname")})
+@Table(name = "simple_task_entry"/*, uniqueConstraints = {@UniqueConstraint(columnNames = {"taskname"}, name = "uq_simple_task_taskname")}*/)
 public class SimpleTaskDbEntity {
 
 	@Id
@@ -33,7 +35,7 @@ public class SimpleTaskDbEntity {
 	@Column(name = "task_id", nullable = false, unique = true)
 	private Integer id;
 	
-	@Column(name = "taskname", unique = true, nullable = false)
+	@Column(name = "taskname", /*unique = true,*/ nullable = false)
 	private String taskName;
 	
 	@Column(name = "task_description", unique = false, nullable = true)

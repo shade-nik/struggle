@@ -1,6 +1,6 @@
 package local.halflight.learning.dao.hibernate.simpletask;
 
-import java.util.List;
+import java.math.BigInteger;
 
 import javax.transaction.Transactional;
 
@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Repository;
 
-import local.halflight.learning.dao.Dao;
 import local.halflight.learning.dao.hibernate.AbstractHibernateDao;
 import local.halflight.learning.dto.hibernate.simpletask.SimpleTaskDbEntity;
 
@@ -32,8 +31,20 @@ public class SimpleTaskHibernateDao extends AbstractHibernateDao<SimpleTaskDbEnt
 
 	@Override
 	public SimpleTaskDbEntity save(SimpleTaskDbEntity entity) {
-		SimpleTaskDbEntity saved = super.save(entity);
-		LOG.info("Saved {} :{}.", getEntityType().getName(), saved);
+		Number checkRes  =  (Number) currentSession()
+				.getNamedQuery("checkEntity")
+				.setString("taskname", entity.getTaskName())
+				.uniqueResult();
+		int resInt = checkRes.intValue();
+		SimpleTaskDbEntity saved;
+		if(checkRes != null && resInt == 0) {
+			saved = super.save(entity);
+			LOG.info("Saved {} :{}.", getEntityType().getName(), saved);
+		}
+		else {
+			saved = null;
+			LOG.info("Failed to save {}, taskname={} already exists in db", entity, entity.getTaskName() );
+		}
 		return saved;
 	}
 
