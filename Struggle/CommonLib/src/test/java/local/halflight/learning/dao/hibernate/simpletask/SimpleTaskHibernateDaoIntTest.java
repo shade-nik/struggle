@@ -3,7 +3,6 @@ package local.halflight.learning.dao.hibernate.simpletask;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import org.hibernate.Hibernate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -37,8 +35,6 @@ public class SimpleTaskHibernateDaoIntTest {
 
 	SimpleTaskDbEntity entity;
 	
-	HibernateDaoSupport support;
-
 	@Before
 	public void before() {
 		entity = TestDataSource.generateSimpleTaskDbEntity(TEST_ID);
@@ -81,6 +77,14 @@ public class SimpleTaskHibernateDaoIntTest {
 		SimpleTaskDbEntity notFound = dao.findById(updated.getId());
 		assertThat(notFound).isNull();
 
+	}
+	
+	
+	public void testGetProjection() {
+		String qString = "select "
+				+ "new local.halflight.learning.dto.simpletask.SimpleTaskProjection(s.taskname, s.task_description, s.priority) "
+				+ "from SimpleTaskDbEntity s  ";
+//		Query query = createQuery(qString);		
 	}
 
 	public void testCustomQueryFind() {

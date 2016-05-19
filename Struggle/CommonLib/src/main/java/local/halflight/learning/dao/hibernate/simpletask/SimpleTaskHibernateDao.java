@@ -30,7 +30,7 @@ public class SimpleTaskHibernateDao extends AbstractHibernateDao<SimpleTaskDbEnt
 
 	@Override
 	public SimpleTaskDbEntity save(SimpleTaskDbEntity entity) {
-		Number checkRes = (Number) currentSession().getNamedQuery("checkEntity")
+		Number checkRes = (Number) currentSession().getNamedQuery(SimpleTaskDbEntity.CHECK_BY_NAME)
 				.setString("taskname", entity.getTaskName()).uniqueResult();
 		int resInt = checkRes.intValue();
 		SimpleTaskDbEntity saved;
@@ -67,7 +67,7 @@ public class SimpleTaskHibernateDao extends AbstractHibernateDao<SimpleTaskDbEnt
 	}
 
 	public SimpleTaskDbEntity findByNameWithNamedQuery(String taskName) {
-		Query query = currentSession().getNamedQuery("findTaskByName").setParameter("taskname", taskName);
+		Query query = currentSession().getNamedQuery(SimpleTaskDbEntity.FIND_BY_NAME).setParameter("taskname", taskName);
 		return (SimpleTaskDbEntity) query.uniqueResult();
 	}
 

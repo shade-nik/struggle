@@ -27,30 +27,43 @@ import com.google.common.base.MoreObjects;
 
 import local.halflight.learning.dto.simpletask.TaskPriority;
 
-@NamedQueries(value = { @NamedQuery(name = "findTaskByName", query = "from SimpleTaskDbEntity where taskname = :taskname") })
-@NamedNativeQueries(value = {@NamedNativeQuery(name = "checkEntity", query = "select count(*) from simple_task_entry where taskname = :taskname")})
+@NamedQueries(value = {
+		@NamedQuery(name = SimpleTaskDbEntity.FIND_BY_NAME,
+				    query = "from SimpleTaskDbEntity where taskname = :taskname") })
+@NamedNativeQueries(value = {
+		@NamedNativeQuery(name = SimpleTaskDbEntity.CHECK_BY_NAME, 
+				          query = "select count(*) from simple_task_entry where taskname = :taskname") })
 @Entity
-@Table(name = "simple_task_entry"/*, uniqueConstraints = {@UniqueConstraint(columnNames = {"taskname"}, name = "uq_simple_task_taskname")}*/)
+@Table(name = "simple_task_entry"/*
+									 * , uniqueConstraints =
+									 * {@UniqueConstraint(columnNames =
+									 * {"taskname"}, name =
+									 * "uq_simple_task_taskname")}
+									 */)
 public class SimpleTaskDbEntity {
+
+	public static final String FIND_BY_NAME= "findTaskByName";
+	public static final String CHECK_BY_NAME = "checkEntity";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "task_id", nullable = false, unique = true)
 	private Long id;
-	
-	@Column(name = "taskname", /*unique = true,*/ nullable = false)
+
+	@Column(name = "taskname", /* unique = true, */ nullable = false)
 	private String taskName;
-	
+
 	@Column(name = "task_description", unique = false, nullable = true)
 	private String taskDescription;
-	
-    @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "enum('LOW','NORMAL', 'HIGH')")
+
+	@Enumerated(EnumType.STRING)
+	@Column(columnDefinition = "enum('LOW','NORMAL', 'HIGH')")
 	private TaskPriority priority;
 
 	@ElementCollection(fetch = FetchType.LAZY)
 	@Cascade(value = { CascadeType.ALL })
-	@CollectionTable(name = "simple_task_notes", joinColumns = @JoinColumn(name="id"))
+
+	@CollectionTable(name = "simple_task_notes", joinColumns = @JoinColumn(name = "id"))
 	private List<String> notes;
 
 	@Transient
@@ -58,7 +71,7 @@ public class SimpleTaskDbEntity {
 
 	public SimpleTaskDbEntity() {
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -105,7 +118,9 @@ public class SimpleTaskDbEntity {
 				.add("id", id)
 				.add("taskName", taskName)
 				.add("taskDescription", taskDescription)
+				.add("priority", priority)
+				.add("notes", notes)
 				.toString();
 	}
-	
+
 }
