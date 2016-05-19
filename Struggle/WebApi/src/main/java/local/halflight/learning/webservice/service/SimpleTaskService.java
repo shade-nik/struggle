@@ -1,6 +1,5 @@
 package local.halflight.learning.webservice.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -13,41 +12,27 @@ import local.halflight.learning.dao.hibernate.simpletask.SimpleTaskHibernateDao;
 import local.halflight.learning.dto.hibernate.simpletask.SimpleTaskDbEntity;
 import local.halflight.learning.dto.simpletask.SimpleTask;
 import local.halflight.learning.dto.simpletask.SimpleTaskEntityConverter;
+import local.halflight.learning.model.sender.SimpleTaskSender;
 
 @Service
 public class SimpleTaskService {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SimpleTaskService.class);
 
-	SimpleTaskHibernateDao simpleTaskHibernateDao;
+	private SimpleTaskHibernateDao simpleTaskHibernateDao;
+	
+	//TODO think about struct (send entity for processing)
+	// local executor, amqp, persist... etc
+	SimpleTaskSender simpleTaskSender; 
 
 	public SimpleTaskService() {
 	}
 
-	public List<String> getListOfStrings() {
-
-		List<String> list = new ArrayList<>();
-		for (int i = 0; i < 5; i++) {
-			list.add("TaskIndex" + i);
-		}
-
-		return list;
-	}
-
-	public String findString(String taskId) {
-		return "FoundedItem";
-	}
-
 	public List<SimpleTask> findAll() {
-		// List<SimpleTask> taskList = TestDataSource.generateTaskList(4);
 		List<SimpleTaskDbEntity> taskList = simpleTaskHibernateDao.retrieveAll();
 		LOG.info("Found tasks: {}", taskList);
-		// convert db entry to web dto old way
-		// TODO use java 8
-		List<SimpleTask> resp = new ArrayList<>();
-		for (SimpleTaskDbEntity e : taskList) {
-			resp.add(SimpleTaskEntityConverter.toDto(e));
-		}
+
+		List<SimpleTask> resp =  SimpleTaskEntityConverter.convertList(taskList, (e)-> SimpleTaskEntityConverter.toDto(e) );
 		return resp;
 	}
 
@@ -55,26 +40,49 @@ public class SimpleTaskService {
 
 		SimpleTaskDbEntity task = null;
 		if (StringUtils.isNumeric(taskId)) {
-			task = simpleTaskHibernateDao.findById(Integer.valueOf(taskId));
+			task = simpleTaskHibernateDao.findById(Long.valueOf(taskId));
 		} else {
+			String taskName = taskId;
 			try {
-				task = simpleTaskHibernateDao.findByNameWithNamedQuery(taskId);
+				task = simpleTaskHibernateDao.findByNameWithNamedQuery(taskName);
+
 			} catch (Exception e) {
 				LOG.info("Exception while searching: {}", e);
 			}
 		}
 		LOG.info("Found task: {}", task);
-
 		return SimpleTaskEntityConverter.toDto(task);
 
 	}
 
 	public SimpleTask save(SimpleTask rq) {
-		SimpleTaskDbEntity task = simpleTaskHibernateDao.save(SimpleTaskEntityConverter.toEntity(rq));
-		LOG.info("Save task: {}", task);
-		return SimpleTaskEntityConverter.toDto(task);
+		try {
+			SimpleTaskDbEntity task = simpleTaskHibernateDao.save(SimpleTaskEntityConverter.toEntity(rq));
+			LOG.info("Saved task: {}", task);
+			return SimpleTaskEntityConverter.toDto(task);
+		} catch (Exception e ) {
+			LOG.info("Save failed: ", e);
+			return null;
+		}
 	}
 
+	public SimpleTask update(SimpleTask update) {
+		try {
+			SimpleTaskDbEntity task = simpleTaskHibernateDao.update(SimpleTaskEntityConverter.toEntity(update));
+			LOG.info("Updated task: {}", task);
+			return SimpleTaskEntityConverter.toDto(task);
+		} catch (Exception e ) {
+			LOG.info("Update failed: ", e);
+			return null;
+		}
+	}
+
+	public void remove(String taskId) {
+		LOG.info("Remove task:{} requested", taskId);
+		Long id = Long.getLong(taskId);
+		simpleTaskHibernateDao.delete(id);
+	}
+	
 	@Autowired
 	public void setSimpleTaskHibernateDao(SimpleTaskHibernateDao simpleTaskHibernateDao) {
 		this.simpleTaskHibernateDao = simpleTaskHibernateDao;

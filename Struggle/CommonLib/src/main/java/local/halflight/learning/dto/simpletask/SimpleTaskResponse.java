@@ -54,18 +54,19 @@ public class SimpleTaskResponse {
 		this.payload = payload;
 	}
 
-	@Override
-	public String toString() {
-		return MoreObjects.toStringHelper(this)
-				.add("SimpleTaskRequest", request)
-				.add("SimpleTask", payload)
-				.toString();
-	}
-
 	public void addValidationError(ValidationErrorType errorType) {
 		if (validationErrors == null) {
 			validationErrors = new HashSet<>();
 		}
 		validationErrors.add(new ValidationError(errorType));
+	}
+	
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+				.add("SimpleTaskRequest", request)
+				.add("SimpleTask", payload)
+				.add("validationErrors", validationErrors)
+				.toString();
 	}
 }

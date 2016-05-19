@@ -4,13 +4,15 @@ import java.util.List;
 
 public interface Dao<T> {
 
-	public T findById(Integer id);
+	public T save(T entity);
+	
+	public T update(T entity);
+	
+	public T merge (T entity);
 
-	public T findByStringId(String id);
-
-	public T update(T dto);
-
-	public void delete(T dto);
+	public void delete(Number id);
+	
+	public T findById(Number id);
 
 	public List<T> retrieveAll();
 

@@ -3,9 +3,11 @@ package local.halflight.learning.webservice.api.rest;
 import static org.easymock.EasyMock.anyString;
 import static org.easymock.EasyMock.expect;
 
+import java.net.URI;
 import java.util.Arrays;
 
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.JAXBElement;
 
 import org.easymock.EasyMock;
@@ -14,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import local.halflight.learning.dto.simpletask.NonAnnotatedTaskListResponse;
 import local.halflight.learning.dto.simpletask.SimpleTask;
@@ -34,20 +37,26 @@ public class SimpleRestApiTest {
 
 	private final IMocksControl control = EasyMock.createControl();
 	private final SimpleTaskService simpleTaskService = control.createMock(SimpleTaskService.class);
+	private final UriInfo uri = control.createMock(UriInfo.class);
 	
 	@Before
 	public void setupSimpleRestApi()
 	{
 		api = new SimpleTaskRestApi();
 		api.setSimpleTaskService(simpleTaskService);
+		ReflectionTestUtils.setField(api, "uri", uri);
+		
 		payload = TestDataSource.generateTask();
+
 	}
 	
 
 	@Test
 	public void shouldGetTask() {
 
-		expect(simpleTaskService.findTask(anyString())).andReturn(payload);
+		expect(simpleTaskService.findTask(TASK_ID)).andReturn(payload);
+		expect(uri.getAbsolutePath()).andReturn(URI.create(""));
+		
 		control.replay();
 		Response rp = api.getTask(TASK_ID);
 		control.verify();
@@ -55,16 +64,7 @@ public class SimpleRestApiTest {
 
 	}
 	
-	@Test
-	public void shouldReturnIntegerForTaskIdInteger() {
 
-		final String taskId = "Integer";
-		
-		control.replay();
-		Response rp = api.getTask(taskId);
-		control.verify();
-		LOG.info("shouldReturnIntegerForTaskIdInteger Rp: {}", rp);
-	}
 	
 	@Test
 	public void shouldGetTaskList() {

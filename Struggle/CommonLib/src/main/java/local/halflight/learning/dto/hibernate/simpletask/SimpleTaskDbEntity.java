@@ -20,6 +20,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.google.common.base.MoreObjects;
 
 import local.halflight.learning.dto.simpletask.TaskPriority;
@@ -33,7 +36,7 @@ public class SimpleTaskDbEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "task_id", nullable = false, unique = true)
-	private Integer id;
+	private Long id;
 	
 	@Column(name = "taskname", /*unique = true,*/ nullable = false)
 	private String taskName;
@@ -46,6 +49,7 @@ public class SimpleTaskDbEntity {
 	private TaskPriority priority;
 
 	@ElementCollection(fetch = FetchType.LAZY)
+	@Cascade(value = { CascadeType.ALL })
 	@CollectionTable(name = "simple_task_notes", joinColumns = @JoinColumn(name="id"))
 	private List<String> notes;
 
@@ -55,11 +59,11 @@ public class SimpleTaskDbEntity {
 	public SimpleTaskDbEntity() {
 	}
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

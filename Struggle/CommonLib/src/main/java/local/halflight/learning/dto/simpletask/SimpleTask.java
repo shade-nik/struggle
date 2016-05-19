@@ -12,14 +12,16 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.google.common.base.MoreObjects;
 
+import local.halflight.learning.model.Task;
+
 @XmlRootElement(name = "SimpleTask")
 @XmlType(name = "SimpleTask")
 @XmlAccessorType(XmlAccessType.NONE)
-public class SimpleTask {
+public class SimpleTask implements Task {
 
 	private String taskName;
 	private String taskDescription;
-	private Integer taskId;
+	private Long taskId;
 	private TaskPriority priority;
 
 	private List<String> notes;
@@ -47,11 +49,11 @@ public class SimpleTask {
 	}
 
 	@XmlElement(name = "Id")
-	public Integer getTaskId() {
+	public Long getTaskId() {
 		return taskId;
 	}
 
-	public void setTaskId(Integer taskId) {
+	public void setTaskId(Long taskId) {
 		this.taskId = taskId;
 	}
 

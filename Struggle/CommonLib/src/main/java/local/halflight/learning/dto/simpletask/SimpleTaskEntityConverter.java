@@ -3,7 +3,7 @@ package local.halflight.learning.dto.simpletask;
 import local.halflight.learning.dto.DtoConverter;
 import local.halflight.learning.dto.hibernate.simpletask.SimpleTaskDbEntity;
 
-public class SimpleTaskEntityConverter extends DtoConverter{
+public class SimpleTaskEntityConverter extends DtoConverter {
 
 	public static SimpleTask toDto(SimpleTaskDbEntity entity) {
 		if (entity == null)
@@ -24,10 +24,9 @@ public class SimpleTaskEntityConverter extends DtoConverter{
 		entity.setTaskName(dto.getTaskName());
 		entity.setTaskDescription(dto.getTaskDescription());
 		entity.setPriority(dto.getPriority());
-//		entity.setId(dto.getTaskId());
+		 entity.setId(dto.getTaskId());
 		entity.setNotes(dto.getNotes());
-		return entity;		
+		return entity;
 	}
-	
-	
+
 }

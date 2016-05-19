@@ -19,16 +19,21 @@ public class SimpleTaskDao extends AbstractDao<SimpleTask> {
 	}
 
 	@Override
-	public SimpleTask findById(Integer id) {
+	public SimpleTask findById(Number id) {
 		throw new NotYetImplementedException();
 
 	}
 
 	@Override
-	public SimpleTask findByStringId(String id) {
+	public SimpleTask save(SimpleTask entity) {
 		throw new NotYetImplementedException();
-
 	}
+
+	@Override
+	public SimpleTask merge(SimpleTask entity) {
+		throw new NotYetImplementedException();
+	}
+
 
 	@Override
 	public SimpleTask update(SimpleTask dto) {
@@ -37,9 +42,8 @@ public class SimpleTaskDao extends AbstractDao<SimpleTask> {
 	}
 
 	@Override
-	public void delete(SimpleTask dto) {
+	public void delete(Number dto) {
 		throw new NotYetImplementedException();
-
 	}
 
 	@Override
@@ -53,5 +57,6 @@ public class SimpleTaskDao extends AbstractDao<SimpleTask> {
 		throw new NotYetImplementedException();
 
 	}
+
 
 }

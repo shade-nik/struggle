@@ -12,7 +12,7 @@ public class TestDataSource {
 	
 	private static final String TASK_NAME = "Test task name";
 	private static final String TASK_DESCRIPTION= "Test task descritpion";
-	private static final Integer TASK_ID = 12456;
+	private static final Long TASK_ID = 12456l;
 	private static final TaskPriority PRIORITY= TaskPriority.HIGH;
 	private static final List<String> NOTES = Arrays.asList("Note1", "Note12");
 	private static final boolean IS_INPROGRESS = true;
@@ -31,12 +31,14 @@ public class TestDataSource {
 		return task;
 	}
 	
-	public static SimpleTaskDbEntity generateSimpleTaskDbEntity(Integer id) {
+	public static SimpleTaskDbEntity generateSimpleTaskDbEntity(Long id) {
+		
 		SimpleTaskDbEntity entity = new SimpleTaskDbEntity();
 		entity.setTaskName(TASK_NAME);
 		entity.setTaskDescription(TASK_DESCRIPTION);
 		entity.setPriority(PRIORITY);
 		entity.setNotes(NOTES);
+		entity.setId(id);
 		return entity;
 	}
 

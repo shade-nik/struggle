@@ -1,5 +1,6 @@
 package local.halflight.learning.dao.hibernate;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -31,28 +32,40 @@ public abstract class AbstractHibernateDao<T> implements Dao<T> {
 		return clazz;
 	}
 	
-	@SuppressWarnings("unchecked")
+	@Override
 	public T save(T entity)
 	{
-//		Serializable id = currentSession().save(entity);
-		return (T) currentSession().merge(entity);
+		Number id = (Number) currentSession().save(entity);
+		T saved = findById(id);
+		return saved;
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public T findById(Integer id) {
+	public T update(T entity) {
+		Session sess = currentSession();
+		sess.saveOrUpdate(entity);
+		Serializable id = sess.getIdentifier(entity);
+		T updated = (T) sess.get(clazz, id);
+		return updated;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public T merge(T entity) {
+		return (T) currentSession().merge(entity);
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public T findById(Number id) {
 		return (T) currentSession().get(clazz, id);
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public T findByStringId(String id) {
 		return (T) currentSession().createCriteria(clazz).add(Restrictions.eq("id", id)).list().get(0);
-	}
-
-	@Override
-	public T update(T dto) {
-		throw new NotYetImplementedException();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -67,8 +80,13 @@ public abstract class AbstractHibernateDao<T> implements Dao<T> {
 	}
 
 	@Override
-	public void delete(T dto) {
-		currentSession().delete(dto);
+	public void delete(Number id) {
+		if(id != null) 
+		{
+			Session sess = currentSession();
+			T entity = (T) sess.get(clazz, id);
+			sess.delete(entity);
+		}
 	}
 
 }

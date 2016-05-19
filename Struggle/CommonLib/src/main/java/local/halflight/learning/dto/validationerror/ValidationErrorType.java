@@ -3,6 +3,7 @@ package local.halflight.learning.dto.validationerror;
 public enum ValidationErrorType {
 
 	RECEIVED_TASK_NAME_ALREADY_IN_DB(400, "Received task name already in database"),
+	UPDATE_FAILED(400, "Entity update failed"),
 
 	VALIDATION_ERROR(400, "Base validation error");
 

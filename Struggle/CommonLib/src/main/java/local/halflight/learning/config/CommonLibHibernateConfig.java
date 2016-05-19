@@ -16,7 +16,6 @@ import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@EnableTransactionManagement
 public class CommonLibHibernateConfig {
 
 //	If the config is in a different @Configuration class, then you can @Autowired it:
@@ -36,8 +35,8 @@ public class CommonLibHibernateConfig {
 		
 		props.setProperty("hibernate.show_sql", "true");
 		props.setProperty("hibernate.format_sql", "true");
-//		props.setProperty("hibernate.hbm2ddl.auto", "update");
-		props.setProperty("hibernate.hbm2ddl.auto", "create");
+		props.setProperty("hibernate.hbm2ddl.auto", "update");
+//		props.setProperty("hibernate.hbm2ddl.auto", "create");
 		props.setProperty("hibernate.connection.CharSet", "utf8");
 		props.setProperty("hibernate.connection.characterEncoding", "utf8");
 		props.setProperty("hibernate.connection.useUnicode", "true");
@@ -55,14 +54,7 @@ public class CommonLibHibernateConfig {
 	{
 		return new PersistenceExceptionTranslationPostProcessor();
 	}
-	@Bean
-	@Autowired
-	public HibernateTransactionManager hibernateTransactionManager(SessionFactory sf)
-	{
-		HibernateTransactionManager txManager = new HibernateTransactionManager();
-		txManager.setSessionFactory(sf);
-		return txManager;
-	}
 	
+
 
 }
