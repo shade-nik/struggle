@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import local.halflight.learning.concurrent.model.TransactionManagerConfiguration;
+import local.halflight.learning.config.TransactionManagerConfiguration;
 import local.halflight.learning.dao.hibernate.AbstractHibernateDao;
 import local.halflight.learning.dto.hibernate.simpletask.SimpleTaskDbEntity;
 

@@ -6,9 +6,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import local.halflight.learning.dao.hibernate.simpletask.SimpleTaskHibernateDao;
+import local.halflight.learning.dao.springdatajpa.SimpleTaskSpringDataDao;
 import local.halflight.learning.dto.hibernate.simpletask.SimpleTaskDbEntity;
 import local.halflight.learning.dto.simpletask.SimpleTask;
 import local.halflight.learning.dto.simpletask.SimpleTaskEntityConverter;
@@ -20,6 +22,10 @@ public class SimpleTaskService {
 	private static final Logger LOG = LoggerFactory.getLogger(SimpleTaskService.class);
 
 	private SimpleTaskHibernateDao simpleTaskHibernateDao;
+	
+	@Autowired
+	@Qualifier("simpleTaskSpringDataDao")
+	private SimpleTaskSpringDataDao springDataDao;
 	
 	//TODO think about struct (send entity for processing)
 	// local executor, amqp, persist... etc
@@ -36,6 +42,10 @@ public class SimpleTaskService {
 		return resp;
 	}
 
+	public SimpleTask jpaDaoFindTask(String taskId) {
+		return SimpleTaskEntityConverter.toDto(springDataDao.findOne(Long.valueOf(taskId)));
+	}
+	
 	public SimpleTask findTask(String taskId) {
 
 		SimpleTaskDbEntity task = null;

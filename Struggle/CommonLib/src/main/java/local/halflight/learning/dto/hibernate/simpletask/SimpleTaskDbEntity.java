@@ -29,7 +29,7 @@ import local.halflight.learning.dto.simpletask.TaskPriority;
 
 @NamedQueries(value = {
 		@NamedQuery(name = SimpleTaskDbEntity.FIND_BY_NAME,
-				    query = "from SimpleTaskDbEntity where taskname = :taskname") })
+				    query = "select t from SimpleTaskDbEntity t where t.taskName = :taskname") })
 @NamedNativeQueries(value = {
 		@NamedNativeQuery(name = SimpleTaskDbEntity.CHECK_BY_NAME, 
 				          query = "select count(*) from simple_task_entry where taskname = :taskname") })
@@ -42,7 +42,7 @@ import local.halflight.learning.dto.simpletask.TaskPriority;
 									 */)
 public class SimpleTaskDbEntity {
 
-	public static final String FIND_BY_NAME= "findTaskByName";
+	public static final String FIND_BY_NAME= "SimpleTaskDbEntity.findTaskByName";
 	public static final String CHECK_BY_NAME = "checkEntity";
 
 	@Id

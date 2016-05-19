@@ -75,18 +75,15 @@ public class SimpleTaskRestApi {
 
 		if (taskId != null) {
 			if (taskId.equals("Test")) {
-				LOG.info("Return Integer as response");
-				SimpleTask task = TestDataSource.generateTask();
-				// return createResponse(Status.OK, task);
+				LOG.info("Return entity from spring data dao");
+				SimpleTask task = simpleTaskService.jpaDaoFindTask("1");
 				return createResponse(Status.OK, new SimpleTaskResponse(task));
 			} else {
 				SimpleTask task = simpleTaskService.findTask(taskId);
 				SimpleTaskResponse response = new SimpleTaskResponse(task);
 				LOG.info("Return object as response: {}", response);
 				return createResponse(Status.OK, response);
-
 			}
-
 		}
 		return createResponse(Status.BAD_REQUEST);
 	}
