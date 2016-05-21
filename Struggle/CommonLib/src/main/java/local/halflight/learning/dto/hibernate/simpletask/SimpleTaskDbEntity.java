@@ -25,6 +25,7 @@ import org.hibernate.annotations.CascadeType;
 
 import com.google.common.base.MoreObjects;
 
+import local.halflight.learning.dto.BaseHibernateDto;
 import local.halflight.learning.dto.simpletask.TaskPriority;
 
 @NamedQueries(value = {
@@ -40,15 +41,11 @@ import local.halflight.learning.dto.simpletask.TaskPriority;
 									 * {"taskname"}, name =
 									 * "uq_simple_task_taskname")}
 									 */)
-public class SimpleTaskDbEntity {
+public class SimpleTaskDbEntity extends BaseHibernateDto {
 
 	public static final String FIND_BY_NAME= "SimpleTaskDbEntity.findTaskByName";
 	public static final String CHECK_BY_NAME = "checkEntity";
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "task_id", nullable = false, unique = true)
-	private Long id;
 
 	@Column(name = "taskname", /* unique = true, */ nullable = false)
 	private String taskName;
@@ -70,14 +67,6 @@ public class SimpleTaskDbEntity {
 	private boolean isInProgress;
 
 	public SimpleTaskDbEntity() {
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getTaskName() {
