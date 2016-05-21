@@ -1,5 +1,11 @@
 package local.halflight.learning.model;
 
-public interface Task {
+import java.util.concurrent.Future;
+
+//
+public interface Task<RP extends TaskResponse> {
+	
+	public Long getId();
+//	public Future<RP> execute();
 	
 }

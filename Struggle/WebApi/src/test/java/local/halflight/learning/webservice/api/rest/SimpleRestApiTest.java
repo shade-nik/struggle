@@ -1,6 +1,5 @@
 package local.halflight.learning.webservice.api.rest;
 
-import static org.easymock.EasyMock.anyString;
 import static org.easymock.EasyMock.expect;
 
 import java.net.URI;

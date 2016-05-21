@@ -137,7 +137,7 @@ public class SimpleTaskRestApi {
 		ResponseBuilder builder = Response.status(status);
 		builder.entity(response);
 		if(response.getPayload() != null) {
-			builder.location(buildLocation(response.getPayload().getTaskId()));
+			builder.location(buildLocation(response.getPayload().getId()));
 		}
 		return builder.build();
 	}

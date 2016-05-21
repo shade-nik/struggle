@@ -17,7 +17,7 @@ import local.halflight.learning.model.Task;
 @XmlRootElement(name = "SimpleTask")
 @XmlType(name = "SimpleTask")
 @XmlAccessorType(XmlAccessType.NONE)
-public class SimpleTask implements Task {
+public class SimpleTask {
 
 	private String taskName;
 	private String taskDescription;
