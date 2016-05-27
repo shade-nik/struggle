@@ -125,7 +125,7 @@ public class ProfileEntity extends BaseHibernateDto {
 				.toString();
 	}
 
-	public static Profile getDto(ProfileEntity entity) {
+	public static Profile toDto(ProfileEntity entity) {
 		Profile profile = new Profile();
 		profile.setEnabled(entity.isEnabled());
 		profile.setFirstName(entity.getFirstName());
@@ -135,6 +135,18 @@ public class ProfileEntity extends BaseHibernateDto {
 		profile.setLastVisited(entity.getLastVisited());
 		profile.setRegistrationDate(entity.getRegistrationDate());
 		return profile;
+	}
+
+	public static ProfileEntity toEntity(Profile profile) {
+		ProfileEntity entity = new ProfileEntity();
+		entity.setEnabled(profile.isEnabled());
+		entity.setFirstName(profile.getFirstName());
+		entity.setLastName(profile.getLastName());
+		entity.setGender(profile.getGender());
+		entity.setImage(profile.getImage());
+		entity.setLastVisited(profile.getLastVisited());
+		entity.setRegistrationDate(profile.getRegistrationDate());
+		return entity;
 	}
 
 }

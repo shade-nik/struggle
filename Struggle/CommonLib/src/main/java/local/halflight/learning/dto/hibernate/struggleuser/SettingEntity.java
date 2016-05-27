@@ -54,19 +54,25 @@ public class SettingEntity extends BaseHibernateDto {
 				.toString();
 	}
 
-	public static Set<Setting> getDtoSet(Set<SettingEntity> entities) {
-	
-		Set<Setting> settings = new HashSet<>();
-		for (SettingEntity entity : entities) {
-			settings.add(getDto(entity));
-		}
-		return settings;
-	}
+//	public static Set<Setting> getDtoSet(Set<SettingEntity> entities) {
+//	
+//		Set<Setting> settings = new HashSet<>();
+//		for (SettingEntity entity : entities) {
+//			settings.add(toDto(entity));
+//		}
+//		return settings;
+//	}
 
-	public static Setting getDto(SettingEntity entity) {
+	public static Setting toDto(SettingEntity entity) {
 		Setting setting = new Setting();
 		setting.setSettingDescription(entity.getSetting());
 		return setting;
 		
+	}
+
+	public static SettingEntity toEntity(Setting setting) {
+		SettingEntity entity = new SettingEntity();
+		entity.setSetting(setting.getSettingDescription());
+		return entity;
 	}
 }

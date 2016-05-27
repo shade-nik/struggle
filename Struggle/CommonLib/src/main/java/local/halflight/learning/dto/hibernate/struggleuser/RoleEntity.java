@@ -61,18 +61,25 @@ public class RoleEntity extends BaseHibernateDto {
 				.toString();
 	}
 
-	public static Set<Role> getDtoSet(Set<RoleEntity> entities) {
-		Set<Role> roles = new HashSet<>();
-		for (RoleEntity entity : entities) {
-			roles.add(getDto(entity));
-		}
-		return roles;
-	}
+//	public static Set<Role> getDtoSet(Set<RoleEntity> entities) {
+//		Set<Role> roles = new HashSet<>();
+//		for (RoleEntity entity : entities) {
+//			roles.add(getDto(entity));
+//		}
+//		return roles;
+//	}
 
-	public static Role getDto(RoleEntity entity) {
+	public static Role toDto(RoleEntity entity) {
 		Role role = new Role();
 		role.setDescription(entity.getDescription());
 		role.setRole(entity.getRole());
 		return role;
+	}
+
+	public static RoleEntity toEntity(Role role) {
+		RoleEntity entity = new RoleEntity();
+		entity.setDescription(role.getDescription());
+		entity.setRole(role.getRole());
+		return entity;
 	}
 }
