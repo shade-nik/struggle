@@ -21,7 +21,7 @@ public class SimpleTask {
 
 	private String taskName;
 	private String taskDescription;
-	private Long taskId;
+	private Long id;
 	private TaskPriority priority;
 
 	private List<String> notes;
@@ -49,12 +49,12 @@ public class SimpleTask {
 	}
 
 	@XmlElement(name = "Id")
-	public Long getTaskId() {
-		return taskId;
+	public Long getId() {
+		return id;
 	}
 
-	public void setTaskId(Long taskId) {
-		this.taskId = taskId;
+	public void setTaskId(Long id) {
+		this.id = id;
 	}
 
 	@XmlElement(name = "Priority")
@@ -85,7 +85,7 @@ public class SimpleTask {
 		return MoreObjects.toStringHelper(this)
 				.add("taskName", taskName)
 				.add("taskDescription", taskDescription)
-				.add("taskId", taskId)
+				.add("id", id)
 				.add("priority", priority)
 				.add("notes", notes)
 				.add("isInProgress", isInProgress)

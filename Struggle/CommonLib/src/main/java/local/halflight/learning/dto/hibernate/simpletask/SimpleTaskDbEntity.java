@@ -46,29 +46,16 @@ public class SimpleTaskDbEntity extends BaseHibernateDto {
 	public static final String FIND_BY_NAME= "SimpleTaskDbEntity.findTaskByName";
 	public static final String CHECK_BY_NAME = "checkEntity";
 
-
-	@Column(name = "taskname", /* unique = true, */ nullable = false)
 	private String taskName;
-
-	@Column(name = "task_description", unique = false, nullable = true)
 	private String taskDescription;
-
-	@Enumerated(EnumType.STRING)
-	@Column(columnDefinition = "enum('LOW','NORMAL', 'HIGH')")
 	private TaskPriority priority;
-
-	@ElementCollection(fetch = FetchType.LAZY)
-	@Cascade(value = { CascadeType.ALL })
-
-	@CollectionTable(name = "simple_task_notes", joinColumns = @JoinColumn(name = "id"))
 	private List<String> notes;
-
-	@Transient
 	private boolean isInProgress;
 
 	public SimpleTaskDbEntity() {
 	}
 
+	@Column(name = "taskname", /* unique = true, */ nullable = false)
 	public String getTaskName() {
 		return taskName;
 	}
@@ -77,6 +64,7 @@ public class SimpleTaskDbEntity extends BaseHibernateDto {
 		this.taskName = taskName;
 	}
 
+	@Column(name = "task_description", unique = false, nullable = true)
 	public String getTaskDescription() {
 		return taskDescription;
 	}
@@ -85,6 +73,9 @@ public class SimpleTaskDbEntity extends BaseHibernateDto {
 		this.taskDescription = taskDescription;
 	}
 
+
+	@Enumerated(EnumType.STRING)
+	@Column(columnDefinition = "enum('LOW','NORMAL', 'HIGH')")
 	public TaskPriority getPriority() {
 		return priority;
 	}
@@ -93,6 +84,9 @@ public class SimpleTaskDbEntity extends BaseHibernateDto {
 		this.priority = priority;
 	}
 
+	@ElementCollection(fetch = FetchType.LAZY)
+	@Cascade(value = { CascadeType.ALL })
+	@CollectionTable(name = "simple_task_notes", joinColumns = @JoinColumn(name = "id"))
 	public List<String> getNotes() {
 		return notes;
 	}
@@ -101,6 +95,11 @@ public class SimpleTaskDbEntity extends BaseHibernateDto {
 		this.notes = notes;
 	}
 
+	@Transient
+	public boolean isInProgress() {
+		return isInProgress;
+	}
+	
 	@Override
 	public String toString() {
 		return MoreObjects.toStringHelper(this)
