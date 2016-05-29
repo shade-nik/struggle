@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlType;
 import com.google.common.base.MoreObjects;
 
 import local.halflight.learning.model.Task;
+import local.halflight.learning.model.TaskType;
 
 @XmlRootElement(name = "SimpleTask")
 @XmlType(name = "SimpleTask")
@@ -20,6 +21,7 @@ import local.halflight.learning.model.Task;
 public class SimpleTask implements Task {
 
 	private String taskName;
+	private TaskType taskType;
 	private String taskDescription;
 	private Long taskId;
 	private TaskPriority priority;
@@ -39,6 +41,15 @@ public class SimpleTask implements Task {
 		this.taskName = taskName;
 	}
 	
+	@XmlElement(name = "TaskType")
+	public TaskType getTaskType() {
+		return taskType;
+	}
+
+	public void setTaskType(TaskType taskType) {
+		this.taskType = taskType;
+	}
+
 	@XmlElement(name = "Description")
 	public String getTaskDescription() {
 		return taskDescription;
@@ -84,6 +95,7 @@ public class SimpleTask implements Task {
 	public String toString() {
 		return MoreObjects.toStringHelper(this)
 				.add("taskName", taskName)
+				.add("taskType", taskType)
 				.add("taskDescription", taskDescription)
 				.add("taskId", taskId)
 				.add("priority", priority)

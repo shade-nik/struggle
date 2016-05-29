@@ -14,6 +14,7 @@ import local.halflight.learning.dao.springdatajpa.SimpleTaskSpringDataDao;
 import local.halflight.learning.dto.hibernate.simpletask.SimpleTaskDbEntity;
 import local.halflight.learning.dto.simpletask.SimpleTask;
 import local.halflight.learning.dto.simpletask.SimpleTaskEntityConverter;
+import local.halflight.learning.model.TaskType;
 import local.halflight.learning.model.sender.SimpleTaskSender;
 
 @Service
@@ -66,6 +67,14 @@ public class SimpleTaskService {
 	}
 
 	public SimpleTask save(SimpleTask rq) {
+		
+		
+		if(rq != null && rq.getTaskType() != null) {
+			if (TaskType.ASYNC.equals(rq.getTaskType())) { 
+				
+			}
+		}
+		
 		try {
 			SimpleTaskDbEntity task = simpleTaskHibernateDao.save(SimpleTaskEntityConverter.toEntity(rq));
 			LOG.info("Saved task: {}", task);
