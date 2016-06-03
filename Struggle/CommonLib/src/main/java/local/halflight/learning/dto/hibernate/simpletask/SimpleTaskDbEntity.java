@@ -25,6 +25,7 @@ import org.hibernate.annotations.CascadeType;
 
 import com.google.common.base.MoreObjects;
 
+import local.halflight.learning.dto.BaseHibernateDto;
 import local.halflight.learning.dto.simpletask.TaskPriority;
 
 @NamedQueries(value = {
@@ -40,46 +41,21 @@ import local.halflight.learning.dto.simpletask.TaskPriority;
 									 * {"taskname"}, name =
 									 * "uq_simple_task_taskname")}
 									 */)
-public class SimpleTaskDbEntity {
+public class SimpleTaskDbEntity extends BaseHibernateDto {
 
 	public static final String FIND_BY_NAME= "SimpleTaskDbEntity.findTaskByName";
 	public static final String CHECK_BY_NAME = "checkEntity";
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "task_id", nullable = false, unique = true)
-	private Long id;
-
-	@Column(name = "taskname", /* unique = true, */ nullable = false)
 	private String taskName;
-
-	@Column(name = "task_description", unique = false, nullable = true)
 	private String taskDescription;
-
-	@Enumerated(EnumType.STRING)
-	@Column(columnDefinition = "enum('LOW','NORMAL', 'HIGH')")
 	private TaskPriority priority;
-
-	@ElementCollection(fetch = FetchType.LAZY)
-	@Cascade(value = { CascadeType.ALL })
-
-	@CollectionTable(name = "simple_task_notes", joinColumns = @JoinColumn(name = "id"))
 	private List<String> notes;
-
-	@Transient
 	private boolean isInProgress;
 
 	public SimpleTaskDbEntity() {
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
+	@Column(name = "taskname", /* unique = true, */ nullable = false)
 	public String getTaskName() {
 		return taskName;
 	}
@@ -88,6 +64,7 @@ public class SimpleTaskDbEntity {
 		this.taskName = taskName;
 	}
 
+	@Column(name = "task_description", unique = false, nullable = true)
 	public String getTaskDescription() {
 		return taskDescription;
 	}
@@ -96,6 +73,9 @@ public class SimpleTaskDbEntity {
 		this.taskDescription = taskDescription;
 	}
 
+
+	@Enumerated(EnumType.STRING)
+	@Column(columnDefinition = "enum('LOW','NORMAL', 'HIGH')")
 	public TaskPriority getPriority() {
 		return priority;
 	}
@@ -104,6 +84,9 @@ public class SimpleTaskDbEntity {
 		this.priority = priority;
 	}
 
+	@ElementCollection(fetch = FetchType.LAZY)
+	@Cascade(value = { CascadeType.ALL })
+	@CollectionTable(name = "simple_task_notes", joinColumns = @JoinColumn(name = "id"))
 	public List<String> getNotes() {
 		return notes;
 	}
@@ -112,6 +95,11 @@ public class SimpleTaskDbEntity {
 		this.notes = notes;
 	}
 
+	@Transient
+	public boolean isInProgress() {
+		return isInProgress;
+	}
+	
 	@Override
 	public String toString() {
 		return MoreObjects.toStringHelper(this)

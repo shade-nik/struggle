@@ -18,12 +18,12 @@ import local.halflight.learning.model.TaskType;
 @XmlRootElement(name = "SimpleTask")
 @XmlType(name = "SimpleTask")
 @XmlAccessorType(XmlAccessType.NONE)
-public class SimpleTask implements Task {
+public class SimpleTask {
 
 	private String taskName;
 	private TaskType taskType;
 	private String taskDescription;
-	private Long taskId;
+	private Long id;
 	private TaskPriority priority;
 
 	private List<String> notes;
@@ -60,12 +60,12 @@ public class SimpleTask implements Task {
 	}
 
 	@XmlElement(name = "Id")
-	public Long getTaskId() {
-		return taskId;
+	public Long getId() {
+		return id;
 	}
 
-	public void setTaskId(Long taskId) {
-		this.taskId = taskId;
+	public void setTaskId(Long id) {
+		this.id = id;
 	}
 
 	@XmlElement(name = "Priority")
@@ -97,7 +97,7 @@ public class SimpleTask implements Task {
 				.add("taskName", taskName)
 				.add("taskType", taskType)
 				.add("taskDescription", taskDescription)
-				.add("taskId", taskId)
+				.add("id", id)
 				.add("priority", priority)
 				.add("notes", notes)
 				.add("isInProgress", isInProgress)

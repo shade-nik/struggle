@@ -24,7 +24,7 @@ public class SimpleTaskEntityConverter extends DtoConverter {
 		entity.setTaskName(dto.getTaskName());
 		entity.setTaskDescription(dto.getTaskDescription());
 		entity.setPriority(dto.getPriority());
-		 entity.setId(dto.getTaskId());
+		 entity.setId(dto.getId());
 		entity.setNotes(dto.getNotes());
 		return entity;
 	}
