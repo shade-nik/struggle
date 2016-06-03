@@ -15,7 +15,7 @@ import local.halflight.learning.dto.hibernate.simpletask.SimpleTaskDbEntity;
 import local.halflight.learning.dto.simpletask.SimpleTask;
 import local.halflight.learning.dto.simpletask.SimpleTaskEntityConverter;
 import local.halflight.learning.model.TaskType;
-import local.halflight.learning.model.sender.SimpleTaskSender;
+import local.halflight.learning.model.amqp.sender.BaseSender;
 
 @Service
 public class SimpleTaskService {
@@ -30,13 +30,14 @@ public class SimpleTaskService {
 	
 	//TODO think about struct (send entity for processing)
 	// local executor, amqp, persist... etc
-	SimpleTaskSender simpleTaskSender; 
-
+	private BaseSender baseSender;
+	
 	public SimpleTaskService() {
 	}
 
 	public List<SimpleTask> findAll() {
-		List<SimpleTaskDbEntity> taskList = simpleTaskHibernateDao.retrieveAll();
+//		List<SimpleTaskDbEntity> taskList = simpleTaskHibernateDao.retrieveAll();
+		List<SimpleTaskDbEntity> taskList = springDataDao.findAll();
 		LOG.info("Found tasks: {}", taskList);
 
 		List<SimpleTask> resp =  SimpleTaskEntityConverter.convertList(taskList, (e)-> SimpleTaskEntityConverter.toDto(e) );
@@ -71,7 +72,7 @@ public class SimpleTaskService {
 		
 		if(rq != null && rq.getTaskType() != null) {
 			if (TaskType.ASYNC.equals(rq.getTaskType())) { 
-				
+				baseSender.sendObjToDefault(rq);
 			}
 		}
 		
@@ -97,6 +98,10 @@ public class SimpleTaskService {
 	}
 
 	public void remove(String taskId) {
+		if("testId".equals(taskId)) {
+			LOG.info("taskId = testId...");
+			return;
+		}
 		LOG.info("Remove task:{} requested", taskId);
 		Long id = Long.getLong(taskId);
 		simpleTaskHibernateDao.delete(id);
@@ -105,6 +110,11 @@ public class SimpleTaskService {
 	@Autowired
 	public void setSimpleTaskHibernateDao(SimpleTaskHibernateDao simpleTaskHibernateDao) {
 		this.simpleTaskHibernateDao = simpleTaskHibernateDao;
+	}
+	
+	@Autowired
+	public void setBaseSender(BaseSender baseSender) {
+		this.baseSender = baseSender;
 	}
 
 }

@@ -4,6 +4,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 public class TransactionManagerConfiguration {
+	private static final Logger LOG = LoggerFactory.getLogger(RabbitConfig.class);
 
 	public static final String HIBERNATE_TRANSACTION_MANAGER = "hibernateTransactionManager";
 	public static final String JDBC_TRANSACTION_MANAGER = "jdbcTransactionManager";
@@ -27,6 +30,7 @@ public class TransactionManagerConfiguration {
 	public HibernateTransactionManager hibernateTransactionManager(SessionFactory sf) {
 		HibernateTransactionManager txManager = new HibernateTransactionManager();
 		txManager.setSessionFactory(sf);
+		LOG.info("hibernateTransactionManager created");
 		return txManager;
 	}
 
@@ -35,12 +39,14 @@ public class TransactionManagerConfiguration {
 	public PlatformTransactionManager jpaTransactionManager(EntityManagerFactory entityManagerFactory) {
 		JpaTransactionManager txManager = new JpaTransactionManager();
 		txManager.setEntityManagerFactory(entityManagerFactory);
+		LOG.info("jpaTransactionManager created");
 		return txManager;
 	}
 
 	@Bean(name = "jdbcTransactionManager")
 	@Autowired
 	public PlatformTransactionManager jdbcTransactionManager(@Qualifier("learningDataSource") DataSource ds) {
+		LOG.info("jdbcTransactionManager created");
 		return new DataSourceTransactionManager(ds);
 	}
 
