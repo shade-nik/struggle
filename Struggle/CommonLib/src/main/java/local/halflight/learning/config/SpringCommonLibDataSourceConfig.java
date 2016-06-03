@@ -8,7 +8,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Configuration
 @Import(value = { CommonLibHibernateConfig.class })
-public class SpringCommonLibConfig {
+public class SpringCommonLibDataSourceConfig {
 	private static final String JDBC_DRIVER_CLASS = "com.mysql.jdbc.Driver";
 
 	@Value("${jdbc.url}")
