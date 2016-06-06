@@ -2,6 +2,10 @@ package local.halflight.learning.dto.validationerror;
 
 public enum ValidationErrorType {
 
+	USER_ERROR_USERNAME_IS_EMPTY(400, "User update failed: username is empty."),
+	USER_WARNING_UUID_IS_EMPTY(400, "User update waring: userUUID is empty."),
+	USER_ERROR_USERNAME_NOT_FOUND(400, "User search failed: user with such username not found."),
+	
 	RECEIVED_TASK_NAME_ALREADY_IN_DB(400, "Received task name already in database"),
 	UPDATE_FAILED(400, "Entity update failed"),
 

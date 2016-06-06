@@ -4,8 +4,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.google.common.base.MoreObjects;
 
+import local.halflight.learning.dto.GenericRequest;
+
 @XmlRootElement(name = "SimpleTaskRequest")
-public class SimpleTaskRequest {
+public class SimpleTaskRequest implements GenericRequest<SimpleTask> {
 
 	private SimpleTask payload;
 

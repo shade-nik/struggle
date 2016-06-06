@@ -1,32 +1,23 @@
 package local.halflight.learning.dto.simpletask;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.google.common.base.MoreObjects;
 
+import local.halflight.learning.dto.BaseResponse;
 import local.halflight.learning.dto.validationerror.ValidationError;
-import local.halflight.learning.dto.validationerror.ValidationErrorType;
+import local.halflight.learning.dto.validationerror.ValidationErrorLevel;
 
 @XmlRootElement(name = "SimpleTaskResponse")
 @XmlAccessorType(XmlAccessType.NONE)
-public class SimpleTaskResponse {
+public class SimpleTaskResponse extends BaseResponse<SimpleTaskRequest> {
 
-	@XmlElement(name = "SimpleTaskRequest")
-	private SimpleTaskRequest request;
-
-	@XmlElement(name = "SimpleTaskPayload")
 	private SimpleTask payload;
-	
-	@XmlElementWrapper(name = "ValidationErrors")
-	@XmlElement(name = "ValidationError")
-	Set<ValidationError> validationErrors;
 	
 	public SimpleTaskResponse() {
 	}
@@ -38,6 +29,8 @@ public class SimpleTaskResponse {
 	public SimpleTaskResponse(SimpleTaskRequest request) {
 		this.request = request;
 	}
+	
+	@XmlElement(name = "SimpleTaskRequest")
 	public SimpleTaskRequest getRequest() {
 		return request;
 	}
@@ -46,6 +39,7 @@ public class SimpleTaskResponse {
 		this.request = request;
 	}
 	
+	@XmlElement(name = "SimpleTaskPayload")
 	public SimpleTask getPayload() {
 		return payload;
 	}
@@ -53,12 +47,11 @@ public class SimpleTaskResponse {
 	public void setPayload(SimpleTask payload) {
 		this.payload = payload;
 	}
-
-	public void addValidationError(ValidationErrorType errorType) {
-		if (validationErrors == null) {
-			validationErrors = new HashSet<>();
-		}
-		validationErrors.add(new ValidationError(errorType));
+	
+	@Override
+	@XmlElement(name = "ValidatinErrors")
+	public Map<ValidationErrorLevel, ValidationError> getValidationErrors() {
+		return super.getValidationErrors();
 	}
 	
 	@Override

@@ -16,7 +16,6 @@ import local.halflight.learning.webservice.service.StruggleUserService;
 @Configuration
 @EnableWebSecurity
 public class WebApiSecurityConfig extends WebSecurityConfigurerAdapter {
-//This will enable global security 
 	
 //TODO use this service for user authentication
 	@Autowired
@@ -28,8 +27,9 @@ public class WebApiSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	 @Autowired
-	 protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-	  		auth.inMemoryAuthentication()
+	 protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//TODO change to use UserDetailService
+		 auth.inMemoryAuthentication()
 	  		.withUser("TestUser")
 	  		.password("TestPassword")
 	  		.roles("USER").and()

@@ -1,6 +1,5 @@
-package local.halflight.learning.webservice.api.rest;
+package local.halflight.learning.webservice.api.rest.simpletask;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -13,12 +12,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 
@@ -29,28 +25,30 @@ import org.springframework.stereotype.Component;
 
 import local.halflight.learning.dto.simpletask.NonAnnotatedTaskListResponse;
 import local.halflight.learning.dto.simpletask.SimpleTask;
+import local.halflight.learning.dto.simpletask.SimpleTaskRequest;
 import local.halflight.learning.dto.simpletask.SimpleTaskResponse;
+import local.halflight.learning.dto.validationerror.ValidationErrorLevel;
 import local.halflight.learning.dto.validationerror.ValidationErrorType;
-import local.halflight.learning.testutils.TestDataSource;
+import local.halflight.learning.webservice.api.rest.BaseRestApi;
 import local.halflight.learning.webservice.service.SimpleTaskService;
+import local.halflight.learning.webservice.validation.Validator;
 
 @Component
 @Path("/api/simple")
 @Consumes(MediaType.APPLICATION_XML)
 @Produces(MediaType.APPLICATION_XML)
-public class SimpleTaskRestApi {
+public class SimpleTaskRestApiImpl extends BaseRestApi<SimpleTaskRequest, SimpleTaskResponse> implements SimpleTaskRestApi {
+
+	static final String DESCRIPTION = "This is simple REST api. Used javax.ws.rs jersey implementation.";
 
 	private static final Logger LOG = LoggerFactory.getLogger(SimpleTaskRestApi.class);
-	private static final String DESCRIPTION = "This is simple REST api. Used javax.ws.rs jersey implementation.";
 
-	@Context
-	UriInfo uri;
 
 	SimpleTaskService simpleTaskService;
 
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	public String getText() {
+	public String getDescription() {
 		LOG.info("Plain get method returning: {}", DESCRIPTION);
 		return DESCRIPTION;
 	}
@@ -99,7 +97,7 @@ public class SimpleTaskRestApi {
 			return createResponse(Status.OK, rp);
 		} else {
 			//TODO move this functional to separate class (some Validator)
-			rp.addValidationError(ValidationErrorType.RECEIVED_TASK_NAME_ALREADY_IN_DB);
+			rp.addValidationError(ValidationErrorLevel.ERROR, ValidationErrorType.RECEIVED_TASK_NAME_ALREADY_IN_DB);
 			return createResponse(Status.BAD_REQUEST, rp);
 		}		
 	}
@@ -115,7 +113,7 @@ public class SimpleTaskRestApi {
 			return createResponse(Status.OK, rp);
 		} else {
 			//TODO move this functional to separate class (some Validator)
-			rp.addValidationError(ValidationErrorType.UPDATE_FAILED);
+			rp.addValidationError(ValidationErrorLevel.ERROR, ValidationErrorType.UPDATE_FAILED);
 			return createResponse(Status.BAD_REQUEST, rp);
 		}
 	}
@@ -128,30 +126,23 @@ public class SimpleTaskRestApi {
 		return createResponse(Status.OK);
 	}
 
-	private Response createResponse(Status status) {
-		ResponseBuilder builder = Response.status(status);
-		return builder.build();
-	}
 
-	private Response createResponse(Status status, SimpleTaskResponse response) {
-		ResponseBuilder builder = Response.status(status);
-		builder.entity(response);
-		if(response.getPayload() != null) {
-			builder.location(buildLocation(response.getPayload().getId()));
-		}
-		return builder.build();
-	}
-
-	// TODO better change to UUID?
-	private URI buildLocation(Long taskId) {
-
-		String location = uri.getAbsolutePath().toString() + "/" + taskId;
-		return URI.create(location);
-	}
 
 	@Autowired
 	public void setSimpleTaskService(SimpleTaskService simpleTaskService) {
 		this.simpleTaskService = simpleTaskService;
+	}
+
+	@Autowired
+	@Override
+	public void setValidator(Validator<SimpleTaskRequest> validator) {
+		this.validator = validator;
+	}
+
+	@Override
+	protected SimpleTaskResponse handle(SimpleTaskRequest request) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

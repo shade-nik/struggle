@@ -12,13 +12,14 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.google.common.base.MoreObjects;
 
+import local.halflight.learning.dto.Payload;
 import local.halflight.learning.model.Task;
 import local.halflight.learning.model.TaskType;
 
 @XmlRootElement(name = "SimpleTask")
 @XmlType(name = "SimpleTask")
 @XmlAccessorType(XmlAccessType.NONE)
-public class SimpleTask {
+public class SimpleTask implements Payload {
 
 	private String taskName;
 	private TaskType taskType;

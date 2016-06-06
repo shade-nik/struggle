@@ -11,12 +11,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.google.common.base.MoreObjects;
 
+import local.halflight.learning.dto.BaseResponse;
 import local.halflight.learning.dto.validationerror.ValidationError;
 import local.halflight.learning.dto.validationerror.ValidationErrorType;
 
 @XmlRootElement(name = "StruggleUserResponse")
 @XmlAccessorType(XmlAccessType.NONE)
-public class StruggleUserResponse {
+public class StruggleUserResponse extends BaseResponse<StruggleUserRequest>{
 
 	@XmlElement(name = "StruggleUserRequest")
 	private StruggleUserRequest request;

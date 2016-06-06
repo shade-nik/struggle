@@ -1,4 +1,4 @@
-package local.halflight.learning.webservice.api.rest;
+package local.halflight.learning.webservice.api.rest.simpletask;
 
 import static org.easymock.EasyMock.expect;
 
@@ -20,18 +20,19 @@ import org.springframework.test.util.ReflectionTestUtils;
 import local.halflight.learning.dto.simpletask.NonAnnotatedTaskListResponse;
 import local.halflight.learning.dto.simpletask.SimpleTask;
 import local.halflight.learning.testutils.TestDataSource;
+import local.halflight.learning.webservice.api.rest.simpletask.SimpleTaskRestApiImpl;
 import local.halflight.learning.webservice.service.SimpleTaskService;
 
 public class SimpleRestApiTest {
 
-	private static final Logger LOG = LoggerFactory.getLogger(SimpleTaskRestApi.class);
+	private static final Logger LOG = LoggerFactory.getLogger(SimpleRestApiTest.class);
 	private static final String TASK_DESCRIPTION = "Task desctiption";
 	private static final int TASK_NUMBER = 17;
 	
 	private static final String TASK_ID = "test-task-id";
 	private static final String TEST_RESPONSE = "test-task-response";
 
-	private SimpleTaskRestApi api;
+	private SimpleTaskRestApiImpl api;
 	private SimpleTask payload;
 
 	private final IMocksControl control = EasyMock.createControl();
@@ -41,7 +42,7 @@ public class SimpleRestApiTest {
 	@Before
 	public void setupSimpleRestApi()
 	{
-		api = new SimpleTaskRestApi();
+		api = new SimpleTaskRestApiImpl();
 		api.setSimpleTaskService(simpleTaskService);
 		ReflectionTestUtils.setField(api, "uri", uri);
 		
