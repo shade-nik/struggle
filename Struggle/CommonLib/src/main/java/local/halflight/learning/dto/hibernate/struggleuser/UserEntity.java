@@ -50,13 +50,9 @@ public class UserEntity extends BaseHibernateDto {
 	private Set<String> groups;
 	private Set<RoleEntity> roles;
 
-	// for testing
 	public UserEntity(String username, byte[] password) {
 		this.username = username;
 		this.password = password;
-		this.settings = new HashSet<>();
-		settings.add(new SettingEntity("_setting"));
-		this.profile = new ProfileEntity("f_" + username, "l_" + username, true, new Date());
 	}
 
 	public UserEntity() {
@@ -91,7 +87,7 @@ public class UserEntity extends BaseHibernateDto {
 		this.password = password;
 	}
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	public Set<SettingEntity> getSettings() {
 		return settings;
 	}
@@ -120,7 +116,7 @@ public class UserEntity extends BaseHibernateDto {
 		this.groups = groups;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@JoinTable(name = "user_role_xref", joinColumns = @JoinColumn(name = "xref_user_id", referencedColumnName = "user_id", foreignKey = @ForeignKey(name = "fk_user")), foreignKey = @ForeignKey(name = "fk_out_user"), inverseJoinColumns = @JoinColumn(name = "xref_role_id", referencedColumnName = "user_role_id", foreignKey = @ForeignKey(name = "fk_security_role")), inverseForeignKey = @ForeignKey(name = "fk_out_security_role"))
 	public Set<RoleEntity> getRoles() {
 		return roles;

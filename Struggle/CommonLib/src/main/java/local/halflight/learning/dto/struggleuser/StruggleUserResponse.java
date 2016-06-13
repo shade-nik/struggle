@@ -34,7 +34,7 @@ public class StruggleUserResponse extends BaseResponse<StruggleUserRequest> {
 		this.request = request;
 	}
 
-	@XmlElement(type = StruggleUserRequest.class, name = "StruggleUserRequest")
+	@XmlElement(name = "StruggleUserRequest")
 	public StruggleUserRequest getRequest() {
 		return request;
 	}

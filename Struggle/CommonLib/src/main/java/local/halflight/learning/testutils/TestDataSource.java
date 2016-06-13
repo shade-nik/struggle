@@ -1,7 +1,8 @@
 package local.halflight.learning.testutils;
 
 import java.util.ArrayList;
-import java.util.Arrays;import java.util.Calendar;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -60,7 +61,7 @@ public class TestDataSource {
 			user.setPassword("Password".getBytes());
 			user.setCreateDate(Calendar.getInstance());
 			user.setUserUUID(UUID.randomUUID().toString());
-			
+
 			user.setProfile(generateProfile(username));
 			user.setSettings(generateSettings(4));
 			user.setGroups(generateGroups());
@@ -84,22 +85,22 @@ public class TestDataSource {
 
 			return setting;
 		}
-		
+
 		public static Set<SettingEntity> generateSettings(int num) {
 			HashSet<SettingEntity> res = new HashSet<>();
-			for (int i = 0 ; i < num ; ++i ) {
-				res.add( generateSetting("Description: "+i));
+			for (int i = 0; i < num; ++i) {
+				res.add(generateSetting("Description: " + i));
 			}
-			
+
 			return res;
 		}
-		
+
 		public static Set<String> generateGroups() {
 			HashSet<String> groups = new HashSet<>();
 			groups.add("FRST_GRP");
 			groups.add("SEC_GRP");
 			groups.add("THRD_GRP");
-			
+
 			return groups;
 		}
 
@@ -108,8 +109,8 @@ public class TestDataSource {
 			roles.add(new RoleEntity("USER", "user role descr"));
 			roles.add(new RoleEntity("ADMIN", "admin role descr"));
 			return roles;
-		}		
-		
+		}
+
 	}
 
 	public static List<SimpleTask> generateTaskList(int size) {
@@ -119,5 +120,6 @@ public class TestDataSource {
 		}
 		return list;
 	}
+
 
 }

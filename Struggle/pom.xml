@@ -14,7 +14,9 @@
 		<module>CommonLib</module>
 		<module>Worker</module>
 		<module>WebApi</module>
-	</modules>
+<!-- 		<module>GwtUI</module>
+ -->
+ 	</modules>
 
 	<!-- Define dependencies versions as properties -->
 	<!-- Of course all of this won't be used just now -->

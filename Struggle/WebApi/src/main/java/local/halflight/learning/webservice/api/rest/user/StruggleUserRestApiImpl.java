@@ -1,10 +1,8 @@
 package local.halflight.learning.webservice.api.rest.user;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
-import javax.security.auth.login.AccountNotFoundException;
 import javax.validation.ValidationException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -15,14 +13,10 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 
-import org.hibernate.cfg.NotYetImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +25,7 @@ import org.springframework.stereotype.Component;
 import local.halflight.learning.dto.struggleuser.StruggleUser;
 import local.halflight.learning.dto.struggleuser.StruggleUserRequest;
 import local.halflight.learning.dto.struggleuser.StruggleUserResponse;
+import local.halflight.learning.dto.struggleuser.UsersResponse;
 import local.halflight.learning.dto.validationerror.ValidationError;
 import local.halflight.learning.dto.validationerror.ValidationErrorLevel;
 import local.halflight.learning.dto.validationerror.ValidationErrorType;
@@ -39,7 +34,7 @@ import local.halflight.learning.webservice.service.StruggleUserService;
 import local.halflight.learning.webservice.validation.StruggleUserValidator;
 
 /**
- * Enabble securiry for delete and post...
+ * Enable securiry for delete and post...
  */
 
 @Component
@@ -67,7 +62,7 @@ public class StruggleUserRestApiImpl extends BaseRestApi<StruggleUserRequest, St
 	public Response getStruggleUsers() {
 		List<StruggleUser> users = struggleUserService.getAllUsers();
 		LOG.info("Get method returning XML:{}", users);
-		return createResponseWith(Status.OK, users);
+		return createResponseWith(Status.OK, new UsersResponse(users));
 	}
 
 	@GET
@@ -100,7 +95,6 @@ public class StruggleUserRestApiImpl extends BaseRestApi<StruggleUserRequest, St
 			StruggleUser savedUser = struggleUserService.create(request.getPayload());
 			return createResponse(Status.CREATED, new StruggleUserResponse(savedUser));
 		} catch (ValidationException e) {
-			// TODO Auto-generated catch block
 			return createResponse(Status.INTERNAL_SERVER_ERROR);
 		}
 	}

@@ -11,10 +11,7 @@ import local.halflight.learning.dto.hibernate.struggleuser.UserEntity;
 
 @Repository("userDao")
 @Transactional(value = TransactionManagerConfiguration.JPA_TRANSACTION_MANAGER)
-public interface UserEntitySpringDataDao extends JpaRepository<UserEntity, Long>{
-
-//	@Query("select u from UserEntity u where  u.id = (:id)")
-//	UserEntity findOne(@Param("id") Long id);
+public interface UserEntitySpringDataDao extends JpaRepository<UserEntity, Long> {
 
 	@Query("select u from UserEntity u where u.username = (:username)")
 	UserEntity findByName(@Param("username") String username);

@@ -3,10 +3,10 @@ package local.halflight.learning.dto;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
+
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.MoreObjects.ToStringHelper;
 
 import local.halflight.learning.dto.validationerror.ValidationError;
 import local.halflight.learning.dto.validationerror.ValidationErrorLevel;
@@ -19,6 +19,7 @@ public class BaseResponse
 	protected Map<ValidationErrorLevel, ValidationError> validationErrors;
 	
 	@Override
+	@XmlTransient
 	public RQ getRequest() {
 		return request;
 	}
