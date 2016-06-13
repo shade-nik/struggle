@@ -127,7 +127,7 @@ public class StruggleUserRestApiImpl extends BaseRestApi<StruggleUserRequest, St
 			}
 			
 		} catch (NotFoundException e) {
-			rp.addValidationError(ValidationErrorType.USER_ERROR_USERNAME_NOT_FOUND);
+			rp.addValidationError(ValidationErrorLevel.ERROR, ValidationErrorType.USER_ERROR_USERNAME_NOT_FOUND);
 			return createResponse(Status.NOT_FOUND, rp);		}
 
 	}

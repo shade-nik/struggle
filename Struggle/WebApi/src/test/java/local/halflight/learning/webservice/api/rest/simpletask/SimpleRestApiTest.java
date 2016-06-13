@@ -55,7 +55,6 @@ public class SimpleRestApiTest {
 	public void shouldGetTask() {
 
 		expect(simpleTaskService.findTask(TASK_ID)).andReturn(payload);
-		expect(uri.getAbsolutePath()).andReturn(URI.create(""));
 		
 		control.replay();
 		Response rp = api.getTask(TASK_ID);

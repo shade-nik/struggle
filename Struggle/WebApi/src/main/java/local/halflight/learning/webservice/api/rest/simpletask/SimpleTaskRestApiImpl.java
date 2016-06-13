@@ -43,7 +43,6 @@ public class SimpleTaskRestApiImpl extends BaseRestApi<SimpleTaskRequest, Simple
 
 	private static final Logger LOG = LoggerFactory.getLogger(SimpleTaskRestApi.class);
 
-
 	SimpleTaskService simpleTaskService;
 
 	@GET

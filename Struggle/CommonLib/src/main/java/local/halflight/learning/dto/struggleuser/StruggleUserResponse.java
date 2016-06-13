@@ -1,7 +1,6 @@
 package local.halflight.learning.dto.struggleuser;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -13,21 +12,16 @@ import com.google.common.base.MoreObjects;
 
 import local.halflight.learning.dto.BaseResponse;
 import local.halflight.learning.dto.validationerror.ValidationError;
-import local.halflight.learning.dto.validationerror.ValidationErrorType;
+import local.halflight.learning.dto.validationerror.ValidationErrorLevel;
 
 @XmlRootElement(name = "StruggleUserResponse")
 @XmlAccessorType(XmlAccessType.NONE)
-public class StruggleUserResponse extends BaseResponse<StruggleUserRequest>{
+public class StruggleUserResponse extends BaseResponse<StruggleUserRequest> {
 
-	@XmlElement(name = "StruggleUserRequest")
 	private StruggleUserRequest request;
 
 	@XmlElement(name = "StruggleUserPayload")
 	private StruggleUser payload;
-
-	@XmlElementWrapper(name = "ValidationErrors")
-	@XmlElement(name = "ValidationError")
-	Set<ValidationError> validationErrors;
 
 	public StruggleUserResponse() {
 	}
@@ -35,11 +29,12 @@ public class StruggleUserResponse extends BaseResponse<StruggleUserRequest>{
 	public StruggleUserResponse(StruggleUser payload) {
 		this.payload = payload;
 	}
-
+	
 	public StruggleUserResponse(StruggleUserRequest request) {
 		this.request = request;
 	}
 
+	@XmlElement(type = StruggleUserRequest.class, name = "StruggleUserRequest")
 	public StruggleUserRequest getRequest() {
 		return request;
 	}
@@ -56,11 +51,14 @@ public class StruggleUserResponse extends BaseResponse<StruggleUserRequest>{
 		this.payload = payload;
 	}
 
-	public void addValidationError(ValidationErrorType errorType) {
-		if (validationErrors == null) {
-			validationErrors = new HashSet<>();
-		}
-		validationErrors.add(new ValidationError(errorType));
+	
+	
+	@XmlElement
+	@XmlElementWrapper(name="ValidationErrors")
+	@Override
+	public Map<ValidationErrorLevel, ValidationError> getValidationErrors() {
+		// TODO Auto-generated method stub
+		return super.getValidationErrors();
 	}
 
 	@Override
