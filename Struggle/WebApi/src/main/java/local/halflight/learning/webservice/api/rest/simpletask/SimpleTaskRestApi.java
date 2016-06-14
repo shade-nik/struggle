@@ -5,17 +5,18 @@ import javax.xml.bind.JAXBElement;
 
 import local.halflight.learning.dto.simpletask.NonAnnotatedTaskListResponse;
 import local.halflight.learning.dto.simpletask.SimpleTask;
+import local.halflight.learning.dto.simpletask.SimpleTaskRequest;
 
 public interface SimpleTaskRestApi {
 
 	 //Use wrapper for test purposes only... yes ugly
 	 JAXBElement<NonAnnotatedTaskListResponse> getTasks(Integer size);
 	
-	 Response createTask(SimpleTask rq);
+	 Response createTask(SimpleTaskRequest rq);
 	 
 	 Response getTask(String taskId) ;
 		
-	 Response update(String taskId, SimpleTask update);
+	 Response update(String taskId, SimpleTaskRequest update);
 	
 	 Response delete(String taskId);
 

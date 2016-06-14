@@ -7,8 +7,10 @@ public enum ValidationErrorType {
 	USER_ERROR_USERNAME_NOT_FOUND(400, "User search failed: user with such username not found."),
 	
 	RECEIVED_TASK_NAME_ALREADY_IN_DB(400, "Received task name already in database"),
+	
 	UPDATE_FAILED(400, "Entity update failed"),
-
+	FEATURE_NOT_IMPLEMENTED(200, "Feature: field %s: value: %s not yet implemented"),
+	
 	VALIDATION_ERROR(400, "Base validation error");
 
 	private String description;

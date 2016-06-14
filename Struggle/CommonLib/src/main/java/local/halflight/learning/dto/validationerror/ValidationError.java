@@ -22,6 +22,11 @@ public class ValidationError  {
 		this.descripiton = type.getDescription();
 		this.code = type.getCode();
 	}
+	
+	public ValidationError(ValidationErrorType type, Object... objects ) {
+		this.descripiton = String.format(type.getDescription(), objects);
+		this.code = type.getCode();
+	}
 
 	public Integer getCode() {
 		return code;

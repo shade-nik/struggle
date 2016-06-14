@@ -1,6 +1,7 @@
 package local.halflight.learning.webservice.api.rest.simpletask;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -22,6 +23,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.google.common.base.Strings;
 
 import local.halflight.learning.dto.simpletask.NonAnnotatedTaskListResponse;
 import local.halflight.learning.dto.simpletask.SimpleTask;
@@ -58,7 +61,7 @@ public class SimpleTaskRestApiImpl extends BaseRestApi<SimpleTaskRequest, Simple
 			@DefaultValue("10") @QueryParam("listSize") Integer size) {
 		// TODO add pagination... and search filter capabilities
 		LOG.info("Request for task list received.");
-		List<SimpleTask> responses = simpleTaskService.findAll(	);
+		List<SimpleTask> responses = simpleTaskService.retrieveAll();
 		NonAnnotatedTaskListResponse resp = new NonAnnotatedTaskListResponse(responses);
 		return new JAXBElement<NonAnnotatedTaskListResponse>(new QName("TaskList"), NonAnnotatedTaskListResponse.class,
 				resp);
@@ -87,14 +90,16 @@ public class SimpleTaskRestApiImpl extends BaseRestApi<SimpleTaskRequest, Simple
 
 	@POST
 	@Path("/task")
-	public Response createTask(SimpleTask rq) {
+	public Response createTask(SimpleTaskRequest rq) {
 		LOG.info("Request {} for task create received.", rq);
 		SimpleTaskResponse rp = new SimpleTaskResponse();
-		SimpleTask saved = simpleTaskService.save(rq);
-		if (saved != null) {
+		rp.setValidationErrors(validator.validate(rq));
+		try {
+			SimpleTask saved = simpleTaskService.save(rq.getPayload()).get();
 			rp.setPayload(saved);
 			return createResponse(Status.OK, rp);
-		} else {
+		} catch(NoSuchElementException e)
+		{
 			//TODO move this functional to separate class (some Validator)
 			rp.addValidationError(ValidationErrorLevel.ERROR, ValidationErrorType.RECEIVED_TASK_NAME_ALREADY_IN_DB);
 			return createResponse(Status.BAD_REQUEST, rp);
@@ -103,14 +108,17 @@ public class SimpleTaskRestApiImpl extends BaseRestApi<SimpleTaskRequest, Simple
 
 	@PUT
 	@Path("/task/{taskId}")
-	public Response update(@PathParam("taskId") String taskId, SimpleTask update) {
+	public Response update(@PathParam("taskId") String taskId, SimpleTaskRequest update) {
 		LOG.info("Request {} for task update received.", update);
 		SimpleTaskResponse rp = new SimpleTaskResponse();
-		SimpleTask updated = simpleTaskService.update(update);
-		if (updated != null) {
+
+		validateUpdate(update.getPayload(), taskId);
+		try 
+		{
+			SimpleTask updated = simpleTaskService.update(update.getPayload()).get();
 			rp.setPayload(updated);
 			return createResponse(Status.OK, rp);
-		} else {
+		} catch (NoSuchElementException e) {
 			//TODO move this functional to separate class (some Validator)
 			rp.addValidationError(ValidationErrorLevel.ERROR, ValidationErrorType.UPDATE_FAILED);
 			return createResponse(Status.BAD_REQUEST, rp);
@@ -125,8 +133,20 @@ public class SimpleTaskRestApiImpl extends BaseRestApi<SimpleTaskRequest, Simple
 		return createResponse(Status.OK);
 	}
 
+	private void validateUpdate(SimpleTask update, String taskId) {
+		try 
+		{
+			Long pathTaskId = Long.valueOf(taskId);
+			//not in validator permits... change update values ? or
+			update.setTaskId(pathTaskId);
+		} 
+		catch (NumberFormatException e) {
+			
+		}
+		
+	}
 
-
+	
 	@Autowired
 	public void setSimpleTaskService(SimpleTaskService simpleTaskService) {
 		this.simpleTaskService = simpleTaskService;

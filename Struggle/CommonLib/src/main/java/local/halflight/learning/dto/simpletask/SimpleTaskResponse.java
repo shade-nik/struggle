@@ -39,7 +39,7 @@ public class SimpleTaskResponse extends BaseResponse<SimpleTaskRequest> {
 		this.request = request;
 	}
 	
-	@XmlElement(name = "SimpleTaskPayload")
+	@XmlElement(name = "SimpleTask")
 	public SimpleTask getPayload() {
 		return payload;
 	}

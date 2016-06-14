@@ -29,6 +29,7 @@ import local.halflight.learning.dto.struggleuser.StruggleUser;
 import local.halflight.learning.dto.struggleuser.StruggleUserConverter;
 import local.halflight.learning.dto.struggleuser.StruggleUserRequest;
 import local.halflight.learning.dto.struggleuser.StruggleUserResponse;
+import local.halflight.learning.dto.struggleuser.UsersResponse;
 import local.halflight.learning.testutils.TestDataSource;
 import local.halflight.learning.webservice.api.rest.simpletask.SimpleRestApiTest;
 import local.halflight.learning.webservice.service.StruggleUserService;
@@ -73,7 +74,7 @@ public class StruggleUserRestApiTest extends BaseRestApiTest {
 		
 		SoftAssertions responseAssertions = new SoftAssertions(); 
 		responseAssertions.assertThat(rp).isNotNull();
-		responseAssertions.assertThat(rp.getEntity()).isInstanceOf(ArrayList.class);
+		responseAssertions.assertThat(rp.getEntity()).isInstanceOf(UsersResponse.class);
 	
 		responseAssertions.assertAll();
 	}

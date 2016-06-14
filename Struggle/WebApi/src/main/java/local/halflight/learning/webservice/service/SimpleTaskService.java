@@ -1,6 +1,8 @@
 package local.halflight.learning.webservice.service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -8,7 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import local.halflight.learning.config.TransactionManagerConfiguration;
 import local.halflight.learning.dao.hibernate.simpletask.SimpleTaskHibernateDao;
 import local.halflight.learning.dao.springdatajpa.SimpleTaskSpringDataDao;
 import local.halflight.learning.dto.hibernate.simpletask.SimpleTaskDbEntity;
@@ -35,12 +39,13 @@ public class SimpleTaskService {
 	public SimpleTaskService() {
 	}
 
-	public List<SimpleTask> findAll() {
-//		List<SimpleTaskDbEntity> taskList = simpleTaskHibernateDao.retrieveAll();
-		List<SimpleTaskDbEntity> taskList = springDataDao.findAll();
+	@Transactional(value = TransactionManagerConfiguration.HIBERNATE_TRANSACTION_MANAGER)
+	public List<SimpleTask> retrieveAll() {
+		List<SimpleTaskDbEntity> taskList = simpleTaskHibernateDao.retrieveAll();
 		LOG.info("Found tasks: {}", taskList);
 
-		List<SimpleTask> resp =  SimpleTaskEntityConverter.convertList(taskList, (e)-> SimpleTaskEntityConverter.toDto(e) );
+		List<SimpleTask> resp = taskList.stream().map(SimpleTaskEntityConverter::toDto).collect(Collectors.toList());
+//		List<SimpleTask> resp =  SimpleTaskEntityConverter.convertList(taskList, (e)-> SimpleTaskEntityConverter.toDto(e) );
 		return resp;
 	}
 
@@ -67,33 +72,33 @@ public class SimpleTaskService {
 
 	}
 
-	public SimpleTask save(SimpleTask rq) {
+	public Optional<SimpleTask> save(SimpleTask task) {
 		
 		
-		if(rq != null && rq.getTaskType() != null) {
-			if (TaskType.ASYNC.equals(rq.getTaskType())) { 
-				baseSender.sendObjToDefault(rq);
+		if(task != null && task.getTaskType() != null) {
+			if (TaskType.ASYNC.equals(task.getTaskType())) { 
+				baseSender.sendObjToDefault(task);
 			}
 		}
 		
 		try {
-			SimpleTaskDbEntity task = simpleTaskHibernateDao.save(SimpleTaskEntityConverter.toEntity(rq));
-			LOG.info("Saved task: {}", task);
-			return SimpleTaskEntityConverter.toDto(task);
+			SimpleTaskDbEntity entity = simpleTaskHibernateDao.save(SimpleTaskEntityConverter.toEntity(task));
+			LOG.info("Saved task: {}", entity);
+			return Optional.of(SimpleTaskEntityConverter.toDto(entity));
 		} catch (Exception e ) {
 			LOG.info("Save failed: ", e);
-			return null;
+			return Optional.empty();
 		}
 	}
 
-	public SimpleTask update(SimpleTask update) {
+	public Optional<SimpleTask> update(SimpleTask update) {
 		try {
 			SimpleTaskDbEntity task = simpleTaskHibernateDao.update(SimpleTaskEntityConverter.toEntity(update));
 			LOG.info("Updated task: {}", task);
-			return SimpleTaskEntityConverter.toDto(task);
+			return Optional.of(SimpleTaskEntityConverter.toDto(task));
 		} catch (Exception e ) {
 			LOG.info("Update failed: ", e);
-			return null;
+			return Optional.empty();
 		}
 	}
 

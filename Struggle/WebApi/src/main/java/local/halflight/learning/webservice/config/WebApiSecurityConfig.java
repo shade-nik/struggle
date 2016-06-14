@@ -8,8 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.web.filter.DelegatingFilterProxy;
 
 import local.halflight.learning.webservice.service.StruggleUserService;
 
@@ -17,10 +16,14 @@ import local.halflight.learning.webservice.service.StruggleUserService;
 @EnableWebSecurity
 public class WebApiSecurityConfig extends WebSecurityConfigurerAdapter {
 	
-//TODO use this service for user authentication
 	@Autowired
 	private StruggleUserService struggleUserService;
-		 
+
+// TODO add repository implement remember me feature	
+//	@Autowired
+//    PersistentTokenRepository tokenRepository;	
+	
+	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/resources/**");
@@ -30,8 +33,8 @@ public class WebApiSecurityConfig extends WebSecurityConfigurerAdapter {
 	 protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 //TODO change to use UserDetailService
 		 auth.inMemoryAuthentication()
-	  		.withUser("TestUser")
-	  		.password("TestPassword")
+	  		.withUser("user")
+	  		.password("user")
 	  		.roles("USER").and()
 	  		.withUser("admin")
 	  		.password("admin")
@@ -40,15 +43,23 @@ public class WebApiSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
+// @formatter:off
+		http
+			.authorizeRequests()
 				.antMatchers(HttpMethod.POST, "/rest/api/simple/task/**")
 				.hasRole("ADMIN")
 				.antMatchers(HttpMethod.DELETE, "/rest/api/simple/task/**")
 				.hasRole("ADMIN")
 				.antMatchers("/rest/api/simple/task/**")
 				.hasRole("USER")
+				.anyRequest().authenticated()
+				
 			.and()
-		    	.formLogin();
+				.httpBasic();
+//		    	.formLogin();
+		
+			http.csrf().disable();
+	// @formatter:on
 	}
 	
 	

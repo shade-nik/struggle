@@ -2,6 +2,7 @@ package local.halflight.learning.dto.hibernate.simpletask;
 
 import java.util.List;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -9,9 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
@@ -35,12 +33,8 @@ import local.halflight.learning.dto.simpletask.TaskPriority;
 		@NamedNativeQuery(name = SimpleTaskDbEntity.CHECK_BY_NAME, 
 				          query = "select count(*) from simple_task_entry where taskname = :taskname") })
 @Entity
-@Table(name = "simple_task_entry"/*
-									 * , uniqueConstraints =
-									 * {@UniqueConstraint(columnNames =
-									 * {"taskname"}, name =
-									 * "uq_simple_task_taskname")}
-									 */)
+@Table(name = "simple_task_entry")
+@AttributeOverride( name="id", column = @Column(name="task_id") )
 public class SimpleTaskDbEntity extends BaseHibernateDto {
 
 	public static final String FIND_BY_NAME= "SimpleTaskDbEntity.findTaskByName";
