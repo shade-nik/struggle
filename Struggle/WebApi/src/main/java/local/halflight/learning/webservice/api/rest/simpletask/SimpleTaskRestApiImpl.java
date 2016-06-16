@@ -61,7 +61,7 @@ public class SimpleTaskRestApiImpl extends BaseRestApi<SimpleTaskRequest, Simple
 			@DefaultValue("10") @QueryParam("listSize") Integer size) {
 		// TODO add pagination... and search filter capabilities
 		LOG.info("Request for task list received.");
-		List<SimpleTask> responses = simpleTaskService.retrieveAll();
+		List<SimpleTask> responses = simpleTaskService.getAll();
 		NonAnnotatedTaskListResponse resp = new NonAnnotatedTaskListResponse(responses);
 		return new JAXBElement<NonAnnotatedTaskListResponse>(new QName("TaskList"), NonAnnotatedTaskListResponse.class,
 				resp);
@@ -79,7 +79,7 @@ public class SimpleTaskRestApiImpl extends BaseRestApi<SimpleTaskRequest, Simple
 				SimpleTask task = simpleTaskService.jpaDaoFindTask("1");
 				return createResponse(Status.OK, new SimpleTaskResponse(task));
 			} else {
-				SimpleTask task = simpleTaskService.findTask(taskId);
+				SimpleTask task = simpleTaskService.getTask(taskId);
 				SimpleTaskResponse response = new SimpleTaskResponse(task);
 				LOG.info("Return object as response: {}", response);
 				return createResponse(Status.OK, response);

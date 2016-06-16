@@ -2,6 +2,7 @@ package local.halflight.learning.webservice.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.ws.rs.NotFoundException;
@@ -10,16 +11,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import local.halflight.learning.config.TransactionManagerConfiguration;
 import local.halflight.learning.dao.springdatajpa.user.UserEntitySpringDataDao;
 import local.halflight.learning.dto.hibernate.struggleuser.UserEntity;
 import local.halflight.learning.dto.struggleuser.StruggleUser;
 import local.halflight.learning.dto.struggleuser.StruggleUserConverter;
 import local.halflight.learning.testutils.TestDataSource;
 
-@Component
-public class StruggleUserService {
+@Component("customUserDetails")
+public class StruggleUserService implements UserDetailsService {
 	private static final Logger LOG = LoggerFactory.getLogger(StruggleUserService.class);
 
 	@Autowired
@@ -68,6 +74,18 @@ public class StruggleUserService {
 
 	public StruggleUser getTestUser(String username) {
 		return StruggleUserConverter.toDto(TestDataSource.User.generateUser("TestUser"));
+	}
+
+	@Override
+	@Transactional(value = TransactionManagerConfiguration.JPA_TRANSACTION_MANAGER)
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		StruggleUser user = getUser(username).orElseThrow(userNameNotFound(username));
+		
+		return user;
+	}
+	
+	private Supplier<UsernameNotFoundException> userNameNotFound(String username) {
+		return () -> new UsernameNotFoundException("User with name: " +  username + "is not found.");
 	}
 
 

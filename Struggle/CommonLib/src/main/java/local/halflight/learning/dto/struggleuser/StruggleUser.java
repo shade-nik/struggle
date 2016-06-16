@@ -1,5 +1,7 @@
 package local.halflight.learning.dto.struggleuser;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -10,6 +12,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.google.common.base.MoreObjects;
 
 import local.halflight.learning.dto.Payload;
@@ -17,7 +23,7 @@ import local.halflight.learning.dto.Payload;
 @XmlRootElement(name = "StruggleUserPayload")
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(propOrder = { "username", "password", "userUUID", "profile", "settings", "roles", "groups" })
-public class StruggleUser implements Payload {
+public class StruggleUser implements Payload, UserDetails {
 
 	private static final long serialVersionUID = 6825474579252728958L;
 
@@ -112,6 +118,35 @@ public class StruggleUser implements Payload {
 				.add("groups", groups)
 
 				.toString();
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		Set<SimpleGrantedAuthority> autorities = new HashSet<>();
+		for(Role role : getRoles()) {
+			autorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRole()));
+		}
+		return autorities;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return getProfile().isEnabled();
 	}
 
 }

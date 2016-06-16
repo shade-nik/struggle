@@ -40,8 +40,8 @@ public class SimpleTaskService {
 	}
 
 	@Transactional(value = TransactionManagerConfiguration.HIBERNATE_TRANSACTION_MANAGER)
-	public List<SimpleTask> retrieveAll() {
-		List<SimpleTaskDbEntity> taskList = simpleTaskHibernateDao.retrieveAll();
+	public List<SimpleTask> getAll() {
+		List<SimpleTaskDbEntity> taskList = simpleTaskHibernateDao.getAll();
 		LOG.info("Found tasks: {}", taskList);
 
 		List<SimpleTask> resp = taskList.stream().map(SimpleTaskEntityConverter::toDto).collect(Collectors.toList());
@@ -53,7 +53,7 @@ public class SimpleTaskService {
 		return SimpleTaskEntityConverter.toDto(springDataDao.findOne(Long.valueOf(taskId)));
 	}
 	
-	public SimpleTask findTask(String taskId) {
+	public SimpleTask getTask(String taskId) {
 
 		SimpleTaskDbEntity task = null;
 		if (StringUtils.isNumeric(taskId)) {

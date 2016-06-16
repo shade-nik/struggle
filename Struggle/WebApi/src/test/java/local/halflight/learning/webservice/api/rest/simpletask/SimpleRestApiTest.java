@@ -54,7 +54,7 @@ public class SimpleRestApiTest {
 	@Test
 	public void shouldGetTask() {
 
-		expect(simpleTaskService.findTask(TASK_ID)).andReturn(payload);
+		expect(simpleTaskService.getTask(TASK_ID)).andReturn(payload);
 		
 		control.replay();
 		Response rp = api.getTask(TASK_ID);
@@ -68,7 +68,7 @@ public class SimpleRestApiTest {
 	@Test
 	public void shouldGetTaskList() {
 
-		expect(simpleTaskService.retrieveAll()).andReturn(Arrays.asList(payload));
+		expect(simpleTaskService.getAll()).andReturn(Arrays.asList(payload));
 		
 		control.replay();
 		JAXBElement<NonAnnotatedTaskListResponse> jaxbRp = api.getTasks(10);

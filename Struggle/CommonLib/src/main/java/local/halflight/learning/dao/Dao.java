@@ -14,7 +14,7 @@ public interface Dao<T> {
 	
 	public T findById(Number id);
 
-	public List<T> retrieveAll();
+	public List<T> getAll();
 
 	public List<T> queryForList(String query, Object[] params);
 }

@@ -15,7 +15,7 @@ public class StruggleUserRequest extends BaseRequest<StruggleUser> {
 
 	private StruggleUser payload;
 
-	@XmlElement
+	@XmlElement(name = "StruggleUserPayload")
 	public StruggleUser getPayload() {
 		return payload;
 	}

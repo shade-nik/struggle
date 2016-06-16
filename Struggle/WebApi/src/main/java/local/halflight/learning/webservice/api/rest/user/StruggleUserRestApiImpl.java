@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import local.halflight.learning.dto.simpletask.SimpleTaskRequest;
 import local.halflight.learning.dto.struggleuser.StruggleUser;
 import local.halflight.learning.dto.struggleuser.StruggleUserRequest;
 import local.halflight.learning.dto.struggleuser.StruggleUserResponse;
@@ -32,6 +33,7 @@ import local.halflight.learning.dto.validationerror.ValidationErrorType;
 import local.halflight.learning.webservice.api.rest.BaseRestApi;
 import local.halflight.learning.webservice.service.StruggleUserService;
 import local.halflight.learning.webservice.validation.StruggleUserValidator;
+import local.halflight.learning.webservice.validation.Validator;
 
 /**
  * Enable securiry for delete and post...
@@ -151,5 +153,11 @@ public class StruggleUserRestApiImpl extends BaseRestApi<StruggleUserRequest, St
 	private Map<ValidationErrorLevel, ValidationError> validateUpdate(StruggleUser existing, StruggleUser update) {
 		StruggleUserValidator v = (StruggleUserValidator) validator;
 		return v.validateUpdate(existing, update);
+	}
+	
+	@Autowired
+	@Override
+	public void setValidator(Validator<StruggleUserRequest> validator) {
+		this.validator = validator;
 	}
 }

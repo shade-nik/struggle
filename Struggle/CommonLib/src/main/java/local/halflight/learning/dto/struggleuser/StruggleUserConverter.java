@@ -11,7 +11,7 @@ public class StruggleUserConverter {
 	public static StruggleUser toDto(UserEntity entity) {
 		StruggleUser user = new StruggleUser();
 		if(entity.getPassword() != null) {
-			user.setPassword(entity.getPassword().toString());
+			user.setPassword(new String(entity.getPassword()));
 		}
 		user.setUsername(entity.getUsername());
 		user.setUserUUID(entity.getUserUUID());

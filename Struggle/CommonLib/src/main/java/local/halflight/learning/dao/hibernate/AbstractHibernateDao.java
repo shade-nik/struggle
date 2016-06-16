@@ -70,7 +70,7 @@ public abstract class AbstractHibernateDao<T> implements Dao<T> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> retrieveAll() {
+	public List<T> getAll() {
 		return currentSession().createCriteria(clazz).list();
 	}
 

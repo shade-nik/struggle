@@ -47,7 +47,7 @@ public class SimpleTaskDao extends AbstractDao<SimpleTask> {
 	}
 
 	@Override
-	public List<SimpleTask> retrieveAll() {
+	public List<SimpleTask> getAll() {
 		throw new NotYetImplementedException();
 
 	}
