@@ -11,9 +11,10 @@ import local.halflight.learning.dto.validationerror.ValidationError;
 import local.halflight.learning.dto.validationerror.ValidationErrorLevel;
 import local.halflight.learning.dto.validationerror.ValidationErrorType;
 import local.halflight.learning.model.TaskType;
+import local.halflight.learning.validation.BaseWebRequestValidator;
 
 @Component
-public class SimpleTaskValidator extends BaseValidator<SimpleTaskRequest> {
+public class SimpleTaskValidator extends BaseWebRequestValidator<SimpleTaskRequest> {
 
 	@Override
 	public Map<ValidationErrorLevel, ValidationError> validate(SimpleTaskRequest request) {

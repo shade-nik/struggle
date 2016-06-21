@@ -20,9 +20,11 @@ import javax.ws.rs.core.Response.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
-import local.halflight.learning.dto.simpletask.SimpleTaskRequest;
 import local.halflight.learning.dto.struggleuser.StruggleUser;
 import local.halflight.learning.dto.struggleuser.StruggleUserRequest;
 import local.halflight.learning.dto.struggleuser.StruggleUserResponse;
@@ -30,10 +32,13 @@ import local.halflight.learning.dto.struggleuser.UsersResponse;
 import local.halflight.learning.dto.validationerror.ValidationError;
 import local.halflight.learning.dto.validationerror.ValidationErrorLevel;
 import local.halflight.learning.dto.validationerror.ValidationErrorType;
+import local.halflight.learning.logging.elasticsearch.WriteExternalLogs;
+import local.halflight.learning.validation.HasValidator;
+import local.halflight.learning.validation.Validator;
+import local.halflight.learning.validation.aspect.UseValidator;
 import local.halflight.learning.webservice.api.rest.BaseRestApi;
 import local.halflight.learning.webservice.service.StruggleUserService;
 import local.halflight.learning.webservice.validation.StruggleUserValidator;
-import local.halflight.learning.webservice.validation.Validator;
 
 /**
  * Enable securiry for delete and post...
@@ -44,7 +49,7 @@ import local.halflight.learning.webservice.validation.Validator;
 @Consumes(MediaType.APPLICATION_XML)
 @Produces(MediaType.APPLICATION_XML)
 public class StruggleUserRestApiImpl extends BaseRestApi<StruggleUserRequest, StruggleUserResponse>
-		implements StruggleUserRestApi {
+		implements StruggleUserRestApi, HasValidator {
 
 	private static final Logger LOG = LoggerFactory.getLogger(StruggleUserRestApi.class);
 	private static final String DESCRIPTION = "This is REST api for managing StruggleUser... ";
@@ -85,19 +90,32 @@ public class StruggleUserRestApiImpl extends BaseRestApi<StruggleUserRequest, St
 			return createResponse(Status.NOT_FOUND);
 		}
 	}
-
+	
+	@GET
+	@Path("/userinfo")
+	public Response getUserInfo( @AuthenticationPrincipal User currentUser) {
+		LOG.debug("Current user: {}", currentUser);
+		return createResponse(Status.OK);
+	}
+	
 	@POST
 	@Path("/user")
+	@UseValidator
+//	@WriteExternalLogs
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
 	public Response createStruggleUser(StruggleUserRequest request) {
-
+		StruggleUserResponse rp = new StruggleUserResponse();
+		
 		try {
-			validator.validate(request);
 			StruggleUser savedUser = struggleUserService.create(request.getPayload());
-			return createResponse(Status.CREATED, new StruggleUserResponse(savedUser));
+			rp.setPayload(savedUser);
+			return createResponse(Status.CREATED, rp);
 		} catch (ValidationException e) {
 			return createResponse(Status.INTERNAL_SERVER_ERROR);
+		} catch (DuplicateKeyException e ) {
+			rp.addValidationError(ValidationErrorLevel.ERROR, ValidationErrorType.USER_ERROR_NAME_ALREADY_EXIST);
+			return createResponse(Status.BAD_REQUEST, rp);
 		}
 	}
 
@@ -138,26 +156,26 @@ public class StruggleUserRestApiImpl extends BaseRestApi<StruggleUserRequest, St
 			return createResponse(Status.NOT_FOUND);
 		}
 	}
-
-	@Autowired
-	public void setStruggleUserService(StruggleUserService struggleUserService) {
-		this.struggleUserService = struggleUserService;
-	}
-
-	@Override
-	protected StruggleUserResponse handle(StruggleUserRequest request) {
-		// TODO
-		return null;
-	}
-
+	
 	private Map<ValidationErrorLevel, ValidationError> validateUpdate(StruggleUser existing, StruggleUser update) {
 		StruggleUserValidator v = (StruggleUserValidator) validator;
 		return v.validateUpdate(existing, update);
 	}
 	
 	@Autowired
+	public void setStruggleUserService(StruggleUserService struggleUserService) {
+		this.struggleUserService = struggleUserService;
+	}
+	
+
+	@Autowired
 	@Override
 	public void setValidator(Validator<StruggleUserRequest> validator) {
 		this.validator = validator;
+	}
+
+	@Override
+	public Validator<StruggleUserRequest> getValidator() {
+		return validator;
 	}
 }

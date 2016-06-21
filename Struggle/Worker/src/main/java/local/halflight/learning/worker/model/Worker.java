@@ -7,7 +7,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import local.halflight.learning.worker.config.WorkerConfiguration;
-import local.halflight.learning.worker.messages.RabbitMqAnnotatedListener;
 
 public class Worker {
 	

@@ -1,4 +1,4 @@
-package local.halflight.learning.webservice.validation;
+package local.halflight.learning.validation;
 
 import java.util.Map;
 
@@ -7,8 +7,8 @@ import local.halflight.learning.dto.Payload;
 import local.halflight.learning.dto.validationerror.ValidationError;
 import local.halflight.learning.dto.validationerror.ValidationErrorLevel;
 
-public interface Validator<RQ extends GenericRequest<? extends Payload>> {
+public interface Validator<T> {
 	
-	 Map<ValidationErrorLevel, ValidationError> validate(RQ request);
+	 Map<ValidationErrorLevel, ValidationError> validate(T request);
 
 }

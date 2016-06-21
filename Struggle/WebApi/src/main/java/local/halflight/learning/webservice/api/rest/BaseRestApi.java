@@ -10,12 +10,14 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
+import org.hibernate.cfg.NotYetImplementedException;
+
 import local.halflight.learning.dto.GenericRequest;
 import local.halflight.learning.dto.GenericResponse;
 import local.halflight.learning.dto.Payload;
 import local.halflight.learning.dto.validationerror.ValidationError;
 import local.halflight.learning.dto.validationerror.ValidationErrorLevel;
-import local.halflight.learning.webservice.validation.Validator;
+import local.halflight.learning.validation.Validator;
 
 public abstract class BaseRestApi<RQ extends GenericRequest<? extends Payload>,
                                   RP extends GenericResponse<? extends GenericRequest<? extends Payload>>> {
@@ -32,8 +34,12 @@ public abstract class BaseRestApi<RQ extends GenericRequest<? extends Payload>,
 	}
 	
 	
-	protected abstract RP handle(RQ request);
+	protected  RP handle(RQ request) {
+		throw new NotYetImplementedException(); 
+	};
+	
 	// TODO refactor... think about use aop to validate....
+	//TODO use strategy ? to deal with sync/async handling
 	protected Response handleSync(RQ request) {
 		try {
 			Map<ValidationErrorLevel, ValidationError>  errors = validator.validate(request);

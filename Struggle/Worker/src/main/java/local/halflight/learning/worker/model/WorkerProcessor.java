@@ -17,7 +17,6 @@ import local.halflight.learning.handlers.AbstractWorkerProcessor;
 import local.halflight.learning.handlers.BaseLearningMessage;
 import local.halflight.learning.handlers.RequestHandler;
 import local.halflight.learning.handlers.RequestHandlerFactory;
-import local.halflight.learning.worker.messages.RabbitMqAnnotatedListener;
 
 @Component
 public class WorkerProcessor extends AbstractWorkerProcessor {

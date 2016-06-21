@@ -14,9 +14,8 @@
 		<module>CommonLib</module>
 		<module>Worker</module>
 		<module>WebApi</module>
-<!-- 		<module>GwtUI</module>
- -->
- 	</modules>
+		<!-- <module>GwtUI</module> -->
+	</modules>
 
 	<!-- Define dependencies versions as properties -->
 	<!-- Of course all of this won't be used just now -->
@@ -32,6 +31,9 @@
 		<guava.version>18.0</guava.version>
 		<apache.commons.version>3.3.2</apache.commons.version>
 
+		<!-- Web -->
+		<javax.servlet.version>3.1.0</javax.servlet.version>
+
 		<!-- Database -->
 		<mysql.version>5.1.37</mysql.version>
 
@@ -42,7 +44,7 @@
 		<spring-security.version>4.0.4.RELEASE</spring-security.version>
 
 		<!-- Aspects -->
-		<aspectj.version>1.8.7</aspectj.version>
+		<aspectj.version>1.8.9</aspectj.version>
 		<!-- Unit testing -->
 		<junit.version>4.11</junit.version>
 		<!-- Mocking framework -->
@@ -86,7 +88,7 @@
 				<artifactId>commons-lang3</artifactId>
 				<version>${apache.commons.version}</version>
 			</dependency>
-			
+
 			<!-- Test -->
 			<dependency>
 				<groupId>junit</groupId>
@@ -113,6 +115,13 @@
 				<scope>test</scope>
 			</dependency>
 
+			<!-- Web dependency -->
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>${javax.servlet.version}</version>
+				<scope>provided</scope>
+			</dependency>
 			<!-- Java ws rs depth -->
 			<dependency>
 				<groupId>javax.ws.rs</groupId>
@@ -155,6 +164,7 @@
 				<scope>import</scope>
 			</dependency>
 
+			<!-- Messaging support  -->
 			<dependency>
 				<groupId>org.springframework.amqp</groupId>
 				<artifactId>spring-rabbit</artifactId>
@@ -165,6 +175,7 @@
 				<artifactId>spring-amqp</artifactId>
 				<version>${spring.amqp.version}</version>
 			</dependency>
+			<!-- Databases -->
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-orm</artifactId>
@@ -234,6 +245,25 @@
 				<artifactId>slf4j-api</artifactId>
 				<version>${slf4j.version}</version>
 			</dependency>
+			
+			<!-- AOP code generation support -->
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjrt</artifactId>
+                <version>${aspectj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjweaver</artifactId>
+                <version>${aspectj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cglib</groupId>
+                <artifactId>cglib</artifactId>
+                <version>3.1</version>
+                <scope>runtime</scope>
+            </dependency>
+			
 
 		</dependencies>
 	</dependencyManagement>
@@ -280,16 +310,18 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-dependency-plugin</artifactId> 
+				<version>2.8</version> </plugin> <plugin> <groupId>org.apache.maven.plugins</groupId> 
+				<artifactId>maven-resources-plugin</artifactId> <version>2.6</version> </plugin> -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.8</version>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.6</version>
-			</plugin>
+
 
 		</plugins>
 		<testResources>

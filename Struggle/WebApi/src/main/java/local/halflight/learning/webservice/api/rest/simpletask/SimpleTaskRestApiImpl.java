@@ -32,9 +32,9 @@ import local.halflight.learning.dto.simpletask.SimpleTaskRequest;
 import local.halflight.learning.dto.simpletask.SimpleTaskResponse;
 import local.halflight.learning.dto.validationerror.ValidationErrorLevel;
 import local.halflight.learning.dto.validationerror.ValidationErrorType;
+import local.halflight.learning.validation.Validator;
 import local.halflight.learning.webservice.api.rest.BaseRestApi;
 import local.halflight.learning.webservice.service.SimpleTaskService;
-import local.halflight.learning.webservice.validation.Validator;
 
 @Component
 @Path("/api/simple")

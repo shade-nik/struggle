@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,15 +32,15 @@ public class StruggleUserService implements UserDetailsService {
 	@Autowired
 	@Qualifier("userDao")
 	private UserEntitySpringDataDao userEntitySpringDataDao;
-	
-	public Optional<StruggleUser> getUser(String username)  {
+
+	public Optional<StruggleUser> getUser(String username) {
 		LOG.info("Getting user by name: {}", username);
 		UserEntity entity = userEntitySpringDataDao.findByName(username);
-		if(entity == null) {
+		if (entity == null) {
 			return Optional.empty();
 		}
 		LOG.info("Found user entity: {}", entity);
-		
+
 		StruggleUser user = StruggleUserConverter.toDto(entity);
 		LOG.info("Converted user: {}", user);
 		return Optional.of(user);
@@ -52,22 +53,31 @@ public class StruggleUserService implements UserDetailsService {
 	}
 
 	public StruggleUser create(StruggleUser payload) {
-		UserEntity saved = userEntitySpringDataDao.save(StruggleUserConverter.toEntity(payload));
-		return StruggleUserConverter.toDto(saved);
+		UserEntity user = userEntitySpringDataDao.findByName(payload.getUsername());
+		if (user == null) {
+			try {
+				UserEntity saved = userEntitySpringDataDao.save(StruggleUserConverter.toEntity(payload));
+				return StruggleUserConverter.toDto(saved);
+			} catch (Exception e) {
+				throw new DuplicateKeyException("Exception when saving user", e);
+			}
+		} else {
+			throw new DuplicateKeyException("User " + payload + " already persisted.");
+		}
 	}
 
 	public StruggleUser update(StruggleUser payload) {
-		//TODO change to find/update since save in my case can't correctly identify user
+		// TODO change to find/update since save in my case can't correctly
+		// identify user
 		return create(payload);
 	}
 
 	public void remove(String username) throws NotFoundException {
 		LOG.info("Remove user entity: {}", username);
 		UserEntity ent = userEntitySpringDataDao.findByName(username);
-		if(ent != null) {
+		if (ent != null) {
 			userEntitySpringDataDao.delete(ent);
-		}
-		else {
+		} else {
 			throw new NotFoundException();
 		}
 	}
@@ -80,13 +90,12 @@ public class StruggleUserService implements UserDetailsService {
 	@Transactional(value = TransactionManagerConfiguration.JPA_TRANSACTION_MANAGER)
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		StruggleUser user = getUser(username).orElseThrow(userNameNotFound(username));
-		
+
 		return user;
 	}
-	
-	private Supplier<UsernameNotFoundException> userNameNotFound(String username) {
-		return () -> new UsernameNotFoundException("User with name: " +  username + "is not found.");
-	}
 
+	private Supplier<UsernameNotFoundException> userNameNotFound(String username) {
+		return () -> new UsernameNotFoundException("User with name: " + username + "is not found.");
+	}
 
 }
