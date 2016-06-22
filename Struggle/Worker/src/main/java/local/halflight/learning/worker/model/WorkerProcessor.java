@@ -1,5 +1,8 @@
 package local.halflight.learning.worker.model;
 
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
@@ -13,13 +16,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ErrorHandler;
 
-import local.halflight.learning.handlers.AbstractWorkerProcessor;
-import local.halflight.learning.handlers.BaseLearningMessage;
+import local.halflight.learning.dto.GenericRequest;
+import local.halflight.learning.dto.GenericResponse;
+import local.halflight.learning.dto.Payload;
+import local.halflight.learning.handlers.HandlerResponse;
 import local.halflight.learning.handlers.RequestHandler;
 import local.halflight.learning.handlers.RequestHandlerFactory;
 
 @Component
-public class WorkerProcessor extends AbstractWorkerProcessor {
+public class WorkerProcessor {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(WorkerProcessor.class);
 	
@@ -45,22 +50,27 @@ public class WorkerProcessor extends AbstractWorkerProcessor {
 		messageListenerContainer.setQueueNames(queueName);
 		messageListenerContainer.setMessageConverter(messageConverter);
 		//callback for message handling
+		//hide in super or elsewhere
 		messageListenerContainer.setMessageListener(new MessageListener() {
 			@Override
 			public void onMessage(Message message) {
 				Object recieved = messageConverter.fromMessage(message);
-				
-				RequestHandler rqh = requestHandlerFactory.createHandler(recieved);
-				LOG.info("==Handler for message created");
-				try {
-					LOG.info("==Handling message... invoke sleep to");
-					BaseLearningMessage result =  rqh.handle(recieved).get();
-					LOG.info("Message handled. result {} ", result.getStatusString());
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					LOG.info("==Caught InterruptedException", e);
+				Payload recieviedPayload = null;
+				if(recieved instanceof Payload) {
+					recieviedPayload = (Payload) recieved;
+					try {
+						RequestHandler rqh = requestHandlerFactory.createHandler(recieviedPayload).orElseThrow(NoSuchElementException::new);
+						LOG.info("==Handler for message created");
+						LOG.info("==Handling message... invoke sleep to");
+						Optional<HandlerResponse<GenericResponse>> result =  rqh.handle(recieviedPayload);
+						LOG.info("Message handled. result {} ", result);
+						Thread.sleep(5000);
+					} catch (InterruptedException e) {
+						LOG.info("==Caught InterruptedException", e);
+					} catch (NoSuchElementException e) {
+						LOG.error("Can't find handler for message {}", recieved );
+					}
 				}
-				
 			}
 		});
 		//Error handler

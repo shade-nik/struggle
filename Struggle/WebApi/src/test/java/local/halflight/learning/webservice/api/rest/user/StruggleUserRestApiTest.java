@@ -96,7 +96,6 @@ public class StruggleUserRestApiTest extends BaseRestApiTest {
 	
 	@Test
 	public void shouldCreateUser() {
-		expect(validator.validate(request)).andReturn(Collections.emptyMap());
 		expect(service.create(request.getPayload())).andReturn(user);
 		expect(uri.getAbsolutePath()).andReturn(requestPathURI);
 

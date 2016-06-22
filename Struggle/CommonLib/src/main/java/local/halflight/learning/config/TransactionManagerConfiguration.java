@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -35,6 +36,7 @@ public class TransactionManagerConfiguration {
 	}
 
 	@Bean(name = "jpaTransactionManager")
+	@Primary
 	@Autowired
 	public PlatformTransactionManager jpaTransactionManager(EntityManagerFactory entityManagerFactory) {
 		JpaTransactionManager txManager = new JpaTransactionManager();

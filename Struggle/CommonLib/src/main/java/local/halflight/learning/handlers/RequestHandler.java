@@ -2,8 +2,13 @@ package local.halflight.learning.handlers;
 
 import java.util.Optional;
 
-public interface RequestHandler {
+import local.halflight.learning.dto.Payload;
 
-	Optional<BaseLearningMessage> handle(Object payload);
+public interface RequestHandler<RP, P extends Payload> {
+
+	Optional<HandlerResponse<RP>> handle(P payload);
+	
+	Class<?> getSupportedType();
+	
 
 }

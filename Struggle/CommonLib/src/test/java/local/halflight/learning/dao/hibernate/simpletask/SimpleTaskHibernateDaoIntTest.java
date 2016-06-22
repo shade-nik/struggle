@@ -10,9 +10,9 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import local.halflight.learning.config.TransactionManagerConfiguration;
@@ -21,7 +21,7 @@ import local.halflight.learning.testutils.TestDataSource;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:common-test-beans.xml" })
-@TransactionConfiguration
+@Rollback
 @Transactional(value = TransactionManagerConfiguration.HIBERNATE_TRANSACTION_MANAGER)
 public class SimpleTaskHibernateDaoIntTest {
 	// TODO extract abstract super

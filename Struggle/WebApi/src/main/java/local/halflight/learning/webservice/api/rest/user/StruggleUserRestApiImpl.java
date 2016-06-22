@@ -32,7 +32,6 @@ import local.halflight.learning.dto.struggleuser.UsersResponse;
 import local.halflight.learning.dto.validationerror.ValidationError;
 import local.halflight.learning.dto.validationerror.ValidationErrorLevel;
 import local.halflight.learning.dto.validationerror.ValidationErrorType;
-import local.halflight.learning.logging.elasticsearch.WriteExternalLogs;
 import local.halflight.learning.validation.HasValidator;
 import local.halflight.learning.validation.Validator;
 import local.halflight.learning.validation.aspect.UseValidator;

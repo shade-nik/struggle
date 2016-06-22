@@ -7,24 +7,27 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import local.halflight.learning.dto.simpletask.SimpleTask;
+import local.halflight.learning.dto.simpletask.SimpleTaskResponse;
 
 @Component
-public class SimpleTaskRequestHandler implements RequestHandler {
+public class SimpleTaskRequestHandler implements RequestHandler<SimpleTaskResponse, SimpleTask> {
+	
 	private static final Logger LOG = LoggerFactory.getLogger(SimpleTaskRequestHandler.class);
 
+	
 	@Override
-	public Optional<BaseLearningMessage> handle(Object payload) {
-		if(payload instanceof SimpleTask) 
-		{
+	public Optional<HandlerResponse<SimpleTaskResponse>> handle(SimpleTask payload) {
 			LOG.info("SimpleTask handler handle()");
-			BaseLearningMessage res = new BaseLearningMessage();
-			res.setStatusString("SimpleTask handled succesfully");
+
+			HandlerResponse res = new SimpleTaskHandlerResponse();
+			res.setStatus("SimpleTask handled succesfully");
 			
-			Optional<BaseLearningMessage> result = Optional.of(res); 
+			Optional<HandlerResponse<SimpleTaskResponse>> result = Optional.of(res); 
  			return result;
-		}
-		
-		return null;
 	}
 
+	public Class<?> getSupportedType() {
+		return SimpleTask.class;
+	}
+	
 }
