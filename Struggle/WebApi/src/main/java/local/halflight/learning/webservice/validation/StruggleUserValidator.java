@@ -24,13 +24,9 @@ public class StruggleUserValidator extends BaseWebRequestValidator<StruggleUserR
 	
 	public Map<ValidationErrorLevel,ValidationError> validate(StruggleUserRequest rq) {
 		Map<ValidationErrorLevel,ValidationError> errors = new HashMap<>();
-
-		
 		if (rq != null && rq.getPayload() != null) {
 			validateUUID(errors, rq.getPayload());
-			
-		}
-		
+		}		
 		return errors;
 	}
 

@@ -10,7 +10,7 @@ import local.halflight.learning.dto.simpletask.SimpleTaskRequest;
 import local.halflight.learning.dto.validationerror.ValidationError;
 import local.halflight.learning.dto.validationerror.ValidationErrorLevel;
 import local.halflight.learning.dto.validationerror.ValidationErrorType;
-import local.halflight.learning.model.TaskType;
+import local.halflight.learning.model.handlers.tasks.TaskType;
 import local.halflight.learning.validation.BaseWebRequestValidator;
 
 @Component

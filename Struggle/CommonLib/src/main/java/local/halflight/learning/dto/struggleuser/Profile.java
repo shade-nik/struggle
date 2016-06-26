@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.google.common.base.MoreObjects;
 
-import local.halflight.learning.dto.hibernate.struggleuser.Gender;
+import local.halflight.learning.entity.struggleuser.Gender;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)

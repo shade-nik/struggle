@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
 
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -14,12 +14,13 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import local.halflight.learning.config.test.TestHandlerConfiguration;
+import local.halflight.learning.dto.elasticsearch.ValidationInfoMessage;
 import local.halflight.learning.dto.simpletask.SimpleTask;
-import local.halflight.learning.dto.struggleuser.StruggleUser;
-import local.halflight.learning.handlers.RequestHandler;
-import local.halflight.learning.handlers.RequestHandlerFactory;
-import local.halflight.learning.messages.validationinfo.ValidationInfoMessage;
-import local.halflight.learning.testconfig.TestHandlerConfiguration;
+import local.halflight.learning.dto.simpletask.SimpleTaskRequest;
+import local.halflight.learning.model.handlers.RequestHandler;
+import local.halflight.learning.model.handlers.RequestHandlerFactory;
+import local.halflight.learning.testutils.TestDataSource;
 import local.halflight.learning.worker.config.WorkerConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -33,10 +34,29 @@ public class RequestHandlerFactoryIntTest {
 	@Autowired
 	private RequestHandlerFactory requestHandlerFactory;
 
+	private SimpleTaskRequest request;
+	
+	
+	@Before
+	public void before() {
+		request = new SimpleTaskRequest();
+		request.setPayload(TestDataSource.generateTask());
+	}
+	
 	@Test
-	public void shouldReturnHandlerForSimpleTask() throws InstantiationException, IllegalAccessException {
-		Optional<RequestHandler> handler = requestHandlerFactory.createHandler(new SimpleTask());
+	public void shouldReturnHandlerForSimpleTaskRequest() throws InstantiationException, IllegalAccessException {
+		Optional<RequestHandler> handler = requestHandlerFactory.createHandler(new SimpleTaskRequest());
 		assertThat(handler).as("Handler for simpleTask").isPresent();
+	}
+
+	@Test
+	public void shouldHandleSimpleTaskReq() throws InstantiationException, IllegalAccessException {
+		Optional<RequestHandler> handlerOpt = requestHandlerFactory.createHandler(new SimpleTaskRequest());
+		
+		assertThat(handlerOpt).as("Handler for simpleTask").isPresent();
+		RequestHandler handler = handlerOpt.get();
+		
+		Object response = handler.handle(new SimpleTask());
 	}
 
 

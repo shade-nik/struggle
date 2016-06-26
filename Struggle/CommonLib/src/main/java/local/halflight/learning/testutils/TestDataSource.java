@@ -11,13 +11,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import local.halflight.learning.dto.hibernate.simpletask.SimpleTaskDbEntity;
-import local.halflight.learning.dto.hibernate.struggleuser.ProfileEntity;
-import local.halflight.learning.dto.hibernate.struggleuser.RoleEntity;
-import local.halflight.learning.dto.hibernate.struggleuser.SettingEntity;
-import local.halflight.learning.dto.hibernate.struggleuser.UserEntity;
 import local.halflight.learning.dto.simpletask.SimpleTask;
 import local.halflight.learning.dto.simpletask.TaskPriority;
+import local.halflight.learning.entity.simpletask.SimpleTaskDbEntity;
+import local.halflight.learning.entity.struggleuser.ProfileEntity;
+import local.halflight.learning.entity.struggleuser.RoleEntity;
+import local.halflight.learning.entity.struggleuser.SettingEntity;
+import local.halflight.learning.entity.struggleuser.UserEntity;
 
 public class TestDataSource {
 

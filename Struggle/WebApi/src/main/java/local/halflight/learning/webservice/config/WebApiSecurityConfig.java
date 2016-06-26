@@ -12,20 +12,17 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.filter.DelegatingFilterProxy;
 
 import local.halflight.learning.webservice.service.StruggleUserService;
 
 @Configuration
 @EnableWebSecurity
 public class WebApiSecurityConfig extends WebSecurityConfigurerAdapter {
-	
 	@Autowired
 	private StruggleUserService struggleUserService;
-
 // TODO add repository implement remember me feature	
 //	@Autowired
-//    PersistentTokenRepository tokenRepository;	
+//  PersistentTokenRepository tokenRepository;	
 	
 	
 	@Override

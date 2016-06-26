@@ -19,9 +19,9 @@ import org.springframework.util.ErrorHandler;
 import local.halflight.learning.dto.GenericRequest;
 import local.halflight.learning.dto.GenericResponse;
 import local.halflight.learning.dto.Payload;
-import local.halflight.learning.handlers.HandlerResponse;
-import local.halflight.learning.handlers.RequestHandler;
-import local.halflight.learning.handlers.RequestHandlerFactory;
+import local.halflight.learning.model.handlers.HandlerResponse;
+import local.halflight.learning.model.handlers.RequestHandler;
+import local.halflight.learning.model.handlers.RequestHandlerFactory;
 
 @Component
 public class WorkerProcessor {

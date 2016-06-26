@@ -7,12 +7,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import local.halflight.learning.config.TransactionManagerConfiguration;
-import local.halflight.learning.dto.hibernate.struggleuser.UserEntity;
+import local.halflight.learning.entity.struggleuser.UserEntity;
 
 @Repository("userDao")
-@Transactional(value = TransactionManagerConfiguration.JPA_TRANSACTION_MANAGER)
 public interface UserEntitySpringDataDao extends JpaRepository<UserEntity, Long> {
-
+	
 	@Query("select u from UserEntity u where u.username = (:username)")
 	UserEntity findByName(@Param("username") String username);
 

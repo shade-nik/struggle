@@ -15,11 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 import local.halflight.learning.config.TransactionManagerConfiguration;
 import local.halflight.learning.dao.hibernate.simpletask.SimpleTaskHibernateDao;
 import local.halflight.learning.dao.springdatajpa.SimpleTaskSpringDataDao;
-import local.halflight.learning.dto.hibernate.simpletask.SimpleTaskDbEntity;
 import local.halflight.learning.dto.simpletask.SimpleTask;
 import local.halflight.learning.dto.simpletask.SimpleTaskEntityConverter;
-import local.halflight.learning.model.TaskType;
+import local.halflight.learning.entity.simpletask.SimpleTaskDbEntity;
 import local.halflight.learning.model.amqp.sender.BaseSender;
+import local.halflight.learning.model.handlers.tasks.TaskType;
 
 @Service
 public class SimpleTaskService {

@@ -20,12 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import local.halflight.learning.config.TransactionManagerConfiguration;
 import local.halflight.learning.dao.springdatajpa.user.UserEntitySpringDataDao;
-import local.halflight.learning.dto.hibernate.struggleuser.UserEntity;
 import local.halflight.learning.dto.struggleuser.StruggleUser;
 import local.halflight.learning.dto.struggleuser.StruggleUserConverter;
+import local.halflight.learning.entity.struggleuser.UserEntity;
 import local.halflight.learning.testutils.TestDataSource;
 
 @Component("customUserDetails")
+@Transactional(value = TransactionManagerConfiguration.JPA_TRANSACTION_MANAGER)
 public class StruggleUserService implements UserDetailsService {
 	private static final Logger LOG = LoggerFactory.getLogger(StruggleUserService.class);
 
@@ -87,7 +88,6 @@ public class StruggleUserService implements UserDetailsService {
 	}
 
 	@Override
-	@Transactional(value = TransactionManagerConfiguration.JPA_TRANSACTION_MANAGER)
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		StruggleUser user = getUser(username).orElseThrow(userNameNotFound(username));
 

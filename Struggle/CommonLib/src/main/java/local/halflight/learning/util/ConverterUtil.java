@@ -1,4 +1,4 @@
-package local.halflight.learning.dto;
+package local.halflight.learning.util;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,7 +10,7 @@ import org.hibernate.cfg.NotYetImplementedException;
 
 import com.google.common.collect.Lists;
 
-public class DtoConverter {
+public class ConverterUtil {
 
 	
 	public static <FROM, TO> List<TO> convertList(List<FROM> from, Function<FROM, TO> func)

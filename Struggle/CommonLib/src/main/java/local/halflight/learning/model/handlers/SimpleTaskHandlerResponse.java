@@ -1,4 +1,4 @@
-package local.halflight.learning.handlers;
+package local.halflight.learning.model.handlers;
 
 import local.halflight.learning.dto.simpletask.SimpleTaskResponse;
 

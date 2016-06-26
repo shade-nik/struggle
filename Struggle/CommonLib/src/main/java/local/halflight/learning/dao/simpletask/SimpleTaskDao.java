@@ -1,5 +1,6 @@
 package local.halflight.learning.dao.simpletask;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -8,10 +9,10 @@ import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import local.halflight.learning.dao.AbstractDao;
+import local.halflight.learning.dao.AbstractJdbcTemplateDao;
 import local.halflight.learning.dto.simpletask.SimpleTask;
 
-public class SimpleTaskDao extends AbstractDao<SimpleTask> {
+public class SimpleTaskDao extends AbstractJdbcTemplateDao<SimpleTask> {
 
 	@Autowired
 	public SimpleTaskDao(@Qualifier("learningDataSource") DataSource learningDatasouce) {
@@ -19,7 +20,7 @@ public class SimpleTaskDao extends AbstractDao<SimpleTask> {
 	}
 
 	@Override
-	public SimpleTask findById(Number id) {
+	public SimpleTask findById(Serializable id) {
 		throw new NotYetImplementedException();
 
 	}
@@ -42,7 +43,7 @@ public class SimpleTaskDao extends AbstractDao<SimpleTask> {
 	}
 
 	@Override
-	public void delete(Number dto) {
+	public void delete(Serializable dto) {
 		throw new NotYetImplementedException();
 	}
 

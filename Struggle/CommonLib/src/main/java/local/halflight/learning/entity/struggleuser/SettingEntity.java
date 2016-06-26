@@ -1,4 +1,4 @@
-package local.halflight.learning.dto.hibernate.struggleuser;
+package local.halflight.learning.entity.struggleuser;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,9 +9,9 @@ import javax.persistence.Table;
 
 import com.google.common.base.MoreObjects;
 
-import local.halflight.learning.dto.BaseHibernateDto;
 import local.halflight.learning.dto.struggleuser.Role;
 import local.halflight.learning.dto.struggleuser.Setting;
+import local.halflight.learning.entity.BaseHibernateDto;
 
 @Entity
 @Table(name = "user_settings")

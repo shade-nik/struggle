@@ -15,9 +15,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import local.halflight.learning.dao.hibernate.simpletask.SimpleTaskHibernateDao;
-import local.halflight.learning.dto.hibernate.simpletask.SimpleTaskDbEntity;
-import local.halflight.learning.dto.hibernate.struggleuser.ProfileEntity;
-import local.halflight.learning.dto.hibernate.struggleuser.UserEntity;
+import local.halflight.learning.entity.simpletask.SimpleTaskDbEntity;
+import local.halflight.learning.entity.struggleuser.ProfileEntity;
+import local.halflight.learning.entity.struggleuser.UserEntity;
 import local.halflight.learning.testutils.TestDataSource;
 
 @RunWith(SpringJUnit4ClassRunner.class)

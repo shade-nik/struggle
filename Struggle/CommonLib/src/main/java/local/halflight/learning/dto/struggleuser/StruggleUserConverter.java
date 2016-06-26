@@ -2,10 +2,10 @@ package local.halflight.learning.dto.struggleuser;
 
 import java.util.stream.Collectors;
 
-import local.halflight.learning.dto.hibernate.struggleuser.ProfileEntity;
-import local.halflight.learning.dto.hibernate.struggleuser.RoleEntity;
-import local.halflight.learning.dto.hibernate.struggleuser.SettingEntity;
-import local.halflight.learning.dto.hibernate.struggleuser.UserEntity;
+import local.halflight.learning.entity.struggleuser.ProfileEntity;
+import local.halflight.learning.entity.struggleuser.RoleEntity;
+import local.halflight.learning.entity.struggleuser.SettingEntity;
+import local.halflight.learning.entity.struggleuser.UserEntity;
 
 public class StruggleUserConverter {
 	public static StruggleUser toDto(UserEntity entity) {

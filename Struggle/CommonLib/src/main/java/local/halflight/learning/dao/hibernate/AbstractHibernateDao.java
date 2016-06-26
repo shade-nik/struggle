@@ -59,7 +59,8 @@ public abstract class AbstractHibernateDao<T> implements Dao<T> {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public T findById(Number id) {
+	public T findById(Serializable id) {		
+		
 		return (T) currentSession().get(clazz, id);
 	}
 
@@ -80,7 +81,7 @@ public abstract class AbstractHibernateDao<T> implements Dao<T> {
 	}
 
 	@Override
-	public void delete(Number id) {
+	public void delete(Serializable id) {
 		if(id != null) 
 		{
 			Session sess = currentSession();

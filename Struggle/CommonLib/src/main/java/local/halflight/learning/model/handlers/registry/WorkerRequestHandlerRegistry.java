@@ -1,4 +1,4 @@
-package local.halflight.learning.handlers.registry;
+package local.halflight.learning.model.handlers.registry;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -7,9 +7,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import local.halflight.learning.handlers.RequestHandler;
+import local.halflight.learning.model.handlers.RequestHandler;
 
 @Component
+@SuppressWarnings("rawtypes")
 public class WorkerRequestHandlerRegistry {
 
 	private Map<Class<?>, RequestHandler> registry;
@@ -32,9 +33,5 @@ public class WorkerRequestHandlerRegistry {
 			registry.put(supportedType, handler);
 		}
 	}
-	
-	
-	
-	
-	
+
 }

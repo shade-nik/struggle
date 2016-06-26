@@ -1,4 +1,4 @@
-package local.halflight.learning.handlers;
+package local.halflight.learning.model.handlers;
 
 import java.util.Optional;
 
@@ -8,7 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import local.halflight.learning.dto.simpletask.SimpleTask;
-import local.halflight.learning.handlers.registry.WorkerRequestHandlerRegistry;
+import local.halflight.learning.dto.simpletask.SimpleTaskRequest;
+import local.halflight.learning.model.handlers.registry.WorkerRequestHandlerRegistry;
 
 @Component
 public class RequestHandlerFactory {
@@ -22,7 +23,7 @@ public class RequestHandlerFactory {
 	private SimpleTaskRequestHandler simpleTaskRequestHandler;
 	
 	public Optional<RequestHandler> createHandler(Object payload) {
-		if(payload instanceof SimpleTask) {
+		if(payload instanceof SimpleTaskRequest) {
 			return Optional.of(simpleTaskRequestHandler);
 		}
 		return Optional.empty();

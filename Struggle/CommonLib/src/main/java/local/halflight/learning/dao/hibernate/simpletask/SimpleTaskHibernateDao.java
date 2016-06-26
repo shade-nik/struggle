@@ -1,5 +1,7 @@
 package local.halflight.learning.dao.hibernate.simpletask;
 
+import java.io.Serializable;
+
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -13,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import local.halflight.learning.config.TransactionManagerConfiguration;
 import local.halflight.learning.dao.hibernate.AbstractHibernateDao;
-import local.halflight.learning.dto.hibernate.simpletask.SimpleTaskDbEntity;
+import local.halflight.learning.entity.simpletask.SimpleTaskDbEntity;
 
 @Repository
 @Transactional(value = TransactionManagerConfiguration.HIBERNATE_TRANSACTION_MANAGER)
@@ -51,7 +53,7 @@ public class SimpleTaskHibernateDao extends AbstractHibernateDao<SimpleTaskDbEnt
 	
 
 	@Override
-	public SimpleTaskDbEntity findById(Number id) {
+	public SimpleTaskDbEntity findById(Serializable id) {
 		SimpleTaskDbEntity found = super.findById(id);
 		if(found != null) {
 			Hibernate.initialize(found.getNotes());

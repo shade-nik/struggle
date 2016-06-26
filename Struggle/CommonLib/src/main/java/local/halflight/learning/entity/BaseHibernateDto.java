@@ -1,4 +1,4 @@
-package local.halflight.learning.dto;
+package local.halflight.learning.entity;
 
 import java.util.Calendar;
 
@@ -14,20 +14,14 @@ import javax.persistence.TemporalType;
 
 @MappedSuperclass
 public abstract class BaseHibernateDto {
-	//TODO place common base fields here
 	//might be overriden with entity level annotation 
-	//	@AttributeOverride( name="super_name", column = @Column(name="overr_name") )
-	
-
+	//@AttributeOverride( name="super_name", column = @Column(name="overr_name") )
 	protected Long id;
-	
-
 	protected Calendar createDate;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", nullable = false, unique = true)
-//	@Access(AccessType.PROPERTY)
 	public Long getId() {
 		return id;
 	}
@@ -45,6 +39,5 @@ public abstract class BaseHibernateDto {
 	public void setCreateDate(Calendar createDate) {
 		this.createDate = createDate;
 	}
-	
 	
 }

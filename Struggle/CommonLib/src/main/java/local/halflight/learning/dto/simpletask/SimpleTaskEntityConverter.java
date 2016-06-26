@@ -1,9 +1,9 @@
 package local.halflight.learning.dto.simpletask;
 
-import local.halflight.learning.dto.DtoConverter;
-import local.halflight.learning.dto.hibernate.simpletask.SimpleTaskDbEntity;
+import local.halflight.learning.entity.simpletask.SimpleTaskDbEntity;
+import local.halflight.learning.util.ConverterUtil;
 
-public class SimpleTaskEntityConverter extends DtoConverter {
+public class SimpleTaskEntityConverter extends ConverterUtil {
 
 	public static SimpleTask toDto(SimpleTaskDbEntity entity) {
 		if (entity == null)

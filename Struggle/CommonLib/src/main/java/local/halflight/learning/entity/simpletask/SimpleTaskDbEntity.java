@@ -1,4 +1,4 @@
-package local.halflight.learning.dto.hibernate.simpletask;
+package local.halflight.learning.entity.simpletask;
 
 import java.util.List;
 
@@ -23,8 +23,8 @@ import org.hibernate.annotations.CascadeType;
 
 import com.google.common.base.MoreObjects;
 
-import local.halflight.learning.dto.BaseHibernateDto;
 import local.halflight.learning.dto.simpletask.TaskPriority;
+import local.halflight.learning.entity.BaseHibernateDto;
 
 @NamedQueries(value = {
 		@NamedQuery(name = SimpleTaskDbEntity.FIND_BY_NAME,
@@ -49,7 +49,7 @@ public class SimpleTaskDbEntity extends BaseHibernateDto {
 	public SimpleTaskDbEntity() {
 	}
 
-	@Column(name = "taskname", /* unique = true, */ nullable = false)
+	@Column(name = "taskname", nullable = false)
 	public String getTaskName() {
 		return taskName;
 	}
