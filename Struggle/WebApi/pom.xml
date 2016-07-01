@@ -22,12 +22,31 @@
 			<groupId>local.halflight.learning</groupId>
 			<artifactId>CommonLib</artifactId>
 		</dependency>
+
+		<!-- JavaScript part of application -->
+		<!-- https://mvnrepository.com/artifact/org.webjars/angularjs -->
+<!-- 		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>angularjs</artifactId>
+			<version>1.5.7</version>
+		</dependency> -->
+		
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jquery</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
 		<!-- Utility lib -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
-
+		<!-- Websocket spring support -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-websocket</artifactId>
+		</dependency>
 		<!-- Add as needed for spring security -->
 		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-web</artifactId> 
 			</dependency> -->
@@ -48,10 +67,10 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
 		</dependency>
-		 <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+		</dependency>
 		<!-- Jersey spring integration -->
 		<dependency>
 			<groupId>javax.ws.rs</groupId>

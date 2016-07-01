@@ -1,0 +1,37 @@
+.err {
+	border: 1px solid #f00; 
+}
+
+.warn {
+	border: 1px solid #ff0; 	
+}
+
+.info {
+	border: 1px solid #eee; 	
+}
+
+.msg {
+	color: #0f0;
+}
+
+#login-form {
+	width: 300px;
+	height: 200px;
+	background: #fff;
+	border: 1px solid #000; 
+}
+
+div {
+	border: 1px solid #ccc;
+}
+
+#action_div {
+	width: 300px;
+	height: 200px;
+	background-image: url(resources/img/learn_ico.gif);
+	border: 1px solid #000; 
+}
+
+.
+
+
