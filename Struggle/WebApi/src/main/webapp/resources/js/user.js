@@ -2,9 +2,6 @@ var userBaseUrl = "http://localhost:8088/webapi/rest/api/users";
 
 var currentUser;
 
-// for story with only get enabled
-$("#delete_button").prop("disabled", true);
-
 // initial
 $("#delete_button").hide();
 
@@ -28,6 +25,11 @@ $("#save_button").click(function() {
 
 $('#user_list a').on('click', function() {
 	getUserById($(this).data('identity'));
+});
+
+$("#delete_button").click(function() {
+	deleteUser();
+	return false;
 });
 
 $('#user_list').delegate(
@@ -130,6 +132,12 @@ function createUser() {
 			console.log("User added succesfully ");
 			$("#delete_button").show();
 			$("#user_id").val($(data).find("userUUID").text());
+			
+			console.log("Add created user to userlist" + $(data).find("username").text());
+			$('#user_list').append(
+					'<li><a href="#" data-identity="'
+							+ $(data).find("userUUID").text() + '">'
+							+ $(data).find("username").text() + '</a></li>');
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			console.log("Error adding user " + textStatus);
@@ -140,10 +148,43 @@ function createUser() {
 
 function updateUser() {
 	console.log("Update user");
+	$.ajax({
+		url: userBaseUrl + "/user/" + $("#user_name").val(),
+		type: "PUT",
+		dataType: 'xml',
+		contentType: "application/xml",
+	    headers: {          
+	       "Accept": "application/xml; charset=utf-8"         
+	    },
+	    data: formToXML(),
+	    success: function(data, textStatus, jqXHR) {
+	    	console.log("Updated succesfully");
+	    },
+	    error:function(jqXHR, textStatus, errorThrown) {
+	    	console.log("Error when updating");
+	    	if(textStatus == 'badRequest') {
+	    		displayValidationErrors();
+	    	}
+	    }
+	});
 }
 
 function deleteUser() {
-	console.log("Delete user");
+	console.log("Delete user");	
+	$.ajax({
+		url: userBaseUrl + "/user/" + $("#user_name").val(),
+		type: "DELETE",
+		success: function(data, textStatus, jqXHR) {
+			console.log("Sucessfully deleted");
+			console.log("Removing <a> with [data-identity='"+ $("#user_id").val() +"]'");
+			$('#user_list a[data-identity="'+ $("#user_id").val() +'"]').remove();
+			currentUser = {};
+			displayUserDetails(currentUser);
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			console.log("Can't delete user, error" + errorThrown);
+		}
+	});
 }
 
 function displayResults(data) {
@@ -223,5 +264,11 @@ function formToXML () {
 	} catch (e) {
 		console.log("Exception " + e);
 	}
+}
+
+
+function displayValidationErrors(jqXHR) {
+	console.log("Validation errors " + jqXHR);
+
 }
 

@@ -15,8 +15,6 @@ import local.halflight.learning.validation.aspect.ValidationTarget;
 @ValidationTarget
 public class StruggleUserRequest extends BaseRequest<StruggleUser> {
 
-	private StruggleUser payload;
-
 	@XmlElement(name = "StruggleUserPayload")
 	public StruggleUser getPayload() {
 		return payload;

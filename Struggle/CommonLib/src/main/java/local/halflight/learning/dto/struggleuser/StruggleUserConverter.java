@@ -16,10 +16,10 @@ public class StruggleUserConverter {
 		user.setUsername(entity.getUsername());
 		user.setUserUUID(entity.getUserUUID());
 		user.setProfile(ProfileEntity.toDto(entity.getProfile()));
-		if (entity.getRoles() != null) {
+		if (entity.getRoles() != null && !entity.getRoles().isEmpty()) {
 			user.setRoles(entity.getRoles().stream().map(RoleEntity::toDto).collect(Collectors.toSet()));
 		}
-		if (entity.getSettings() != null) {
+		if (entity.getSettings() != null && !entity.getRoles().isEmpty()) {
 			user.setSettings(entity.getSettings().stream().map(SettingEntity::toDto).collect(Collectors.toSet()));
 		}
 		user.setGroups(entity.getGroups());
@@ -34,10 +34,10 @@ public class StruggleUserConverter {
 		entity.setUsername(user.getUsername());
 		entity.setUserUUID(user.getUserUUID());
 		entity.setProfile(ProfileEntity.toEntity(user.getProfile()));
-		if (user.getRoles() != null) {
+		if (user.getRoles() != null && !user.getRoles().isEmpty()) {
 			entity.setRoles(user.getRoles().stream().map(RoleEntity::toEntity).collect(Collectors.toSet()));
 		}
-		if (user.getSettings() != null) {
+		if (user.getSettings() != null && !user.getSettings().isEmpty()) {
 			entity.setSettings(user.getSettings().stream().map(SettingEntity::toEntity).collect(Collectors.toSet()));
 		}
 		entity.setGroups(user.getGroups());

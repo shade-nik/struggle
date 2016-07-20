@@ -18,8 +18,6 @@ import local.halflight.learning.dto.validationerror.ValidationErrorLevel;
 @XmlAccessorType(XmlAccessType.NONE)
 public class StruggleUserResponse extends BaseResponse<StruggleUserRequest> {
 
-	private StruggleUserRequest request;
-
 	@XmlElement(name = "StruggleUserPayload")
 	private StruggleUser payload;
 
