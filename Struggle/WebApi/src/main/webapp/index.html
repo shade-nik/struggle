@@ -1,31 +1,94 @@
+<!DOCTYPE HTML>
 <html>
 
 <head>
-	<title>Starting  JS</title>
-	<link rel="stylesheet" href="resources/css/style.css" />
-	<link rel="shortcut/icon" type="image/png" href="resources/img/learn_ico.png" />
-	<meta charset="utf-8"/>
+<title>Learning jQuery (User management)</title>
+<link rel="stylesheet" href="resources/css/style.css" />
+<link rel="shortcut/icon" type="image/png"
+	href="resources/img/learn_ico.png" />
+<meta charset="utf-8" />
 </head>
 
 
 <body>
-
 	<div id="validation_error" class="err"></div>
 
-	<div class="controls">
-		<div id="action_div">Action Div</div>
-		<input type="button" value="register" id="reg_button" /><br />
-
+	<div class="top_menu">
+		<input type="text" id="name_for_search" /> <input type="button"
+			id="search_button" value="Search" /> <input type="button"
+			id="add_button" value="AddUser" />
 	</div>
 
-	<div class="container">
-		<p class="user-id">UserId is</p>
-		<p class="user-roles">Roles are</p>
+	<div class="left_container">
+		<ul id="user_list"></ul>
 	</div>
+
+
+	<form id="user_form">
+		<div class="details_container">
+			<table>
+				<tr>
+					<td><label for="user_id">Id: </label></td>
+					<td><input type="text" id="user_id" name="id" disabled="true" /></td>
+				</tr>
+				<tr>
+					<td><label for="user_name"> Username: </label></td>
+					<td><input type="text" id="user_name" name="name" /></td>
+				</tr>
+				<tr>
+					<td><label for="user_pass"> Password: </label></td>
+					<td><input type="text" id="user_pass" name="password" /></td>
+				</tr>
+				<tr>
+					<td><label class="header"> Profile: </label></td>
+				</tr>
+				<tr>
+					<td><label for="profile_user_first_name"> First Name:
+					</label></td>
+					<td><input type="text" id="profile_user_first_name"
+						name="first_name" /></td>
+				</tr>
+				<tr>
+					<td><label for="profile_user_last_name"> Last Name: </label></td>
+					<td><input type="text" id="profile_user_last_name"
+						name="last_name" /></td>
+				</tr>
+				<tr>
+					<td><label for="profile_user_enabled"> Enabled: </label></td>
+					<td><input type="checkbox" id="profile_user_enabled"
+						name="enabled" /></td>
+				</tr>
+				<tr>
+					<td><label class="header"> Settings: </label></td>
+					<td><button class="add_spec_button" id="add_settings_button">+</button></td>
+				</tr>
+				<td><ul class="user_info" id="user_settings"></ul></td>
+				</tr>
+				<tr>
+					<td><label class="header"> Roles: </label></td>
+					<td><button class="add_spec_button" id="add_role_button">+</button></td>
+				</tr>
+				<tr>
+					<td><ul class="user_info" id="user_roles"></ul></td>
+				</tr>
+				<tr>
+					<td><label class="header"> Groups: </label></td>
+					<td><button class="add_spec_button" id="add_group_button">+</button></td>
+				</tr>
+				<tr>
+					<td><ul class="user_info" id="user_groups"></ul></td>
+				</tr>
+			</table>
+		</div>
+
+		<div class="image_container">
+			<img alt="Place for photo" id="photo" height="300" />
+		</div>
+
+	</form>
 
 	<script src="resources/js/jquery-3.0.0.js" type="text/javascript"></script>
 	<script src="resources/js/user.js" type="text/javascript"></script>
-
 </body>
 
 </html>

@@ -24,11 +24,11 @@ public class RoleEntity extends BaseHibernateDto {
 		return role;
 	}
 
-	@Column
 	public void setRole(String role) {
 		this.role = role;
 	}
 
+	@Column
 	public String getDescription() {
 		return description;
 	}

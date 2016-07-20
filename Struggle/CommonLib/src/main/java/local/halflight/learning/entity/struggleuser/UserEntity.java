@@ -1,9 +1,6 @@
 package local.halflight.learning.entity.struggleuser;
 
-import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
@@ -28,7 +25,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import com.google.common.base.MoreObjects;
 
-import local.halflight.learning.dto.struggleuser.StruggleUser;
 import local.halflight.learning.entity.BaseHibernateDto;
 
 @NamedQueries(value = { @NamedQuery(name = "findUserByName", query = "from UserEntity where username = :username"),
@@ -87,7 +83,8 @@ public class UserEntity extends BaseHibernateDto {
 		this.password = password;
 	}
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@OneToMany(mappedBy = "user", 
+			fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	public Set<SettingEntity> getSettings() {
 		return settings;
 	}
@@ -117,7 +114,16 @@ public class UserEntity extends BaseHibernateDto {
 	}
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-	@JoinTable(name = "user_role_xref", joinColumns = @JoinColumn(name = "xref_user_id", referencedColumnName = "user_id", foreignKey = @ForeignKey(name = "fk_user")), foreignKey = @ForeignKey(name = "fk_out_user"), inverseJoinColumns = @JoinColumn(name = "xref_role_id", referencedColumnName = "user_role_id", foreignKey = @ForeignKey(name = "fk_security_role")), inverseForeignKey = @ForeignKey(name = "fk_out_security_role"))
+	@JoinTable(name = "user_role_xref", 
+	           joinColumns = @JoinColumn(
+	        		    name = "xref_user_id", 
+	           			referencedColumnName = "user_id",
+	           			foreignKey = @ForeignKey(name = "fk_user")),
+	                    foreignKey = @ForeignKey(name = "fk_out_user"),
+	           inverseJoinColumns = @JoinColumn(name = "xref_role_id",
+	           			referencedColumnName = "user_role_id",
+	           			foreignKey = @ForeignKey(name = "fk_security_role")),
+	                    inverseForeignKey = @ForeignKey(name = "fk_out_security_role"))
 	public Set<RoleEntity> getRoles() {
 		return roles;
 	}
@@ -128,8 +134,14 @@ public class UserEntity extends BaseHibernateDto {
 
 	@Override
 	public String toString() {
-		return MoreObjects.toStringHelper(this).add("id", id).add("userUUID", userUUID).add("username", username)
-				.add("password", password).add("settings", settings).add("profile", profile).add("groups", groups)
+		return MoreObjects.toStringHelper(this)
+				.add("id", id)
+				.add("userUUID", userUUID)
+				.add("username", username)
+				.add("password", password)
+				.add("settings", settings)
+				.add("profile", profile)
+				.add("groups", groups)
 				.add("roles", roles).toString();
 	}
 }

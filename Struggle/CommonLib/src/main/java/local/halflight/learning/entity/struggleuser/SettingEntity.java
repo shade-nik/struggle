@@ -1,15 +1,13 @@
 package local.halflight.learning.entity.struggleuser;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.google.common.base.MoreObjects;
 
-import local.halflight.learning.dto.struggleuser.Role;
 import local.halflight.learning.dto.struggleuser.Setting;
 import local.halflight.learning.entity.BaseHibernateDto;
 
@@ -23,8 +21,11 @@ public class SettingEntity extends BaseHibernateDto {
 
 	public SettingEntity() {
 	}
-
+	public SettingEntity(String settingDescription) {
+		this.setting = settingDescription;
+	}
 	@ManyToOne
+	@JoinColumn(name="id", insertable=false, updatable=false)
 	public UserEntity getUser() {
 		return user;
 	}
@@ -32,11 +33,7 @@ public class SettingEntity extends BaseHibernateDto {
 	public void setUser(UserEntity user) {
 		this.user = user;
 	}
-
-	public SettingEntity(String settingDescription) {
-		this.setting = settingDescription;
-	}
-
+	@Column
 	public String getSetting() {
 		return setting;
 	}
@@ -49,19 +46,10 @@ public class SettingEntity extends BaseHibernateDto {
 	public String toString() {
 		return MoreObjects.toStringHelper(this)
 				.add("id", id)
-				.add("user", user)
+				.add("user_name", user.getUsername())
 				.add("setting", setting)
 				.toString();
 	}
-
-//	public static Set<Setting> getDtoSet(Set<SettingEntity> entities) {
-//	
-//		Set<Setting> settings = new HashSet<>();
-//		for (SettingEntity entity : entities) {
-//			settings.add(toDto(entity));
-//		}
-//		return settings;
-//	}
 
 	public static Setting toDto(SettingEntity entity) {
 		Setting setting = new Setting();
