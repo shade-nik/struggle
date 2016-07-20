@@ -131,7 +131,7 @@ label.header {
 	padding:6px;
 }
 
-.details_container button.add_spec_button {
+.details_container span.add_spec_button {
 	display: inline;
 	border: 1px solid #0c0;
 	padding:6px;

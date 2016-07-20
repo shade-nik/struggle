@@ -3,15 +3,26 @@ var userBaseUrl = "http://localhost:8088/webapi/rest/api/users";
 var currentUser;
 
 // for story with only get enabled
-$('.details_container input, .details_container button').prop("disabled", true);
 $("#delete_button").prop("disabled", true);
-
 
 // initial
 $("#delete_button").hide();
 
 $("#search_button").click(function() {
 	search($("#name_for_search").val());
+	return false;
+});
+
+$("#add_button").click(function() {
+    newUser();
+    return false;
+});
+
+$("#save_button").click(function() {
+	if($("#user_id").val() == '') 
+		createUser();
+	else
+		updateUser();
 	return false;
 });
 
@@ -97,6 +108,44 @@ function getUserByName(userName) {
 	});
 }
 
+function newUser() {
+	console.log("create new user");
+	$("#delete_button").hide();
+	currentUser = {};
+	displayUserDetails(currentUser);
+}
+
+function createUser() {
+	console.log("create user");
+	$.ajax({
+		url: userBaseUrl + "/user",
+		type: "POST",
+		dataType: 'xml',
+		contentType: "application/xml",
+	    headers: {          
+	       "Accept": "application/xml; charset=utf-8"         
+	    },
+	    data: formToXML(),
+	    success: function(data, textStatus, jqXHR) {
+			console.log("User added succesfully ");
+			$("#delete_button").show();
+			$("#user_id").val($(data).find("userUUID").text());
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			console.log("Error adding user " + textStatus);
+		}
+	});
+}
+
+
+function updateUser() {
+	console.log("Update user");
+}
+
+function deleteUser() {
+	console.log("Delete user");
+}
+
 function displayResults(data) {
 	$("#user_list li").remove();
 
@@ -143,3 +192,36 @@ function displayUserDetails(data) {
 		$("#user_groups").append('<li>' + $(group).text() + '</li>');
 	});
 }
+
+function formToXML () {
+	try {
+		var xmlString;
+		var serializer = new XMLSerializer();
+		
+		var xml = $($.parseXML('<?xml version="1.0" encoding="utf-8" ?><StruggleUserRequest/>'));
+
+		$('StruggleUserRequest', xml).append($('<StruggleUserPayload/>', xml));
+		$('StruggleUserPayload', xml).append($('<username/>', xml).text($("#user_name").val()));
+		$('StruggleUserPayload', xml).append($('<password/>', xml).text($("#user_pass").val()));
+		$('StruggleUserPayload', xml).append($('<userUUID/>', xml).text($("#user_id").val()));
+
+		$('StruggleUserPayload', xml).append($('<profile/>', xml));
+		$('profile', xml).append($('<firstName/>', xml).text($("#profile_user_first_name").val()));
+		$('profile', xml).append($('<lastName/>', xml).text($("#profile_user_last_name").val()));
+		$('profile', xml).append($('<enabled/>', xml).text($("#profile_user_enabled").is(":checked")));
+//skip filling groups, roles, settings... 				
+		$('StruggleUserPayload', xml).append($('<Settings/>', xml));
+		$(".user_settings li").each(function () {
+			var setting =  $(this).val();
+			var elem = $('Settings', xml).append($('<Setting/>', xml));
+			$(elem).append($('<Description/>', xml).text(setting));
+		});
+						
+		xmlString = serializer.serializeToString(xml[0]);
+	     
+	    return xmlString;
+	} catch (e) {
+		console.log("Exception " + e);
+	}
+}
+

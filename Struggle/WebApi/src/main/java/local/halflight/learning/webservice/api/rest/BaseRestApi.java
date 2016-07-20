@@ -83,14 +83,22 @@ public abstract class BaseRestApi<RQ extends GenericRequest<? extends Payload>,
 	protected Response createResponse(Status status, RP response) {
 		ResponseBuilder builder = Response.status(status);
 		builder.entity(response);
+		return builder.build();
+	}
+	
+	protected Response createResponse(Status status, RP response, UriInfo uri) {
+		ResponseBuilder builder = Response.status(status);
+		builder.entity(response);
 		if(status.equals(Status.CREATED)) {
-			builder.location(buildLocation(response.getPayloadId().orElse(EMPTY_PAYLOAD_ID)));
+			URI locationURI = uri.getAbsolutePath().resolve(response.getPayloadId().orElse(EMPTY_PAYLOAD_ID).toString());
+			builder.location(locationURI);
+			//builder.location(buildLocationHeader(response.getPayloadId().orElse(EMPTY_PAYLOAD_ID).));
 		}
 		return builder.build();
 	}
 
 	// TODO better change to UUID?
-	protected URI buildLocation(Long taskId) {
+	protected URI buildLocationHeader(Long taskId) {
 		String location = uri.getAbsolutePath().toString() + "/" + taskId;
 		return URI.create(location);
 	}

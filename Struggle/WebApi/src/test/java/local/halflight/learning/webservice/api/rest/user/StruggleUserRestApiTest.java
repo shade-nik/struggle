@@ -81,7 +81,7 @@ public class StruggleUserRestApiTest extends BaseRestApiTest {
 	
 	@Test
 	public void shouldFindUserByName() {
-		expect(service.getUser(TEST_USER_NAME)).andReturn(Optional.of(user));
+		expect(service.getUserByName(TEST_USER_NAME)).andReturn(Optional.of(user));
 		
 		control.replay();
 		Response rp = api.getStruggleUser(TEST_USER_NAME);
@@ -98,9 +98,9 @@ public class StruggleUserRestApiTest extends BaseRestApiTest {
 	public void shouldCreateUser() {
 		expect(service.create(request.getPayload())).andReturn(user);
 		expect(uri.getAbsolutePath()).andReturn(requestPathURI);
-
+		
 		control.replay();
-		Response rp = api.createStruggleUser(request);
+		Response rp = api.createStruggleUser(request, uri);
 		control.verify();
 		
 		StruggleUserResponse serviceRp = (StruggleUserResponse) rp.getEntity();
@@ -123,7 +123,7 @@ public class StruggleUserRestApiTest extends BaseRestApiTest {
 		StruggleUser existing = StruggleUserConverter.toDto(TestDataSource.User.generateUser(TEST_USER_NAME));
 		existing.setUserUUID(UUID.randomUUID().toString());
 		
-		expect(service.getUser(TEST_USER_NAME)).andReturn(Optional.of(existing));
+		expect(service.getUserByName(TEST_USER_NAME)).andReturn(Optional.of(existing));
 		expect(validator.validateUpdate(existing, user)).andReturn(Collections.emptyMap());
 		expect(service.update(user)).andReturn(user);
 
@@ -146,7 +146,7 @@ public class StruggleUserRestApiTest extends BaseRestApiTest {
 	@Test
 	public void updateShouldReturnNotFoundIfUserNotExists() {
 
-		expect(service.getUser(TEST_USER_NAME)).andReturn(Optional.empty());
+		expect(service.getUserByName(TEST_USER_NAME)).andReturn(Optional.empty());
 		
 		
 		control.replay();

@@ -10,7 +10,8 @@
 
 	<import resource="classpath:common-lib-spring-beans.xml"/>
 
- 	<context:component-scan base-package="local.halflight.learning"/>
-	<context:property-placeholder location="classpath:learning.properties" />
+<!--  	<context:component-scan base-package="local.halflight.learning"/>
+ -->
+ 	<context:property-placeholder location="classpath:learning.properties" />
 	
 </beans>

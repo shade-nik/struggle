@@ -24,6 +24,7 @@ import local.halflight.learning.dto.struggleuser.StruggleUser;
 import local.halflight.learning.dto.struggleuser.StruggleUserConverter;
 import local.halflight.learning.entity.struggleuser.UserEntity;
 import local.halflight.learning.testutils.TestDataSource;
+import local.halflight.learning.validation.aspect.UseValidator;
 
 @Component("customUserDetails")
 @Transactional(value = TransactionManagerConfiguration.JPA_TRANSACTION_MANAGER)
@@ -34,7 +35,22 @@ public class StruggleUserService implements UserDetailsService {
 	@Qualifier("userDao")
 	private UserEntitySpringDataDao userEntitySpringDataDao;
 
-	public Optional<StruggleUser> getUser(String username) {
+	
+	public Optional<StruggleUser> getUserByUUID(String userId) {
+		LOG.info("Getting user by name: {}", userId);
+		UserEntity entity = userEntitySpringDataDao.findByUUID(userId);
+		
+		if (entity == null) {
+			return Optional.empty();
+		}
+		LOG.info("Found user entity: {}", entity);
+
+		StruggleUser user = StruggleUserConverter.toDto(entity);
+		LOG.info("Converted user: {}", user);
+		return Optional.of(user);
+	}
+	
+	public Optional<StruggleUser> getUserByName(String username) {
 		LOG.info("Getting user by name: {}", username);
 		UserEntity entity = userEntitySpringDataDao.findByName(username);
 		if (entity == null) {
@@ -63,14 +79,19 @@ public class StruggleUserService implements UserDetailsService {
 				throw new DuplicateKeyException("Exception when saving user", e);
 			}
 		} else {
-			throw new DuplicateKeyException("User " + payload + " already persisted.");
+			LOG.info("Update user: {}", payload);
+			UserEntity save = StruggleUserConverter.toEntity(payload);
+			save.setId(user.getId());
+			UserEntity saved = userEntitySpringDataDao.save(save);
+			return StruggleUserConverter.toDto(saved);
+//			throw new DuplicateKeyException("User " + payload + " already persisted.");
 		}
 	}
 
 	public StruggleUser update(StruggleUser payload) {
 		// TODO change to find/update since save in my case can't correctly
 		// identify user
-		return create(payload);
+			return create(payload);
 	}
 
 	public void remove(String username) throws NotFoundException {
@@ -89,7 +110,7 @@ public class StruggleUserService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		StruggleUser user = getUser(username).orElseThrow(userNameNotFound(username));
+		StruggleUser user = getUserByName(username).orElseThrow(userNameNotFound(username));
 
 		return user;
 	}
