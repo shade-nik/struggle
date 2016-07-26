@@ -1,6 +1,7 @@
 package local.halflight.learning.webservice.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,14 +14,21 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import local.halflight.learning.webservice.authentication.StruggleUserDetailsAuthenticationProvider;
 import local.halflight.learning.webservice.service.StruggleUserService;
 
 @Configuration
 @EnableWebSecurity
 public class WebApiSecurityConfig extends WebSecurityConfigurerAdapter {
+	
 	@Autowired
 	private StruggleUserService struggleUserService;
-// TODO add repository implement remember me feature	
+
+	@Autowired
+	@Qualifier("authenticationProvider")
+	private StruggleUserDetailsAuthenticationProvider authenticationProvider;
+	
+	// TODO add repository implement remember me feature	
 //	@Autowired
 //  PersistentTokenRepository tokenRepository;	
 	
@@ -28,11 +36,12 @@ public class WebApiSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/resources/**");
+		web.ignoring().antMatchers("/webjars/**");
 	}
 	
 	 @Autowired
 	 protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		 auth.userDetailsService(struggleUserService);
+//		 auth.userDetailsService(struggleUserService);
 		 auth.authenticationProvider(daoAuthenticationProvider());
 		// @formatter:off
 //		 auth.inMemoryAuthentication()
@@ -49,22 +58,31 @@ public class WebApiSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 // @formatter:off
 //Properties->Java Code Style -> Formatter -> configure -> on/off tag
+		http.csrf().disable();
 		http
+			.formLogin()
+				.defaultSuccessUrl("/index.html")
+				.loginPage("/login.html")
+				.failureUrl("/login.html?error")
+				.permitAll()
+			.and()
+			.logout()
+				.logoutSuccessUrl("/login.html?logout")
+				.logoutUrl("/logout.html")
+				.permitAll()
+			.and()
 			.authorizeRequests()
-				.antMatchers(HttpMethod.POST, "/rest/api/simple/task/**")
+				.antMatchers(HttpMethod.POST, "/rest/api/users/**")
 				.hasRole("ADMIN")
-				.antMatchers(HttpMethod.DELETE, "/rest/api/simple/task/**")
+				.antMatchers(HttpMethod.DELETE, "/rest/api/users/**")
 				.hasRole("ADMIN")
-				.antMatchers("/rest/api/simple/task/**")
+				.antMatchers("/rest/api/users/**")
 				.hasRole("USER")
-				.anyRequest().authenticated()
+				.anyRequest().authenticated();
 //			.and()
 //				.rememberMe()
 //				.rememberMeParameter("rememberMe")
 //				.tokenRepository(tokenRepository)
-			.and()
-				.httpBasic();
-			http.csrf().disable();
 	// @formatter:on
 	}
 	

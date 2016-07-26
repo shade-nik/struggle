@@ -2,7 +2,6 @@ package local.halflight.learning.webservice.api.rest.user;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.validation.ValidationException;
 import javax.ws.rs.Consumes;
@@ -18,17 +17,18 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import local.halflight.learning.dto.struggleuser.StruggleUser;
 import local.halflight.learning.dto.struggleuser.StruggleUserRequest;
@@ -43,10 +43,6 @@ import local.halflight.learning.validation.aspect.UseValidator;
 import local.halflight.learning.webservice.api.rest.BaseRestApi;
 import local.halflight.learning.webservice.service.StruggleUserService;
 import local.halflight.learning.webservice.validation.StruggleUserValidator;
-
-/**
- * Enable securiry for delete and post...
- */
 
 @Component
 @Path("/api/users")
@@ -71,7 +67,7 @@ public class StruggleUserRestApiImpl extends BaseRestApi<StruggleUserRequest, St
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
 	public Response getStruggleUsers() {
-		//TODO implement brief version of rp
+		// TODO implement brief version of rp
 		List<StruggleUser> users = struggleUserService.getAllUsers();
 		LOG.info("Get method returning XML:{}", users);
 		return createResponseWith(Status.OK, new UsersResponse(users));

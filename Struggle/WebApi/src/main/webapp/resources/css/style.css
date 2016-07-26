@@ -46,7 +46,7 @@ table {
 	width:310px;
 }
 
-.image_container {
+.right_container {
 	position: absolute;
 	top: 70px;
 	bottom: 20px;
@@ -140,5 +140,25 @@ label.header {
 
 #name_for_search {
 	width:160px;
+}
+
+#templates  {
+	border: 1px solid #00c;
+}
+
+.template  {
+	display: none;
+}
+
+.roleItem, groupItem, settingItem {
+	border: 1px dotted #00c;
+}
+
+.selectChooser {
+	
+}
+
+.selectRemover {
+	
 }
 

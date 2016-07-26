@@ -19,7 +19,7 @@ public class StruggleUserConverter {
 		if (entity.getRoles() != null && !entity.getRoles().isEmpty()) {
 			user.setRoles(entity.getRoles().stream().map(RoleEntity::toDto).collect(Collectors.toSet()));
 		}
-		if (entity.getSettings() != null && !entity.getRoles().isEmpty()) {
+		if (entity.getSettings() != null && !entity.getSettings().isEmpty()) {
 			user.setSettings(entity.getSettings().stream().map(SettingEntity::toDto).collect(Collectors.toSet()));
 		}
 		user.setGroups(entity.getGroups());

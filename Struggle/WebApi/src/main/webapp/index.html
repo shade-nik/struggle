@@ -3,7 +3,10 @@
 
 <head>
 <title>Learning jQuery (User management)</title>
+
 <link rel="stylesheet" href="resources/css/style.css" />
+<link rel="stylesheet" href="resources/css/jquery-ui.css" />
+
 <link rel="shortcut/icon" type="image/png"
 	href="resources/img/learn_ico.png" />
 <meta charset="utf-8" />
@@ -14,13 +17,16 @@
 	<div id="validation_error" class="err"></div>
 
 	<div class="top_menu">
-		<input type="text" id="name_for_search" /> <input type="button"
-			id="search_button" value="Search" /> <input type="button"
-			id="add_button" value="AddUser" />
+		<input type="text" class="ui-widget" id="name_for_search" placeholder="User Name"/>
+		<input type="button" class="ui-button" id="search_button" value="Search" />
+		<input type="button" class="ui-button" id="add_button" value="AddUser" />
+		
+		<input type="text" class="ui-widget" id="msg_to_send" placeholder="Type message here" />
+		<input type="button" class="ui-button" id="send_button" value="Send" />
 	</div>
 
 	<div class="left_container">
-		<ul id="user_list"></ul>
+		<ul class="ui-widget" id="user_list"></ul>
 	</div>
 
 
@@ -28,15 +34,15 @@
 			<table>
 				<tr>
 					<td><label for="user_id">Id: </label></td>
-					<td><input type="text" id="user_id" name="id" disabled="true" /></td>
+					<td><input type="text" class="ui-widget" id="user_id" name="id" disabled="true" /></td>
 				</tr>
 				<tr>
 					<td><label for="user_name"> Username: </label></td>
-					<td><input type="text" id="user_name" name="name" /></td>
+					<td><input type="text" class="ui-widget" id="user_name" name="name" placeholder="User name" /></td>
 				</tr>
 				<tr>
 					<td><label for="user_pass"> Password: </label></td>
-					<td><input type="text" id="user_pass" name="password" /></td>
+					<td><input type="text" class="ui-widget" id="user_pass" name="password" placeholder="Password"/></td>
 				</tr>
 				<tr>
 					<td><label class="header"> Profile: </label></td>
@@ -44,13 +50,13 @@
 				<tr>
 					<td><label for="profile_user_first_name"> First Name:
 					</label></td>
-					<td><input type="text" id="profile_user_first_name"
-						name="first_name" /></td>
+					<td><input type="text" class="ui-widget" id="profile_user_first_name"
+						name="first_name" placeholder="First Name"/></td>
 				</tr>
 				<tr>
 					<td><label for="profile_user_last_name"> Last Name: </label></td>
-					<td><input type="text" id="profile_user_last_name"
-						name="last_name" /></td>
+					<td><input type="text" class="ui-widget" id="profile_user_last_name"
+						name="last_name" placeholder="Last Name"/></td>
 				</tr>
 				<tr>
 					<td><label for="profile_user_enabled"> Enabled: </label></td>
@@ -59,38 +65,76 @@
 				</tr>
 				<tr>
 					<td><label class="header"> Settings: </label></td>
-					<td><span class="add_spec_button" id="add_settings_button">+</span></td>
+					<td><span class="add_spec_button ui-button" id="add_settings_button">+</span></td>
 				</tr>
+				<tr>
 				<td><ul class="user_info" id="user_settings"></ul></td>
 				</tr>
 				<tr>
 					<td><label class="header"> Roles: </label></td>
-					<td><span class="add_spec_button" id="add_role_button">+</span></td>
+					<td><span class="add_spec_button ui-button" id="add_role_button">+</span></td>
 				</tr>
 				<tr>
 					<td><ul class="user_info" id="user_roles"></ul></td>
 				</tr>
 				<tr>
 					<td><label class="header"> Groups: </label></td>
-					<td><span class="add_spec_button" id="add_group_button">+</span]></td>
+					<td><span class="add_spec_button ui-button"  id="add_group_button">+</span]></td>
 				</tr>
 				<tr>
 					<td><ul class="user_info" id="user_groups"></ul></td>
 				</tr>
 				<tr>
-					<td><button id="save_button">Save</button></td>
-					<td><button id="delete_button">Delete</button></td>
+					<td><button class="ui-button" id="save_button">Save</button></td>
+					<td><button class="ui-button" id="delete_button">Delete</button></td>
 				</tr>
 			</table>
 		</div>
 
-		<div class="image_container">
+		<div class="right_container">
 			<img alt="Place for photo" id="photo" height="300" />
 		</div>
 
+<div id="templates">
+  <div class="template" id="selectRole">
+    <button type="button" class="selectRemover"
+            title="Remove this select">X</button>
+
+    <select name="select" size="5" multiple="multiple" title="Select a role">
+        <option value="" data-filter-type="" selected="selected">-- choose role --</option>
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+        <option value="moder">Moderator</option>
+        <option value="level_editor">LevelEditor</option>
+        <option value="monster_editor">MonsterEditor</option>
+    </select>
+  </div>
+  
+  <div class="template" id="chatSection">
+  	  <textarea rows="20" cols="10" id="chat_history"></textarea>
+  	  <input type="text" id="message_input" name="message"/> 
+      <span class="add_spec_button" id="send_message">></span>
+  </div>
+  
+    <div class="template" id="selectGroup">
+    <button type="button" class="selectRemover"
+            title="Remove this select">X</button>
+
+    <select name="select" title="Select a group">
+        <option value="" data-filter-type="" selected="selected">-- choose group --</option>
+        <option value="groupA">GroupA</option>
+        <option value="groupB">GroupB</option>
+        <option value="groupC">GroupC</option>
+    </select>
+  </div>
+</div>
 
 	<script src="resources/js/jquery-3.0.0.js" type="text/javascript"></script>
-	<script src="resources/js/user.js" type="text/javascript"></script>
+	<script src="resources/js/jquery-ui.js" type="text/javascript"></script>
+	<script src="resources/js/stomp.js" type="text/javascript"></script>
+<!-- 	<script src="resources/js/learn_ws_chat.js" type="text/javascript"></script>
+ -->
+ 	<script src="resources/js/user.js" type="text/javascript"></script>
 </body>
 
 </html>

@@ -1,6 +1,21 @@
 var userBaseUrl = "http://localhost:8088/webapi/rest/api/users";
 
 var currentUser;
+var mode;
+var detached;
+
+function ObjTest_Position(pos) {
+	this.left = pos.left;
+	this.top = pos.top;
+}
+
+ObjTest_Position.prototype.getLeft() {
+	return this.left;
+}
+
+ObjTest_Position.prototype.getTop() {
+	return this.top;
+}
 
 // initial
 $("#delete_button").hide();
@@ -8,6 +23,16 @@ $("#delete_button").hide();
 $("#search_button").click(function() {
 	search($("#name_for_search").val());
 	return false;
+});
+
+$("#chat_button").click(function() {
+	if(mode == 'chat_mode') {
+	   return false;
+	}
+	else {
+		mode = 'chat_mode';
+		switchMode(mode);
+	}
 });
 
 $("#add_button").click(function() {
@@ -45,7 +70,36 @@ $('#user_list').delegate(
 
 		});
 
-$("img").attr("src", "resources/img/default_user.jpg");
+//$("img").attr("src", "resources/img/default_user.jpg");
+
+/* animation tests */
+$("span#add_setting_button").click(function() {
+	var position = $(this).position();
+	var testObj = new ObjTest_Position(position);
+	var l = testObj.getLeft();
+	var t = testObj.getTop();
+	$("span#add_setting_button")
+		.css({position:'absolute',
+		top:position.top,
+		left:position.left});
+	console.log("1-rst animation.");
+	$("span#add_setting_button").animate({left:'+=250'},2500);
+	console.log("2-nd animation.");
+	$("span#add_setting_button").animate({top:'+=250'},2500);
+	console.log("3-rd animation.");
+	$("span#add_setting_button").animate({left:'-=250'},2500);
+	console.log("4-th animation.");
+	$("span#add_setting_button").animate({top:'-=250'},2500);
+});
+
+$("span#add_role_button").click(function() {
+	console.log("Add role click");
+});
+
+$("span#add_group_button").click(function() {
+	console.log("Add group click");
+});
+
 
 function search(userName) {
 	if (userName == '')
@@ -191,15 +245,18 @@ function displayResults(data) {
 	$("#user_list li").remove();
 
 	var list = $(data);
-
+	var list_items = []; 
 	$.each(list.find("StruggleUser"), function(index, user) {
-		var current = $(this);
 		console.log("Found payload in the res list " + user);
-		$('#user_list').append(
-				'<li><a href="#" data-identity="'
+		list_items.push(		
+				'<li class="ui-state-default ui-corner-all">'+
+						'<span class="ui-icon ui-icon-person"></span>'
+						+'<a href="#" data-identity="'
 						+ $(user).find("userUUID").text() + '">'
 						+ $(user).find("username").text() + '</a></li>');
 	});
+	
+	$('#user_list').append(list_items.join(''));
 }
 
 function displayUserDetails(data) {
@@ -272,3 +329,13 @@ function displayValidationErrors(jqXHR) {
 
 }
 
+
+
+/* Chat stuff */
+
+function switchMode(mode) {
+    detached = $("div.right_container").children().detach();
+    var right_container = $("div.right_container");
+    
+    $('div.template#chatSection').children().clone().appendTo(right_container);
+}
