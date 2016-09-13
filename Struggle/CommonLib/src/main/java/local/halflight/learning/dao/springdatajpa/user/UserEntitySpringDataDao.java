@@ -15,7 +15,7 @@ public interface UserEntitySpringDataDao extends JpaRepository<UserEntity, Long>
 	@Query("select u from UserEntity u where u.username = (:username)")
 	UserEntity findByName(@Param("username") String username);
 
-	@Query("select u from UserEntity u where u.userUUID = (:uuid)")
-	UserEntity findByUUID(@Param("uuid") String uuid);
+	@Query("select u from UserEntity u where u.email = (:email)")
+	UserEntity findByEmail(@Param("email") String email);
 
 }

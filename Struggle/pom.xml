@@ -15,7 +15,7 @@
 		<module>Worker</module>
 		<module>WebApi</module>
 		<!-- <module>GwtUI</module> -->
-		<module>WorkerReactive</module>
+		<!-- <module>WorkerReactive</module> -->
 	</modules>
 
 	<!-- Define dependencies versions as properties -->
@@ -47,7 +47,7 @@
 		<!-- Aspects -->
 		<aspectj.version>1.8.9</aspectj.version>
 		<!-- Unit testing -->
-		<junit.version>4.11</junit.version>
+		<junit.version>4.12</junit.version>
 		<!-- Mocking framework -->
 		<easymock.version>3.4</easymock.version>
 		<!-- Maven plugins -->
@@ -65,10 +65,11 @@
 		
 <!-- 		1.7.0.RELEASE</spring-data-jpa.version>
  -->
-		<spring.elastic.version>2.0.2.RELEASE</spring.elastic.version>
 		<hibernate.version>4.3.6.Final</hibernate.version>
 		<hibernate.validator.version>5.2.2.Final</hibernate.validator.version>
-		<jersey.version>2.22.1</jersey.version>
+		<jersey.version>2.23.2</jersey.version>
+		<javax.ws.rs.version>2.0.1</javax.ws.rs.version>
+		
 	</properties>
 
 
@@ -88,6 +89,15 @@
 				<artifactId>CommonLib</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
+	
+	<!-- check is this needed? -->		
+<!-- 		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-server</artifactId>
+			<version>${jersey.version}</version>
+		</dependency> -->
+
+
 			<!-- Utility lib -->
 			<dependency>
 				<groupId>org.apache.commons</groupId>
@@ -180,11 +190,6 @@
 				<groupId>org.springframework.amqp</groupId>
 				<artifactId>spring-amqp</artifactId>
 				<version>${spring.amqp.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.data</groupId>
-				<artifactId>spring-data-elasticsearch</artifactId>
-				<version>${spring.elastic.version}</version>
 			</dependency>
 			<!-- Databases -->
 			<dependency>

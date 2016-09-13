@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import local.halflight.learning.config.TransactionManagerConfiguration;
-import local.halflight.learning.entity.struggleuser.ProfileEntity;
+import local.halflight.learning.entity.struggleuser.RegistrationDetailsEntity;
 import local.halflight.learning.entity.struggleuser.RoleEntity;
 
 @Repository("roleEntitySpringDataDao")

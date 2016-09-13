@@ -1,4 +1,4 @@
-package local.halflight.learning.dto.struggleuser;
+package local.halflight.learning.dto.role;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

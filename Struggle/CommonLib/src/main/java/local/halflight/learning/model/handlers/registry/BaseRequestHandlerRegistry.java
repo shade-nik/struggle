@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component;
 
 import local.halflight.learning.model.handlers.RequestHandler;
 
-@Component
+//@Component
 @SuppressWarnings("rawtypes")
-public class WorkerRequestHandlerRegistry {
+public class BaseRequestHandlerRegistry {
 
 	private Map<Class<?>, RequestHandler> registry;
 	
-	@Autowired
-	public WorkerRequestHandlerRegistry(Collection<RequestHandler> handlers) {
+//	@Autowired
+	public BaseRequestHandlerRegistry(Collection<RequestHandler> handlers) {
 		registry = new HashMap<>();
 		register(handlers);
 	}

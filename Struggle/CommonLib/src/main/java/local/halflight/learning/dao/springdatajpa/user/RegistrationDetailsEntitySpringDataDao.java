@@ -5,10 +5,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import local.halflight.learning.config.TransactionManagerConfiguration;
-import local.halflight.learning.entity.struggleuser.ProfileEntity;
+import local.halflight.learning.entity.struggleuser.RegistrationDetailsEntity;
 
-@Repository("profileEntitySpringDataDao")
+@Repository("regDetailsEntitySpringDataDao")
 @Transactional(value = TransactionManagerConfiguration.JPA_TRANSACTION_MANAGER)
-public interface ProfileEntitySpringDataDao extends JpaRepository<ProfileEntity, Long> {
+public interface RegistrationDetailsEntitySpringDataDao extends JpaRepository<RegistrationDetailsEntity, Long> {
 
 }

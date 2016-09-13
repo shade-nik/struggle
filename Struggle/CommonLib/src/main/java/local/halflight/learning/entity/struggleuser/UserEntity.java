@@ -27,23 +27,23 @@ import com.google.common.base.MoreObjects;
 
 import local.halflight.learning.entity.BaseHibernateDto;
 
-@NamedQueries(value = { @NamedQuery(name = "findUserByName", query = "from UserEntity where username = :username"),
-		@NamedQuery(name = "findUserByUUID", query = "from UserEntity where userUUID = :userUUID") })
+@NamedQueries(value = {
+		@NamedQuery(name = "findUserByName", query = "from UserEntity where username = :username"),
+		@NamedQuery(name = "findUserByEmail", query = "from UserEntity where email = :email") })
 @Entity
-@Table(name = "user", uniqueConstraints = { @UniqueConstraint(columnNames = { "username" }, name = "uq_user_username"),
-		@UniqueConstraint(columnNames = { "userUUID" }, name = "uq_user_uuid") })
+@Table(name = "user", uniqueConstraints = { 
+		@UniqueConstraint(columnNames = { "username" }, name = "uq_user_username"),
+		@UniqueConstraint(columnNames = { "email" }, name = "uq_user_email") })
 @AttributeOverride(name = "id", column = @Column(name = "user_id"))
 public class UserEntity extends BaseHibernateDto {
 
 	public static final String FIND_BY_NAME = "UserEntity.findUserByName";
-	public static final String FIND_BY_UUID = "UserEntity.findUserByUUID";
+	public static final String FIND_BY_UUID = "UserEntity.findUserByEmail";
 
-	private String userUUID;
+	private String email;
 	private String username;
 	private byte[] password;
-	private Set<SettingEntity> settings;
-	private ProfileEntity profile;
-	private Set<String> groups;
+    private RegistrationDetailsEntity details;
 	private Set<RoleEntity> roles;
 
 	public UserEntity(String username, byte[] password) {
@@ -52,20 +52,17 @@ public class UserEntity extends BaseHibernateDto {
 	}
 
 	public UserEntity() {
-		// TODO Auto-generated constructor stub
+	}
+	
+	@Column(name = "email", unique = true, nullable = false)
+	public String getEmail() {
+		return email;
 	}
 
-	@Column(name = "userUUID", unique = true, nullable = false)
-	@GeneratedValue(generator = "uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid2")
-	public String getUserUUID() {
-		return userUUID;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-
-	public void setUserUUID(String userUUID) {
-		this.userUUID = userUUID;
-	}
-
+	
 	@Column(name = "username", nullable = false)
 	public String getUsername() {
 		return username;
@@ -83,34 +80,15 @@ public class UserEntity extends BaseHibernateDto {
 		this.password = password;
 	}
 
-	@OneToMany(mappedBy = "user", 
-			fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-	public Set<SettingEntity> getSettings() {
-		return settings;
-	}
-
-	public void setSettings(Set<SettingEntity> settings) {
-		this.settings = settings;
-	}
 
 	@OneToOne(cascade = { CascadeType.ALL }, optional = false)
-	@JoinColumn(name = "profile_id", unique = true, nullable = false, foreignKey = @ForeignKey(name = "fk_user_profile"))
-	public ProfileEntity getProfile() {
-		return profile;
+	@JoinColumn(name = "details_id", unique = true, nullable = false, foreignKey = @ForeignKey(name = "fk_user_details"))
+	public RegistrationDetailsEntity getDetails() {
+		return details;
 	}
 
-	public void setProfile(ProfileEntity profile) {
-		this.profile = profile;
-	}
-
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "user_group", joinColumns = @JoinColumn(name = "id"))
-	public Set<String> getGroups() {
-		return groups;
-	}
-
-	public void setGroups(Set<String> groups) {
-		this.groups = groups;
+	public void setDetails(RegistrationDetailsEntity details) {
+		this.details = details;
 	}
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
@@ -136,12 +114,10 @@ public class UserEntity extends BaseHibernateDto {
 	public String toString() {
 		return MoreObjects.toStringHelper(this)
 				.add("id", id)
-				.add("userUUID", userUUID)
+				.add("email", email)
 				.add("username", username)
 				.add("password", password)
-				.add("settings", settings)
-				.add("profile", profile)
-				.add("groups", groups)
+				.add("details", details)
 				.add("roles", roles).toString();
 	}
 }

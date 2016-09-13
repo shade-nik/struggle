@@ -14,13 +14,13 @@ import javax.persistence.TemporalType;
 
 import com.google.common.base.MoreObjects;
 
-import local.halflight.learning.dto.struggleuser.Profile;
+import local.halflight.learning.dto.user.RegistrationDetails;
 import local.halflight.learning.entity.BaseHibernateDto;
 
 
 @Entity
-@Table(name="user_profile")
-public class ProfileEntity extends BaseHibernateDto {
+@Table(name="user_registration_details")
+public class RegistrationDetailsEntity extends BaseHibernateDto {
 
 	private UserEntity userEntity;
 	private String firstName;
@@ -29,12 +29,11 @@ public class ProfileEntity extends BaseHibernateDto {
 	private Date registrationDate;
 	private Date lastVisited;
 	private boolean enabled = true;
-	private byte[] image; //TODO extract to other table
 
-	public ProfileEntity() {
+	public RegistrationDetailsEntity() {
 	}
 	
-	public ProfileEntity(String fname, String lname, boolean enabled, Date nowDate) {
+	public RegistrationDetailsEntity(String fname, String lname, boolean enabled, Date nowDate) {
 		this.firstName = fname;
 		this.lastName = lname;
 		this.enabled = enabled;
@@ -42,7 +41,7 @@ public class ProfileEntity extends BaseHibernateDto {
 		this.lastVisited = nowDate;
 	}
 
-	@OneToOne(mappedBy="profile")
+	@OneToOne(mappedBy="details")
 	public UserEntity getUserEntity() {
 		return userEntity;
 	}
@@ -102,15 +101,6 @@ public class ProfileEntity extends BaseHibernateDto {
 		this.enabled = enabled;
 	}
 	
-	@Lob
-    @Column(length=32*1024*1024, columnDefinition="longblob", name="image_data") 
-	public byte[] getImage() {
-		return image;
-	}
-
-	public void setImage(byte[] image) {
-		this.image = image;
-	}
 	
 	@Override
 	public String toString() {
@@ -121,29 +111,26 @@ public class ProfileEntity extends BaseHibernateDto {
 				.add("enabled", enabled)
 				.add("registrationDate", registrationDate)
 				.add("lastVisited", lastVisited)
-				.add("image", image)
 				.toString();
 	}
 
-	public static Profile toDto(ProfileEntity entity) {
-		Profile profile = new Profile();
+	public static RegistrationDetails toDto(RegistrationDetailsEntity entity) {
+		RegistrationDetails profile = new RegistrationDetails();
 		profile.setEnabled(entity.isEnabled());
 		profile.setFirstName(entity.getFirstName());
 		profile.setLastName(entity.getLastName());
 		profile.setGender(entity.getGender());
-		profile.setImage(entity.getImage());
 		profile.setLastVisited(entity.getLastVisited());
 		profile.setRegistrationDate(entity.getRegistrationDate());
 		return profile;
 	}
 
-	public static ProfileEntity toEntity(Profile profile) {
-		ProfileEntity entity = new ProfileEntity();
+	public static RegistrationDetailsEntity toEntity(RegistrationDetails profile) {
+		RegistrationDetailsEntity entity = new RegistrationDetailsEntity();
 		entity.setEnabled(profile.isEnabled());
 		entity.setFirstName(profile.getFirstName());
 		entity.setLastName(profile.getLastName());
 		entity.setGender(profile.getGender());
-		entity.setImage(profile.getImage());
 		entity.setLastVisited(profile.getLastVisited());
 		entity.setRegistrationDate(profile.getRegistrationDate());
 		return entity;

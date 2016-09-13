@@ -9,26 +9,15 @@ import org.springframework.stereotype.Component;
 
 import local.halflight.learning.dto.simpletask.SimpleTask;
 import local.halflight.learning.dto.simpletask.SimpleTaskRequest;
-import local.halflight.learning.model.handlers.registry.WorkerRequestHandlerRegistry;
+import local.halflight.learning.model.handlers.registry.BaseRequestHandlerRegistry;
 
-@Component
-public class RequestHandlerFactory {
+//@Component
+public class BaseRequestHandlerFactory {
 
-	private static final Logger LOG = LoggerFactory.getLogger(RequestHandlerFactory.class);
+	private static final Logger LOG = LoggerFactory.getLogger(BaseRequestHandlerFactory.class);
 
-	@Autowired
-	private WorkerRequestHandlerRegistry handlerRegistry;
+	protected BaseRequestHandlerRegistry handlerRegistry;
 	
-	@Autowired
-	private SimpleTaskRequestHandler simpleTaskRequestHandler;
-	
-	public Optional<RequestHandler> createHandler(Object payload) {
-		if(payload instanceof SimpleTaskRequest) {
-			return Optional.of(simpleTaskRequestHandler);
-		}
-		return Optional.empty();
-	}
-
 	public Optional<RequestHandler> getHandlerFromRegistry(Object payload) {
 		LOG.debug("Trying to find handler for object (class{}) {} ", payload.getClass(), payload);
 		RequestHandler handler = handlerRegistry.getHandler(payload.getClass());
@@ -36,4 +25,7 @@ public class RequestHandlerFactory {
 		return Optional.of(handler);
 	}
 
+	public void setHandlerRegistry(BaseRequestHandlerRegistry handlerRegistry) {
+		this.handlerRegistry = handlerRegistry;
+	}
 }

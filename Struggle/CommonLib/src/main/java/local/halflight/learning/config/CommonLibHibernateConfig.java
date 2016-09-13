@@ -4,16 +4,14 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.hibernate.SessionFactory;
+import org.hibernate.cfg.AvailableSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
-import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 public class CommonLibHibernateConfig {
@@ -35,15 +33,11 @@ public class CommonLibHibernateConfig {
 		
 		props.setProperty("hibernate.show_sql", "true");
 		props.setProperty("hibernate.format_sql", "true");
-		props.setProperty("hibernate.hbm2ddl.auto", "update");
-//		props.setProperty("hibernate.hbm2ddl.auto", "create");
+		props.setProperty(AvailableSettings.HBM2DDL_AUTO, "create");
+		//		props.setProperty("hibernate.hbm2ddl.auto", "create");
 		props.setProperty("hibernate.connection.CharSet", "utf8");
 		props.setProperty("hibernate.connection.characterEncoding", "utf8");
 		props.setProperty("hibernate.connection.useUnicode", "true");
-
-//        <property name="hibernate.connection.CharSet">utf8</property>
-//        <property name="hibernate.connection.characterEncoding">utf8</property>
-//        <property name="hibernate.connection.useUnicode">true</property>
         
 		factoryBean.setHibernateProperties(props);
 		return factoryBean;

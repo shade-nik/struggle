@@ -111,8 +111,6 @@ public class SimpleTaskRestApiImpl extends BaseRestApi<SimpleTaskRequest, Simple
 	public Response update(@PathParam("taskId") String taskId, SimpleTaskRequest update) {
 		LOG.info("Request {} for task update received.", update);
 		SimpleTaskResponse rp = new SimpleTaskResponse();
-
-		validateUpdate(update.getPayload(), taskId);
 		try 
 		{
 			SimpleTask updated = simpleTaskService.update(update.getPayload()).get();
@@ -132,20 +130,6 @@ public class SimpleTaskRestApiImpl extends BaseRestApi<SimpleTaskRequest, Simple
 		simpleTaskService.remove(taskId);
 		return createResponse(Status.OK);
 	}
-
-	private void validateUpdate(SimpleTask update, String taskId) {
-		try 
-		{
-			Long pathTaskId = Long.valueOf(taskId);
-			//not in validator permits... change update values ? or
-			update.setTaskId(pathTaskId);
-		} 
-		catch (NumberFormatException e) {
-			
-		}
-		
-	}
-
 	
 	@Autowired
 	public void setSimpleTaskService(SimpleTaskService simpleTaskService) {
@@ -157,11 +141,4 @@ public class SimpleTaskRestApiImpl extends BaseRestApi<SimpleTaskRequest, Simple
 	public void setValidator(Validator<SimpleTaskRequest> validator) {
 		this.validator = validator;
 	}
-
-	@Override
-	protected SimpleTaskResponse handle(SimpleTaskRequest request) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

@@ -7,8 +7,8 @@ import local.halflight.learning.dto.Payload;
 import local.halflight.learning.dto.validationerror.ValidationError;
 import local.halflight.learning.dto.validationerror.ValidationErrorLevel;
 
-public interface Validator<T> {
+public interface Validator<RQ extends GenericRequest<? extends Payload> > {
 	
-	 Map<ValidationErrorLevel, ValidationError> validate(T request);
+	 Map<ValidationErrorLevel, ValidationError> validate(RQ request);
 
 }

@@ -32,42 +32,6 @@ public abstract class BaseRestApi<RQ extends GenericRequest<? extends Payload>,
 	public void setValidator(Validator<RQ> validator) {
 		this.validator = validator;
 	}
-	
-	
-	protected  RP handle(RQ request) {
-		throw new NotYetImplementedException(); 
-	};
-	
-	// TODO refactor... think about use aop to validate....
-	//TODO use strategy ? to deal with sync/async handling
-	protected Response handleSync(RQ request) {
-		try {
-			Map<ValidationErrorLevel, ValidationError>  errors = validator.validate(request);
-			if(errors.isEmpty()) {
-				RP response = handle(request);
-				return createResponse(Status.OK, response);
-			}
-			else {
-				return createResponse(Status.BAD_REQUEST);
-			}
-		} catch (ValidationException e) {
-			return createResponse(Status.BAD_REQUEST);
-		}
-	}
-	
-	protected Response handleASync(RQ request) {
-		try {
-			Map<ValidationErrorLevel, ValidationError> errors = validator.validate(request);
-			if(errors.isEmpty()) {
-				return createResponse(Status.OK);
-			}
-			else {
-				return createResponse(Status.BAD_REQUEST);
-			}
-		} catch (ValidationException e) {
-			return createResponse(Status.BAD_REQUEST);
-		}
-	}
 
 	protected Response createResponseWith(Status status, Object entity) {
 		ResponseBuilder builder = Response.status(status);
@@ -97,9 +61,8 @@ public abstract class BaseRestApi<RQ extends GenericRequest<? extends Payload>,
 		return builder.build();
 	}
 
-	// TODO better change to UUID?
-	protected URI buildLocationHeader(Long taskId) {
-		String location = uri.getAbsolutePath().toString() + "/" + taskId;
+	protected URI buildLocationHeader(Long id) {
+		String location = uri.getAbsolutePath().toString() + "/" + id;
 		return URI.create(location);
 	}
 }

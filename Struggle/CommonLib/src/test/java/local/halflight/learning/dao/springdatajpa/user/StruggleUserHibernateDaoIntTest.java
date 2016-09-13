@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import local.halflight.learning.dao.hibernate.simpletask.SimpleTaskHibernateDao;
 import local.halflight.learning.entity.simpletask.SimpleTaskDbEntity;
-import local.halflight.learning.entity.struggleuser.ProfileEntity;
+import local.halflight.learning.entity.struggleuser.RegistrationDetailsEntity;
 import local.halflight.learning.entity.struggleuser.UserEntity;
 import local.halflight.learning.testutils.TestDataSource;
 
@@ -29,6 +29,7 @@ public class StruggleUserHibernateDaoIntTest {
 	private static final Logger LOG = LoggerFactory.getLogger(StruggleUserHibernateDaoIntTest.class);
 
 	private static final String TEST_USERNAME = "TestUser";
+	private static final String TEST_USER_EMAIL = "testuser@test.mail";
 
 	@Autowired
 	private UserEntitySpringDataDao userEntitySpringDataDao;
@@ -37,7 +38,7 @@ public class StruggleUserHibernateDaoIntTest {
 	
 	@Before
 	public void before() {
-		entity = TestDataSource.User.generateUser(TEST_USERNAME);
+		entity = TestDataSource.User.generateUser(TEST_USERNAME, TEST_USER_EMAIL);
 		 UserEntity cleanup =
 				 userEntitySpringDataDao.findByName(entity.getUsername());
 		 if (cleanup != null) {
@@ -81,28 +82,6 @@ public class StruggleUserHibernateDaoIntTest {
 		assertThat(notFound).isNull();
 
 	}
-
-
-	@Test
-	@Rollback
-	public void testFindByGeneratedUUid() {
-		
-		UserEntitySpringDataDao dao = getDao();
-		UserEntity dto = getDto();
-		dto.setId(null);
-		
-		// save
-		UserEntity saved = dao.save(dto);
-		assertTrue("Saved dto should be not null", saved != null);
-		assertTrue("uuid must be generated and shouldn't be null", saved.getUserUUID() != null);
-
-		LOG.info("===Saved dto: {}", saved);
-		LOG.info("===UUID: {}", saved.getUserUUID());
-		//findByUUID
-		UserEntity userByUUID = dao.findByUUID(saved.getUserUUID());
-		assertTrue("findById res should be not null", userByUUID != null);
-	}
-
 	
 	@Test
 	@Rollback
@@ -115,10 +94,9 @@ public class StruggleUserHibernateDaoIntTest {
 		// save
 		UserEntity saved = dao.save(dto);
 		assertTrue("Saved dto should be not null", saved != null);
-		assertTrue("uuid must be generated and shouldn't be null", saved.getUserUUID() != null);
 
 		//findByUUID
-		ProfileEntity profile = saved.getProfile();
+		RegistrationDetailsEntity profile = saved.getDetails();
 		LOG.info("===Fetch profile: {}", profile);
 	}
 	

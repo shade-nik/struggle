@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 import com.google.common.base.MoreObjects;
 
-import local.halflight.learning.dto.struggleuser.Role;
+import local.halflight.learning.dto.role.Role;
 import local.halflight.learning.entity.BaseHibernateDto;
 
 @Entity
@@ -47,7 +47,10 @@ public class RoleEntity extends BaseHibernateDto {
 
 	@Override
 	public String toString() {
-		return MoreObjects.toStringHelper(this).add("id", id).add("role", role).add("description", description)
+		return MoreObjects.toStringHelper(this)
+				.add("id", id)
+				.add("role", role)
+				.add("description", description)
 				.toString();
 	}
 	

@@ -1,4 +1,4 @@
-package local.halflight.learning.dto.struggleuser;
+package local.halflight.learning.dto.user;
 
 import java.util.List;
 
@@ -13,16 +13,16 @@ import com.google.common.util.concurrent.MoreExecutors;
 
 @XmlRootElement(name = "StruggleUsersResponse" )
 @XmlAccessorType(XmlAccessType.NONE)
-public class UsersResponse {
+public class StruggleUsersResponse {
 
 	@XmlElementWrapper(name = "StruggleUsersList")
 	@XmlElement(name = "StruggleUser")
 	private List<StruggleUser> users;
 
-	public UsersResponse() {
+	public StruggleUsersResponse() {
 	}
 	
-	public UsersResponse(List<StruggleUser> users) {
+	public StruggleUsersResponse(List<StruggleUser> users) {
 		this.users = users;
 	}
 

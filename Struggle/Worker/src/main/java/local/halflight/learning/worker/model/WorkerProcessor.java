@@ -16,12 +16,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ErrorHandler;
 
-import local.halflight.learning.dto.GenericRequest;
 import local.halflight.learning.dto.GenericResponse;
 import local.halflight.learning.dto.Payload;
 import local.halflight.learning.model.handlers.HandlerResponse;
 import local.halflight.learning.model.handlers.RequestHandler;
-import local.halflight.learning.model.handlers.RequestHandlerFactory;
+import local.halflight.learning.worker.model.handler.WorkerHandlerFactory;
 
 @Component
 public class WorkerProcessor {
@@ -42,7 +41,7 @@ public class WorkerProcessor {
 	private MessageConverter messageConverter;
 
 	@Autowired
-	private RequestHandlerFactory requestHandlerFactory;
+	private WorkerHandlerFactory requestHandlerFactory;
 	
 	public void start() {
 		
@@ -50,7 +49,7 @@ public class WorkerProcessor {
 		messageListenerContainer.setQueueNames(queueName);
 		messageListenerContainer.setMessageConverter(messageConverter);
 		//callback for message handling
-		//hide in super or elsewhere
+		//move to super or elsewhere
 		messageListenerContainer.setMessageListener(new MessageListener() {
 			@Override
 			public void onMessage(Message message) {
@@ -59,7 +58,7 @@ public class WorkerProcessor {
 				if(recieved instanceof Payload) {
 					recieviedPayload = (Payload) recieved;
 					try {
-						RequestHandler rqh = requestHandlerFactory.createHandler(recieviedPayload).orElseThrow(NoSuchElementException::new);
+						RequestHandler rqh = requestHandlerFactory.getHandlerFromRegistry(recieviedPayload).orElseThrow(NoSuchElementException::new);
 						LOG.info("==Handler for message created");
 						LOG.info("==Handling message... invoke sleep to");
 						Optional<HandlerResponse<GenericResponse>> result =  rqh.handle(recieviedPayload);

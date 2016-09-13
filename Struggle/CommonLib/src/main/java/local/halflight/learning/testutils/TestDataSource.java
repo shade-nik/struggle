@@ -4,19 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
 import local.halflight.learning.dto.simpletask.SimpleTask;
 import local.halflight.learning.dto.simpletask.TaskPriority;
 import local.halflight.learning.entity.simpletask.SimpleTaskDbEntity;
-import local.halflight.learning.entity.struggleuser.ProfileEntity;
+import local.halflight.learning.entity.struggleuser.RegistrationDetailsEntity;
 import local.halflight.learning.entity.struggleuser.RoleEntity;
-import local.halflight.learning.entity.struggleuser.SettingEntity;
 import local.halflight.learning.entity.struggleuser.UserEntity;
 
 public class TestDataSource {
@@ -55,22 +52,19 @@ public class TestDataSource {
 
 	public static class User {
 
-		public static UserEntity generateUser(String username) {
+		public static UserEntity generateUser(String username, String email) {
 			UserEntity user = new UserEntity();
 			user.setUsername(username);
+			user.setEmail(email);
 			user.setPassword("Password".getBytes());
 			user.setCreateDate(Calendar.getInstance());
-			user.setUserUUID(UUID.randomUUID().toString());
-
-			user.setProfile(generateProfile(username));
-			user.setSettings(generateSettings(4));
-			user.setGroups(generateGroups());
+			user.setDetails(generateProfile(username));
 			user.setRoles(generateRoles());
 			return user;
 		}
 
-		public static ProfileEntity generateProfile(String username) {
-			ProfileEntity profile = new ProfileEntity();
+		public static RegistrationDetailsEntity generateProfile(String username) {
+			RegistrationDetailsEntity profile = new RegistrationDetailsEntity();
 			profile.setCreateDate(Calendar.getInstance());
 			profile.setRegistrationDate(new Date());
 			profile.setEnabled(true);
@@ -78,30 +72,6 @@ public class TestDataSource {
 			profile.setLastName("d'" + username);
 			profile.setLastVisited(new Date());
 			return profile;
-		}
-
-		public static SettingEntity generateSetting(String settingDescr) {
-			SettingEntity setting = new SettingEntity(settingDescr);
-
-			return setting;
-		}
-
-		public static Set<SettingEntity> generateSettings(int num) {
-			HashSet<SettingEntity> res = new HashSet<>();
-			for (int i = 0; i < num; ++i) {
-				res.add(generateSetting("Description: " + i));
-			}
-
-			return res;
-		}
-
-		public static Set<String> generateGroups() {
-			HashSet<String> groups = new HashSet<>();
-			groups.add("FRST_GRP");
-			groups.add("SEC_GRP");
-			groups.add("THRD_GRP");
-
-			return groups;
 		}
 
 		public static Set<RoleEntity> generateRoles() {

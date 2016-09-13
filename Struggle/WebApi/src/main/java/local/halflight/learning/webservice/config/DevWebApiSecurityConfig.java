@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,7 +20,8 @@ import local.halflight.learning.webservice.service.StruggleUserService;
 
 @Configuration
 @EnableWebSecurity
-public class WebApiSecurityConfig extends WebSecurityConfigurerAdapter {
+//@Profile("dev")
+public class DevWebApiSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private StruggleUserService struggleUserService;
@@ -33,24 +35,25 @@ public class WebApiSecurityConfig extends WebSecurityConfigurerAdapter {
 //  PersistentTokenRepository tokenRepository;	
 	
 	
+	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/resources/**");
 		web.ignoring().antMatchers("/webjars/**");
+		web.ignoring().antMatchers("/usermgmnt.html");
 	}
 	
 	 @Autowired
 	 protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//		 auth.userDetailsService(struggleUserService);
-		 auth.authenticationProvider(daoAuthenticationProvider());
+//		 auth.authenticationProvider(daoAuthenticationProvider());
 		// @formatter:off
-//		 auth.inMemoryAuthentication()
-//	  		.withUser("user")
-//	  		.password("user")
-//	  		.roles("USER").and()
-//	  		.withUser("admin")
-//	  		.password("admin")
-//	  		.roles("USER", "ADMIN");
+		 auth.inMemoryAuthentication()
+	  		.withUser("user")
+	  		.password("user")
+	  		.roles("USER").and()
+	  		.withUser("admin")
+	  		.password("admin")
+	  		.roles("USER", "ADMIN");
 		// @formatter:on
 	  }
 	

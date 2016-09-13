@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 public class TransactionManagerConfiguration {
-	private static final Logger LOG = LoggerFactory.getLogger(RabbitConfig.class);
+	private static final Logger LOG = LoggerFactory.getLogger(TransactionManagerConfiguration.class);
 
 	public static final String HIBERNATE_TRANSACTION_MANAGER = "hibernateTransactionManager";
 	public static final String JDBC_TRANSACTION_MANAGER = "jdbcTransactionManager";

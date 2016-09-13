@@ -1,4 +1,4 @@
-package local.halflight.learning.dto.struggleuser;
+package local.halflight.learning.dto.user;
 
 import java.util.Map;
 
@@ -48,8 +48,6 @@ public class StruggleUserResponse extends BaseResponse<StruggleUserRequest> {
 	public void setPayload(StruggleUser payload) {
 		this.payload = payload;
 	}
-
-	
 	
 	@XmlElement
 	@XmlElementWrapper(name="ValidationErrors")
@@ -61,7 +59,9 @@ public class StruggleUserResponse extends BaseResponse<StruggleUserRequest> {
 
 	@Override
 	public String toString() {
-		return MoreObjects.toStringHelper(this).add("StruggleUserRequest", request).add("StruggleUser", payload)
+		return MoreObjects.toStringHelper(this)
+				.add("StruggleUserRequest", request)
+				.add("StruggleUser", payload)
 				.add("validationErrors", validationErrors).toString();
 	}
 }

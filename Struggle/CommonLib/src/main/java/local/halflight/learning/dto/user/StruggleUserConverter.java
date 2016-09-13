@@ -1,10 +1,9 @@
-package local.halflight.learning.dto.struggleuser;
+package local.halflight.learning.dto.user;
 
 import java.util.stream.Collectors;
 
-import local.halflight.learning.entity.struggleuser.ProfileEntity;
+import local.halflight.learning.entity.struggleuser.RegistrationDetailsEntity;
 import local.halflight.learning.entity.struggleuser.RoleEntity;
-import local.halflight.learning.entity.struggleuser.SettingEntity;
 import local.halflight.learning.entity.struggleuser.UserEntity;
 
 public class StruggleUserConverter {
@@ -14,15 +13,10 @@ public class StruggleUserConverter {
 			user.setPassword(new String(entity.getPassword()));
 		}
 		user.setUsername(entity.getUsername());
-		user.setUserUUID(entity.getUserUUID());
-		user.setProfile(ProfileEntity.toDto(entity.getProfile()));
+		user.setRegistrationDetails(RegistrationDetailsEntity.toDto(entity.getDetails()));
 		if (entity.getRoles() != null && !entity.getRoles().isEmpty()) {
 			user.setRoles(entity.getRoles().stream().map(RoleEntity::toDto).collect(Collectors.toSet()));
 		}
-		if (entity.getSettings() != null && !entity.getSettings().isEmpty()) {
-			user.setSettings(entity.getSettings().stream().map(SettingEntity::toDto).collect(Collectors.toSet()));
-		}
-		user.setGroups(entity.getGroups());
 		return user;
 	}
 
@@ -32,15 +26,11 @@ public class StruggleUserConverter {
 			entity.setPassword(user.getPassword().getBytes());
 		}
 		entity.setUsername(user.getUsername());
-		entity.setUserUUID(user.getUserUUID());
-		entity.setProfile(ProfileEntity.toEntity(user.getProfile()));
+		entity.setEmail(user.getEmail());
+		entity.setDetails(RegistrationDetailsEntity.toEntity(user.getRegistrationDetails()));
 		if (user.getRoles() != null && !user.getRoles().isEmpty()) {
 			entity.setRoles(user.getRoles().stream().map(RoleEntity::toEntity).collect(Collectors.toSet()));
 		}
-		if (user.getSettings() != null && !user.getSettings().isEmpty()) {
-			entity.setSettings(user.getSettings().stream().map(SettingEntity::toEntity).collect(Collectors.toSet()));
-		}
-		entity.setGroups(user.getGroups());
 		return entity;
 	}
 }

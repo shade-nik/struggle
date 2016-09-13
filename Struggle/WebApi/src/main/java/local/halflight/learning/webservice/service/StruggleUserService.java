@@ -20,8 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import local.halflight.learning.config.TransactionManagerConfiguration;
 import local.halflight.learning.dao.springdatajpa.user.UserEntitySpringDataDao;
-import local.halflight.learning.dto.struggleuser.StruggleUser;
-import local.halflight.learning.dto.struggleuser.StruggleUserConverter;
+import local.halflight.learning.dto.user.StruggleUserConverter;
+import local.halflight.learning.dto.user.StruggleUser;
 import local.halflight.learning.entity.struggleuser.UserEntity;
 import local.halflight.learning.testutils.TestDataSource;
 import local.halflight.learning.validation.aspect.UseValidator;
@@ -35,10 +35,13 @@ public class StruggleUserService implements UserDetailsService {
 	@Qualifier("userDao")
 	private UserEntitySpringDataDao userEntitySpringDataDao;
 
+//TODO at this level of abstraction we work at StruggleUser level...
+// no web stuf... no jpa/sql stuff
+// think no optional returns?
 	
-	public Optional<StruggleUser> getUserByUUID(String userId) {
-		LOG.info("Getting user by name: {}", userId);
-		UserEntity entity = userEntitySpringDataDao.findByUUID(userId);
+	public Optional<StruggleUser> getUserByEmail(String email) {
+		LOG.info("Getting user by email: {}", email);
+		UserEntity entity = userEntitySpringDataDao.findByEmail(email);
 		
 		if (entity == null) {
 			return Optional.empty();
@@ -105,7 +108,7 @@ public class StruggleUserService implements UserDetailsService {
 	}
 
 	public StruggleUser getTestUser(String username) {
-		return StruggleUserConverter.toDto(TestDataSource.User.generateUser("TestUser"));
+		return StruggleUserConverter.toDto(TestDataSource.User.generateUser("TestUser", "testuser@test.mail"));
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package local.halflight.learning.dto.struggleuser;
+package local.halflight.learning.dto.user;
 
 import java.util.Date;
 
@@ -13,7 +13,7 @@ import local.halflight.learning.entity.struggleuser.Gender;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public class Profile {
+public class RegistrationDetails {
 	@XmlElement
 	private String firstName;
 	@XmlElement
@@ -26,12 +26,12 @@ public class Profile {
 	private Date lastVisited;
 	@XmlElement
 	private boolean enabled = true;
-	private byte[] image;
 
-	public Profile() {
+
+	public RegistrationDetails() {
 	}
 	
-	public Profile(String fname, String lname, boolean enabled, Date nowDate) {
+	public RegistrationDetails(String fname, String lname, boolean enabled, Date nowDate) {
 		this.firstName = fname;
 		this.lastName = lname;
 		this.enabled = enabled;
@@ -78,13 +78,7 @@ public class Profile {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
-	public byte[] getImage() {
-		return image;
-	}
 
-	public void setImage(byte[] image) {
-		this.image = image;
-	}
 	
 	public Gender getGender() {
 		return gender;
@@ -103,7 +97,6 @@ public class Profile {
 				.add("registrationDate", registrationDate)
 				.add("lastVisited", lastVisited)
 				.add("gender", gender)
-				.add("image", image)
 				.toString();
 	}
 	

@@ -25,11 +25,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import local.halflight.learning.dto.struggleuser.StruggleUser;
-import local.halflight.learning.dto.struggleuser.StruggleUserConverter;
-import local.halflight.learning.dto.struggleuser.StruggleUserRequest;
-import local.halflight.learning.dto.struggleuser.StruggleUserResponse;
-import local.halflight.learning.dto.struggleuser.UsersResponse;
+import local.halflight.learning.dto.user.StruggleUserConverter;
+import local.halflight.learning.dto.user.StruggleUserRequest;
+import local.halflight.learning.dto.user.StruggleUserResponse;
+import local.halflight.learning.dto.user.StruggleUser;
+import local.halflight.learning.dto.user.StruggleUsersResponse;
 import local.halflight.learning.testutils.TestDataSource;
 import local.halflight.learning.webservice.api.rest.simpletask.SimpleRestApiTest;
 import local.halflight.learning.webservice.service.StruggleUserService;
@@ -37,7 +37,9 @@ import local.halflight.learning.webservice.validation.StruggleUserValidator;
 
 public class StruggleUserRestApiTest extends BaseRestApiTest {
 	private static final Logger LOG = LoggerFactory.getLogger(SimpleRestApiTest.class);
+
 	private static final String TEST_USER_NAME = "TestUserName";
+	private static final String TEST_USER_EMAIL = "testuser@test.mail";
 	private static final String TEST_UPDATED_USER_NAME = "UpdatedUserName";
 
 	private StruggleUserRestApiImpl api;
@@ -57,7 +59,7 @@ public class StruggleUserRestApiTest extends BaseRestApiTest {
 		api.setValidator(validator);
 		ReflectionTestUtils.setField(api, "uri", uri);
 	
-		user =  StruggleUserConverter.toDto(TestDataSource.User.generateUser(TEST_USER_NAME));
+		user =  StruggleUserConverter.toDto(TestDataSource.User.generateUser(TEST_USER_NAME, TEST_USER_EMAIL));
 		request = new StruggleUserRequest();
 		request.setPayload(user);
 		requestPathURI = new URI("http://localhost/absolutePathToApi");
@@ -69,12 +71,12 @@ public class StruggleUserRestApiTest extends BaseRestApiTest {
 		expect(service.getAllUsers()).andReturn(new ArrayList<>());
 		
 		control.replay();
-		Response rp = api.getStruggleUsers();
+		Response rp = api.getStruggleUsersList();
 		control.verify();
 		
 		SoftAssertions responseAssertions = new SoftAssertions(); 
 		responseAssertions.assertThat(rp).isNotNull();
-		responseAssertions.assertThat(rp.getEntity()).isInstanceOf(UsersResponse.class);
+		responseAssertions.assertThat(rp.getEntity()).isInstanceOf(StruggleUsersResponse.class);
 	
 		responseAssertions.assertAll();
 	}
@@ -120,8 +122,7 @@ public class StruggleUserRestApiTest extends BaseRestApiTest {
 	@Test
 	public void updateShouldReturnOkIfUpdate() {
 		
-		StruggleUser existing = StruggleUserConverter.toDto(TestDataSource.User.generateUser(TEST_USER_NAME));
-		existing.setUserUUID(UUID.randomUUID().toString());
+		StruggleUser existing = StruggleUserConverter.toDto(TestDataSource.User.generateUser(TEST_USER_NAME, TEST_USER_EMAIL));
 		
 		expect(service.getUserByName(TEST_USER_NAME)).andReturn(Optional.of(existing));
 		expect(validator.validateUpdate(existing, user)).andReturn(Collections.emptyMap());
@@ -143,7 +144,7 @@ public class StruggleUserRestApiTest extends BaseRestApiTest {
 	}
 
 	
-	@Test
+	@Test(expected=NotFoundException.class)
 	public void updateShouldReturnNotFoundIfUserNotExists() {
 
 		expect(service.getUserByName(TEST_USER_NAME)).andReturn(Optional.empty());
@@ -177,7 +178,7 @@ public class StruggleUserRestApiTest extends BaseRestApiTest {
 		responseAssertions.assertAll();	
 	}
 	
-	@Test
+	@Test(expected = NotFoundException.class)
 	public void deleteShouldReturnNotFoundIfUserNotExists() {
 
 		service.remove(TEST_USER_NAME);

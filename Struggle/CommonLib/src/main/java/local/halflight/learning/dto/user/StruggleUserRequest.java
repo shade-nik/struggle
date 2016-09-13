@@ -1,4 +1,4 @@
-package local.halflight.learning.dto.struggleuser;
+package local.halflight.learning.dto.user;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -26,7 +26,8 @@ public class StruggleUserRequest extends BaseRequest<StruggleUser> {
 
 	@Override
 	public String toString() {
-		return MoreObjects.toStringHelper(this).add("StruggleUser", payload).toString();
+		return MoreObjects.toStringHelper(this)
+				.add("StruggleUser", payload).toString();
 	}
 
 }

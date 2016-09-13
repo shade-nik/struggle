@@ -1,4 +1,4 @@
-package local.halflight.learning.dto.struggleuser;
+package local.halflight.learning.dto.user;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -19,22 +19,22 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.google.common.base.MoreObjects;
 
 import local.halflight.learning.dto.Payload;
+import local.halflight.learning.dto.role.Role;
 
 @XmlRootElement(name = "StruggleUserPayload")
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(propOrder = { "username", "password", "userUUID", "profile", "settings", "roles", "groups" })
+@XmlType(propOrder = { "username", "email", "password", "registrationDetails", "roles" })
 public class StruggleUser implements Payload, UserDetails {
 
 	private static final long serialVersionUID = 6825474579252728958L;
 
 	private Long id;
-	private String userUUID;
 	private String username;
+	private String email;
 	private String password;
-	private Profile profile;
-	private Set<Setting> settings;
+	
+	private RegistrationDetails registrationDetails;
 	private Set<Role> roles;
-	private Set<String> groups;
 
 	@Override
 	public Long getId() {
@@ -46,15 +46,6 @@ public class StruggleUser implements Payload, UserDetails {
 	}
 
 	@XmlElement
-	public String getUserUUID() {
-		return userUUID;
-	}
-
-	public void setUserUUID(String userUUID) {
-		this.userUUID = userUUID;
-	}
-
-	@XmlElement
 	public String getUsername() {
 		return username;
 	}
@@ -62,6 +53,17 @@ public class StruggleUser implements Payload, UserDetails {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+	
+	@XmlElement
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
 
 	@XmlElement
 	public String getPassword() {
@@ -70,25 +72,6 @@ public class StruggleUser implements Payload, UserDetails {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	@XmlElement
-	public Profile getProfile() {
-		return profile;
-	}
-
-	public void setProfile(Profile profile) {
-		this.profile = profile;
-	}
-
-	@XmlElementWrapper(name = "Settings")
-	@XmlElement(name = "Setting")
-	public Set<Setting> getSettings() {
-		return settings;
-	}
-
-	public void setSettings(Set<Setting> settings) {
-		this.settings = settings;
 	}
 
 	@XmlElementWrapper(name = "Roles")
@@ -101,22 +84,23 @@ public class StruggleUser implements Payload, UserDetails {
 		this.roles = roles;
 	}
 
-	@XmlElementWrapper(name = "Groups")
-	@XmlElement(name = "Group")
-	public Set<String> getGroups() {
-		return groups;
+	@XmlElement
+	public RegistrationDetails getRegistrationDetails() {
+		return registrationDetails;
 	}
 
-	public void setGroups(Set<String> groups) {
-		this.groups = groups;
+	public void setRegistrationDetails(RegistrationDetails details) {
+		this.registrationDetails = details;
 	}
 
 	@Override
 	public String toString() {
-		return MoreObjects.toStringHelper(this).add("userUUID", userUUID).add("username", username)
-				.add("password", "[secret]").add("profile", profile).add("settings", settings).add("roles", roles)
-				.add("groups", groups)
-
+		return MoreObjects.toStringHelper(this)
+				.add("username", username)
+				.add("email", email)
+				.add("password", "[secret]")
+				.add("details", registrationDetails)
+				.add("roles", roles)
 				.toString();
 	}
 
@@ -146,7 +130,7 @@ public class StruggleUser implements Payload, UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return getProfile().isEnabled();
+		return getRegistrationDetails().isEnabled();
 	}
 
 }
