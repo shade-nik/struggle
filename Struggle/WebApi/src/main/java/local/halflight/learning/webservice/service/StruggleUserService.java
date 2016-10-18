@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,6 +30,7 @@ import local.halflight.learning.validation.aspect.UseValidator;
 
 @Component("customUserDetails")
 @Transactional(value = TransactionManagerConfiguration.JPA_TRANSACTION_MANAGER)
+@Scope( proxyMode = ScopedProxyMode.TARGET_CLASS )
 public class StruggleUserService implements UserDetailsService {
 	private static final Logger LOG = LoggerFactory.getLogger(StruggleUserService.class);
 
